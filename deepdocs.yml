@@ -1,5 +1,5 @@
 
-target_docs:
-  - filepath: README.md
-#  - url: https://github.com/another_user/another_repo/blob/main/docs/EXAMPLE.md
+target_repo:
+  - url: "https://github.com/Nilzkool/agno-docs"
+
             
