@@ -41,9 +41,10 @@ agent = Agent(
     knowledge=knowledge_base,
     search_knowledge=True,
 )
-agent.knowledge.load(recreate=False)
+# Load the knowledge base (if not already loaded)
+knowledge_base.load(recreate=False)
 
-agent.print_response("Ask me about something from the knowledge base")
+agent.print_response("Ask me about something from the knowledge base", markdown=True)
 ```
 
 ## Params
@@ -57,5 +58,5 @@ agent.print_response("Ask me about something from the knowledge base")
 
 ## Developer Resources
 
-- View [Sync loading Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/arxiv_kb.py)
-- View [Async loading Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/arxiv_kb_async.py)
+- View [Sync loading Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/arxiv_kb.py)
+- View [Async loading Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/arxiv_kb_async.py)

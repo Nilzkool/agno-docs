@@ -3,6 +3,15 @@ title: YouTube Reader
 sidebarTitle: YouTube
 ---
 
-YouTubeReader is a reader class that allows you to read transcript from YouTube videos.
+YouTubeReader is a reader class that fetches and parses transcripts from YouTube videos using the `youtube_transcript_api` package. It provides two methods:
+
+- `read(video_url: str) -> List[Document]`: Synchronously fetches and returns a list of `Document` objects containing the full transcript.
+- `async_read(video_url: str) -> List[Document]`: Asynchronously fetches the transcript in an executor and returns the same list of `Document` objects.
+
+If the `youtube_transcript_api` package is not installed, the reader will raise an `ImportError` instructing you to install it via:
+
+```shell
+pip install youtube_transcript_api
+```
 
 <Snippet file="youtube-reader-reference.mdx" />

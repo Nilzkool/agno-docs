@@ -24,21 +24,21 @@ from agno.vectordb.mongodb import MongoDb
 """
 Example connection strings:
 "mongodb+srv://<username>:<password>@cluster0.mongodb.net/?retryWrites=true&w=majority"
-"mongodb://localhost/?directConnection=true"
+"mongodb://localhost:27017/agno?authSource=admin"
 """
-mdb_connection_string = ""
+mdb_connection_string = "mongodb+srv://<username>:<password>@cluster0.mongodb.net/?retryWrites=true&w=majority"
 
 knowledge_base = PDFUrlKnowledgeBase(
     urls=["https://agno-public.s3.amazonaws.com/recipes/ThaiRecipes.pdf"],
     vector_db=MongoDb(
         collection_name="recipes",
         db_url=mdb_connection_string,
-        wait_until_index_ready=60,
-        wait_after_insert=300
+        search_index_name="recipes",
     ),
-)  # adjust wait_after_insert and wait_until_index_ready to your needs
+)
 
-# knowledge_base.load(recreate=True)  # Comment out after first run
+# Comment out after first run
+knowledge_base.load(recreate=False)
 
 agent = Agent(knowledge=knowledge_base, show_tool_calls=True)
 agent.print_response("How to make Thai curry?", markdown=True)
@@ -95,5 +95,5 @@ agent.print_response("How to make Thai curry?", markdown=True)
 
 ## Developer Resources
 
-- View [Cookbook (Sync)](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/mongo_db/mongo_db.py)
-- View [Cookbook (Async)](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/mongo_db/async_mongo_db.py)
+- View [Cookbook (Sync)](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/mongo_db/mongo_db.py)
+- View [Cookbook (Async)](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/mongo_db/async_mongo_db.py)

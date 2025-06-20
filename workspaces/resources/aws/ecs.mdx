@@ -1,4 +1,90 @@
 ---
 title: ECS
-description: This guide is in the works
+sidebarTitle: ECS
 ---
+
+AWS Elastic Container Service (ECS) lets you run Docker containers in a fully managed cluster. Agno provides pydantic-style ECS resources that wrap the underlying boto3 ECS API.
+
+## Resources
+
+- **EcsCluster**: Defines an ECS cluster.
+- **EcsTaskDefinition**: Defines one or more containers to run as a task.
+- **EcsService**: Deploys and maintains a specified number of task instances in your cluster.
+
+## Quickstart Example
+
+Copy the following code into a file named `resources.py` and run `ag start resources.py` to create a Fargate service behind an Application Load Balancer.
+
+<CodeGroup>
+```python resources.py
+from agno.aws.resource.ec2.subnet import Subnet
+from agno.aws.resource.ec2.security_group import SecurityGroup
+from agno.aws.resource.ecs import EcsCluster, EcsTaskDefinition, EcsService
+from agno.aws.resource.elb.target_group import TargetGroup
+
+# --- Network configuration ---
+subnet1 = Subnet(name="subnet-0123456789abcdef0")
+subnet2 = Subnet(name="subnet-0fedcba9876543210")
+
+# Create a security group allowing HTTP traffic
+sg = SecurityGroup(
+    name="my-service-sg",
+    description="Allow HTTP from internet",
+    inbound_rules=[{"description":"HTTP","port":80,"cidr_ip":"0.0.0.0/0"}],
+)
+
+# Define the ECS cluster
+ecs_cluster = EcsCluster(name="my-cluster")
+
+# Define the Task Definition
+task_def = EcsTaskDefinition(
+    name="my-app-td",
+    family="my-app",
+    network_mode="awsvpc",
+    cpu="256",
+    memory="512",
+    containers=[
+        {
+            "name": "app",
+            "image": "nginx:latest",
+            "portMappings": [{"containerPort": 80}],
+            "essential": True,
+        }
+    ],
+    requires_compatibilities=["FARGATE"],
+)
+
+# Optional: Create a target group for ALB
+tg = TargetGroup(
+    name="my-tg",
+    port=80,
+    protocol="HTTP",
+    subnets=[subnet1, subnet2],
+)
+
+# Create the ECS Service
+service = EcsService(
+    name="my-app-service",
+    cluster=ecs_cluster,
+    task_definition=task_def,
+    target_group=tg,
+    target_container_name="app",
+    target_container_port=80,
+    subnets=[subnet1, subnet2],
+    security_groups=[sg],
+    assign_public_ip=True,
+    desired_count=2,
+    launch_type="FARGATE",
+)
+```
+</CodeGroup>
+
+Run:
+```bash
+ag start resources.py
+```
+to deploy, and:
+```bash
+ag stop resources.py
+```
+to tear down.

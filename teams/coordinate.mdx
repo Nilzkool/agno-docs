@@ -40,16 +40,6 @@ This mode is ideal for complex tasks that require multiple specialized skills, c
             "You are a senior writer for the New York Times. Given a topic and a list of URLs, "
             "your goal is to write a high-quality NYT-worthy article on the topic."
         ),
-        instructions=[
-            "First read all urls using `read_article`."
-            "Then write a high-quality NYT-worthy article on the topic."
-            "The article should be well-structured, informative, engaging and catchy.",
-            "Ensure the length is at least as long as a NYT cover story -- at a minimum, 15 paragraphs.",
-            "Ensure you provide a nuanced and balanced opinion, quoting facts where possible.",
-            "Focus on clarity, coherence, and overall quality.",
-            "Never make up facts or plagiarize. Always provide proper attribution.",
-            "Remember: you are writing for the New York Times, so the quality of the article is important.",
-        ],
         tools=[Newspaper4kTools()],
         add_datetime_to_instructions=True,
     )
@@ -69,9 +59,9 @@ This mode is ideal for complex tasks that require multiple specialized skills, c
             "Remember: you are the final gatekeeper before the article is published, so make sure the article is perfect.",
         ],
         add_datetime_to_instructions=True,
-        add_member_tools_to_system_message=False,  # This can be tried to make the agent more consistently get the transfer tool call correct
-        enable_agentic_context=True,  # Allow the agent to maintain a shared context and send that to members.
-        share_member_interactions=True,  # Share all member responses with subsequent member requests.
+        add_member_tools_to_system_message=False,
+        enable_agentic_context=True,
+        share_member_interactions=True,
         show_members_responses=True,
         markdown=True,
     )
@@ -103,11 +93,41 @@ strategy_team = Team(
     members=[market_analyst, competitive_analyst, strategic_planner],
     mode="coordinate",
     name="Strategy Team",
-    description="A team that develops strategic recommendations",
-    success_criteria="Produce actionable strategic recommendations supported by market and competitive analysis",
+    description="Produce actionable strategic recommendations supported by market and competitive analysis",
 )
 
 response = strategy_team.run(
     "Develop a market entry strategy for our new AI-powered healthcare product"
 )
+```
+
+## Structured Output with Coordinate Mode
+
+Teams can also return structured outputs by supplying a Pydantic model via the `response_model` parameter. The final `response.content` will be parsed into that model.
+
+```python
+from pydantic import BaseModel
+from typing import List
+
+class Article(BaseModel):
+    title: str
+    summary: str
+    reference_links: List[str]
+
+team = Team(
+    name="News Team",
+    mode="coordinate",
+    model=OpenAIChat("gpt-4o"),
+    members=[hn_researcher, web_searcher],
+    instructions=[
+        "First, search HackerNews for the top stories.",
+        "Then, summarize each story with reference links.",
+    ],
+    response_model=Article,
+    enable_agentic_context=True,
+)
+
+response = team.run("Write an article about the top HackerNews story")
+assert isinstance(response.content, Article)
+print(response.content.json(indent=2))
 ```

@@ -1,4 +1,121 @@
 ---
 title: RDS
-description: This guide is in the works
+description: Guide to using AWS RDS Resources
 ---
+
+## Introduction
+
+Agno enables you to define and manage AWS RDS resources entirely in Python. Below are the main classes:
+
+- **DbSubnetGroup**: Defines a group of subnets for your RDS instances or clusters.
+- **DbInstance**: Creates and manages a standalone RDS database instance.
+- **DbCluster**: Creates and manages an Aurora or Multi-AZ RDS cluster.
+
+Each resource is a Pydantic object providing type validation, and can be created with `ag start resources.py`.
+
+---
+
+## DB Subnet Group
+
+A DB subnet group is required to launch Amazon RDS instances in a VPC. It must include at least one subnet in two or more Availability Zones.
+
+```python
+from agno.aws.resource.rds import DbSubnetGroup
+
+# Create a DB subnet group with explicit subnet IDs
+db_sg = DbSubnetGroup(
+    name="my-db-subnet-group",
+    description="Subnet group for dev databases",
+    subnet_ids=["subnet-abc123", "subnet-def456"],
+    tags=[{"Key": "env", "Value": "dev"}],
+)
+```
+
+Alternatively, derive subnets from a VPC CloudFormation stack:
+
+```python
+from agno.aws.resource.cloudformation.stack import CloudFormationStack
+from agno.aws.resource.rds import DbSubnetGroup
+
+vpc_stack = CloudFormationStack(name="my-vpc-stack")
+# This will fetch private subnets first, then public if none found
+db_sg = DbSubnetGroup(
+    name="my-db-subnet-group",
+    vpc_stack=vpc_stack,
+)
+```
+
+---
+
+## DB Instance
+
+Use `DbInstance` to define a single RDS instance:
+
+```python
+from pathlib import Path
+from agno.aws.resource.rds import DbInstance, DbSubnetGroup
+from agno.aws.resource.secret.manager import SecretsManager
+
+# Read database credentials from a local YAML file
+db_secret = SecretsManager(
+    name="my-db-secret",
+    secret_files=[Path("db_secrets.yml")],
+)
+
+# Define the subnet group
+db_sg = DbSubnetGroup(name="my-db-subnet-group", subnet_ids=["subnet-abc123", "subnet-def456"])
+
+# Create the RDS instance
+db_instance = DbInstance(
+    name="my-db-instance",
+    engine="postgres",
+    engine_version="13.4",
+    db_instance_class="db.t3.micro",
+    allocated_storage=20,
+    db_subnet_group=db_sg,
+    aws_secret=db_secret,
+    publicly_accessible=True,
+    tags=[{"Key": "env", "Value": "dev"}],
+)
+```
+
+Options such as `port`, `multi_az`, and backup settings can also be configured via keyword arguments.
+
+---
+
+## DB Cluster
+
+Use `DbCluster` for Aurora or Multi-AZ clusters, optionally adding one or more instances:
+
+```python
+from agno.aws.resource.rds import DbCluster, DbInstance, DbSubnetGroup
+from agno.aws.resource.secret.manager import SecretsManager
+from pathlib import Path
+
+db_secret = SecretsManager(
+    name="my-cluster-secret",
+    secret_files=[Path("cluster_secrets.yml")],
+)
+
+# Subnet group for the cluster
+db_sg = DbSubnetGroup(name="my-cluster-subnet-group", subnet_ids=["subnet-xyz789", "subnet-uvw012"])
+
+# Define two instances for the cluster
+instances = [
+    DbInstance(name="cluster-node-1", db_subnet_group=db_sg),
+    DbInstance(name="cluster-node-2", db_subnet_group=db_sg),
+]
+
+# Create the cluster
+db_cluster = DbCluster(
+    name="my-aurora-cluster",
+    engine="aurora-postgresql",
+    engine_version="13.6",
+    db_instances=instances,
+    db_subnet_group=db_sg,
+    aws_secret=db_secret,
+    tags=[{"Key": "env", "Value": "prod"}],
+)
+```
+
+Additional parameters like `availability_zones`, `backup_retention_period`, and `deletion_protection` are available.

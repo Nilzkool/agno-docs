@@ -1,18 +1,16 @@
-| Parameter                       | Type                        | Default                        | Description                                                     |
-| ------------------------------ | --------------------------- | ------------------------------ | --------------------------------------------------------------- |
-| `id`                           | `str`                       | `"claude-3-5-sonnet-20241022"` | The id of the Anthropic Claude model to use                     |
-| `name`                         | `str`                       | `"Claude"`                     | The name of the model                                           |
-| `provider`                     | `str`                       | `"Anthropic"`                  | The provider of the model                                       |
-| `max_tokens`                   | `Optional[int]`             | `1024`                         | Maximum number of tokens to generate in the chat completion     |
-| `temperature`                  | `Optional[float]`           | `None`                         | Controls randomness in the model's output                       |
-| `stop_sequences`               | `Optional[List[str]]`       | `None`                         | A list of strings that the model should stop generating text at |
-| `top_p`                        | `Optional[float]`           | `None`                         | Controls diversity via nucleus sampling                         |
-| `top_k`                        | `Optional[int]`             | `None`                         | Controls diversity via top-k sampling                           |
-| `request_params`               | `Optional[Dict[str, Any]]`  | `None`                         | Additional parameters to include in the request                 |
-| `api_key`                      | `Optional[str]`             | `None`                         | The API key for authenticating with Anthropic                   |
-| `client_params`                | `Optional[Dict[str, Any]]`  | `None`                         | Additional parameters for client configuration                  |
-| `client`                       | `Optional[AnthropicClient]` | `None`                         | A pre-configured instance of the Anthropic client               |
-| `structured_outputs`           | `bool`                      | `False`                        | Whether to use structured outputs with this Model               |
-| `add_images_to_message_content`| `bool`                      | `True`                         | Whether to add images to the message content                    |
-| `override_system_role`         | `bool`                      | `True`                         | Whether to override the system role                             |
-| `system_message_role`          | `str`                       | `"assistant"`                  | The role to map the system message to                           |
+| Parameter       | Type                                    | Default                             | Description                                    |
+| --------------- | --------------------------------------- | ----------------------------------- | ---------------------------------------------- |
+| `id`            | `str`                                   | `"claude-3-5-sonnet-20241022"`     | The id of the Anthropic Claude model           |
+| `name`          | `str`                                   | `"Claude"`                         | The name of the model                          |
+| `provider`      | `str`                                   | `"Anthropic"`                      | The provider of the model                      |
+| `max_tokens`    | `Optional[int]`                         | `4096`                              | Maximum number of tokens to generate           |
+| `thinking`      | `Optional[Dict[str, Any]]`              | `None`                              | Parameters controlling reasoning/thinking      |
+| `temperature`   | `Optional[float]`                       | `None`                              | Sampling temperature                           |
+| `stop_sequences`| `Optional[List[str]]`                   | `None`                              | Sequences where generation will stop           |
+| `top_p`         | `Optional[float]`                       | `None`                              | Nucleus (top-p) sampling probability           |
+| `top_k`         | `Optional[int]`                         | `None`                              | Top-k sampling cutoff                          |
+| `request_params`| `Optional[Dict[str, Any]]`              | `None`                              | Additional parameters for the request          |
+| `api_key`       | `Optional[str]`                         | `None`                              | Anthropic API key (or from environment)        |
+| `client_params` | `Optional[Dict[str, Any]]`              | `None`                              | Extra configuration for the client             |
+| `client`        | `Optional[AnthropicClient]`             | `None`                              | Synchronous Anthropic client instance         |
+| `async_client`  | `Optional[AsyncAnthropicClient]`        | `None`                              | Asynchronous Anthropic client instance        |
