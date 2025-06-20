@@ -28,7 +28,7 @@ from agno.docker.resource.image import DockerImage
 dev_image = DockerImage(
     name="repo/image",
     tag="latest",
-    push_image=True,,
+    push_image=True,
 )
 ```
 
@@ -54,6 +54,8 @@ my_secret = SecretsManager(
 ```python RDS Database
 from pathlib import Path
 from agno.aws.resource.secret import SecretsManager
+from agno.aws.resource.rds.db_subnet_group import DbSubnetGroup
+from agno.aws.resource.rds.db_instance import DbInstance
 
 # -*- Database Secret
 db_secret = SecretsManager(

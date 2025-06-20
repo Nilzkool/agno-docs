@@ -8,7 +8,7 @@ title: Introduction
 
 ## Create a new workspace
 
-Run `ag ws create` to create a new workspace, the command will ask your for a starter template and workspace name.
+Run `ag ws create` to create a new workspace, the command will ask your for a starter template, workspace name or URL.
 
 <CodeGroup>
 
@@ -16,12 +16,12 @@ Run `ag ws create` to create a new workspace, the command will ask your for a st
 ag ws create
 ```
 
-```bash Create Agent App
-ag ws create -t agent-app-aws -n agent-app
+```bash Create Agent App by template
+ag ws create -t agent-app   # uses default agent-app template
 ```
 
-```bash Create Agent API
-ag ws create -t agent-api-aws -n agent-api
+```bash Create Agent App by URL
+ag ws create --url https://github.com/agno-agi/agent-app-aws -n my-app
 ```
 
 </CodeGroup>
@@ -102,7 +102,7 @@ ag ws patch -e dev -i docker
 
 <Note>
 
-The `patch` command in under development for some resources. Use `restart` if needed
+The `patch` command is under development for some resources. Use `restart` if needed
 
 </Note>
 
@@ -366,6 +366,32 @@ ag ws up \
   -e dev \
   -i docker \
   -f
+```
+
+</CodeGroup>
+
+### Pull images (`--pull`)
+
+Use the `--pull` or `-p` flag to pull images where applicable before creating resources.
+
+<CodeGroup>
+
+```bash flag
+ag ws up --pull
+```
+
+```bash full options
+ag ws up \
+  --env dev \
+  --infra docker \
+  --pull
+```
+
+```bash short options
+ag ws up \
+  -e dev \
+  -i docker \
+  -p
 ```
 
 </CodeGroup>

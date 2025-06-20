@@ -29,8 +29,8 @@
 | `share_member_interactions` | `bool` | `False` | If True, send all previous member interactions to members |
 | `read_team_history` | `bool` | `False` | If True, read the team history |
 | `search_knowledge` | `bool` | `True` | Add a tool that allows the Model to search the knowledge base |
-| `get_member_information_tool` | `bool` | `True` | Add a tool that allows the Model to get information about the members of the team |
-| `show_tool_calls` | `bool` | `False` | Show tool calls in team response |
+| `get_member_information_tool` | `bool` | `False` | Add a tool that allows the Model to get information about the members of the team |
+| `show_tool_calls` | `bool` | `True` | Show tool calls in team response |
 | `response_model` | `Optional[Type[BaseModel]]` | `None` | Response model for the team response |
 | `use_json_mode` | `bool` | `False` | If `response_model` is set, sets the response "mode" of the model, i.e. if the model should explicitly respond with a JSON object instead of a Pydantic model |
 | `parse_response` | `bool` | `True` | If True, parse the response |
@@ -55,6 +55,3 @@
 | `arun` | Run the agent asynchronously |
 | `get_session_summary` | Get the session summary for the given session ID and user ID (if not provided, the current session is used) |
 | `get_user_memories` | Get the user memories for the given user ID (if not provided, the current user is used) |
-
-
-
