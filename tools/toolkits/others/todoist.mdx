@@ -5,7 +5,7 @@ title: Todoist
 **TodoistTools** enables an Agent to interact with [Todoist](https://www.todoist.com/). 
 
 ## Prerequisites
-The following example requires the `todoist-api-python` library. and a Todoist API token which can be obtained from the [Todoist Developer Portal](https://app.todoist.com/app/settings/integrations/developer).
+The following example requires the `todoist-api-python` library and a Todoist API token which can be obtained from the [Todoist Developer Portal](https://app.todoist.com/app/settings/integrations/developer).
 
 ```shell
 pip install todoist-api-python
@@ -19,7 +19,7 @@ export TODOIST_API_TOKEN=***
 
 The following agent will create a new task in Todoist.
 
-```python cookbook/tools/todoist.py
+```python cookbook/tools/todoist_tools.py
 """
 Example showing how to use the Todoist Tools with Agno
 
@@ -35,9 +35,10 @@ Usage:
 """
 
 from agno.agent import Agent
-from agno.models.openai import OpenAIChat
+from agno.models.google.gemini import Gemini
 from agno.tools.todoist import TodoistTools
 
+# Initialize the agent using Gemini
 todoist_agent = Agent(
     name="Todoist Agent",
     role="Manage your todoist tasks",
@@ -49,7 +50,7 @@ todoist_agent = Agent(
         "When given a task to get, get the todoist task.",
     ],
     agent_id="todoist-agent",
-    model=OpenAIChat(id="gpt-4o"),
+    model=Gemini("gemini-2.0-flash-exp"),
     tools=[TodoistTools()],
     markdown=True,
     debug_mode=True,
@@ -60,13 +61,11 @@ todoist_agent = Agent(
 print("\n=== Create a task ===")
 todoist_agent.print_response("Create a todoist task to buy groceries tomorrow at 10am")
 
-
 # Example 2: Delete a task
 print("\n=== Delete a task ===")
 todoist_agent.print_response(
     "Delete the todoist task to buy groceries tomorrow at 10am"
 )
-
 
 # Example 3: Get all tasks
 print("\n=== Get all tasks ===")
@@ -75,24 +74,23 @@ todoist_agent.print_response("Get all the todoist tasks")
 
 ## Toolkit Params
 
-| Parameter | Type  | Default | Description                                       |
-| --------- | ----- | ------- | ------------------------------------------------- |
-| `api_token` | `str` | `None`  | If you want to manually supply the TODOIST_API_TOKEN. |
+| Parameter   | Type  | Default | Description                                                 |
+| ----------- | ----- | ------- | ----------------------------------------------------------- |
+| `api_token` | `str` | `None`  | If you want to manually supply the TODOIST_API_TOKEN.       |
 
 ## Toolkit Functions
 
-| Function | Description |
-|----------|-------------|
-| `create_task` | Creates a new task in Todoist with optional project assignment, due date, priority, and labels. |
-| `get_task` | Fetches a specific task. |
-| `update_task` | Updates an existing task with new properties such as content, due date, priority, etc. |
-| `close_task` | Marks a task as completed. |
-| `delete_task` | Deletes a specific task from Todoist. |
-| `get_active_tasks` | Retrieves all active (non-completed) tasks. |
-| `get_projects` | Retrieves all projects in Todoist. |
-
+| Function           | Description                                                              |
+| ------------------ | ------------------------------------------------------------------------ |
+| `create_task`      | Creates a new task in Todoist with optional project assignment, due date, priority, and labels. |
+| `get_task`         | Fetches a specific task.                                                 |
+| `update_task`      | Updates an existing task with new properties such as content, due date, priority, etc. |
+| `close_task`       | Marks a task as completed.                                               |
+| `delete_task`      | Deletes a specific task from Todoist.                                    |
+| `get_active_tasks` | Retrieves all active (non-completed) tasks.                              |
+| `get_projects`     | Retrieves all projects in Todoist.                                       |
 
 ## Developer Resources
 
-- View [Tools](https://github.com/agno-agi/agno/blob/main/libs/agno/agno/tools/todoist.py)
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/todoist_tool.py)
+- View [Tools](https://github.com/Nilzkool/agno/blob/main/libs/agno/agno/tools/todoist.py)
+- View [Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/tools/todoist_tools.py)

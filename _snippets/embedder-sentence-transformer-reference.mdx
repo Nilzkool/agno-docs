@@ -1,6 +1,8 @@
 ### Parameters
 
-| Parameter | Type | Description | Default |
-|-----------|------|-------------|---------|
-| `id` | `str` | The model ID or path to use for embeddings | `"sentence-transformers/all-MiniLM-L6-v2"` |
-| `sentence_transformer_client` | `Optional[SentenceTransformer]` | Pre-configured SentenceTransformer instance | `None` |
+| Parameter                       | Type                             | Description                                                              | Default                                          |
+|---------------------------------|----------------------------------|--------------------------------------------------------------------------|--------------------------------------------------|
+| `id`                            | `str`                            | The model ID or path to use for embeddings                               | `"sentence-transformers/all-MiniLM-L6-v2"`     |
+| `sentence_transformer_client`   | `Optional[SentenceTransformer]`  | Pre-configured SentenceTransformer instance                              | `None`                                           |
+
+**Note:** On Windows, the embedder enforces NumPy 1.x compatibility. If NumPy 2.x or higher is detected, a `RuntimeError` is raised with instructions to install NumPy&lt;2.

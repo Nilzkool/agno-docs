@@ -26,14 +26,14 @@ agent = Agent(
     model=OpenAIChat(
         id="gpt-4o-audio-preview",
         modalities=["text", "audio"],
-        audio={"voice": "alloy", "format": "wav"},
+        audio={"voice": "sage", "format": "wav"},
     ),
-    description=dedent("""\
+    description=dedent(""\
         You are an expert in audio processing and voice interaction, capable of understanding
         and analyzing spoken content while providing natural, engaging voice responses.
         You excel at comprehending context, emotion, and nuance in speech.\
     """),
-    instructions=dedent("""\
+    instructions=dedent(""\
         As a voice interaction specialist, follow these guidelines:
         1. Listen carefully to audio input to understand both content and context
         2. Provide clear, concise responses that address the main points

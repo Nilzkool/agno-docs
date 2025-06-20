@@ -22,7 +22,7 @@ prd_bucket = S3Bucket(name="my-bucket-885")
 
 </CodeGroup>
 
-Make sure to delete the bucket using `ag stop resources.py`
+Make sure to delete the bucket using `ag stop resources.py`.
 
 ### Secret Manager
 
@@ -45,18 +45,65 @@ prd_secret = SecretsManager(
 
 </CodeGroup>
 
-Read the secret in another file called `read_my_secret.py`
+Read the secret in another file called `read_my_secret.py`:
 
 <CodeGroup>
 
 ```python read_my_secret.py
-from resources import my_secret
+from resources import prd_secret
 
-print(my_secret.get_secret_value("mysecretkey"))
+print(prd_secret.get_secret_value("mysecretkey"))
 ```
 
 </CodeGroup>
 
 Run this file using `python read_my_secret.py`.
 
-Delete the secret using `ag stop resources.py`
+Delete the secret using `ag stop resources.py`.
+
+### ECS Cluster, Task Definition, and Service
+
+Copy the following code to a file `resources.py` and run `ag start resources.py` to deploy an ECS cluster, Fargate task definition, and service.
+
+<CodeGroup>
+
+```python resources.py
+from agno.aws.resource.ecs import EcsCluster, EcsTaskDefinition, EcsService
+
+# Create an ECS cluster
+ecs_cluster = EcsCluster(
+    name="my-cluster"
+)
+
+# Define a Fargate task definition
+ecs_task = EcsTaskDefinition(
+    name="my-app-td",
+    family="my-app",
+    network_mode="awsvpc",
+    cpu="1024",
+    memory="2048",
+    containers=[
+        {
+            "name": "app",
+            "image": "nginx:latest",
+            "portMappings": [{"containerPort": 80}],
+        }
+    ],
+    requires_compatibilities=["FARGATE"],
+)
+
+# Create a service running on Fargate
+ecs_service = EcsService(
+    name="my-app-service",
+    cluster=ecs_cluster,
+    task_definition=ecs_task,
+    desired_count=1,
+    subnets=["subnet-0123456789abcdef0"],
+    security_groups=["sg-0123456789abcdef0"],
+    assign_public_ip=True,
+)
+```
+
+</CodeGroup>
+
+Make sure to delete the ECS resources using `ag stop resources.py`.

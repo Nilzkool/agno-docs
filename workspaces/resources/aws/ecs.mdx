@@ -1,4 +1,61 @@
 ---
 title: ECS
-description: This guide is in the works
+description: Guide for defining and deploying AWS ECS resources with Agno
 ---
+
+ECS Resources enable you to define and manage Amazon ECS clusters, task definitions, and services entirely in Python using Agno’s Pydantic-based constructs.
+
+## Quickstart Example
+
+Copy the following code into a file `resources.py` and run:
+
+```bash
+ag start resources.py
+```
+
+<CodeGroup>
+
+```python resources.py
+from agno.aws.resource.ecs import EcsCluster, EcsTaskDefinition, EcsService
+
+# 1. Create an ECS cluster
+ecs_cluster = EcsCluster(
+    name="my-cluster"
+)
+
+# 2. Define a Fargate task definition
+ecs_task = EcsTaskDefinition(
+    name="my-app-td",
+    family="my-app",
+    network_mode="awsvpc",
+    cpu="1024",
+    memory="2048",
+    containers=[
+        {
+            "name": "app",
+            "image": "nginx:latest",
+            "portMappings": [{"containerPort": 80}],
+        }
+    ],
+    requires_compatibilities=["FARGATE"],
+)
+
+# 3. Create a service running on Fargate
+ecs_service = EcsService(
+    name="my-app-service",
+    cluster=ecs_cluster,
+    task_definition=ecs_task,
+    desired_count=2,
+    subnets=["subnet-0123456789abcdef0"],
+    security_groups=["sg-0123456789abcdef0"],
+    assign_public_ip=True,
+)
+```
+
+</CodeGroup>
+
+After testing, remove the ECS resources:
+
+```bash
+ag stop resources.py
+```

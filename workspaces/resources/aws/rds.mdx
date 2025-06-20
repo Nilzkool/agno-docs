@@ -1,4 +1,90 @@
 ---
 title: RDS
-description: This guide is in the works
+description: Manage Amazon RDS resources with Agno
 ---
+
+Agno provides pydantic-based classes for creating and managing AWS RDS resources:
+
+- **DbSubnetGroup**: Defines a group of subnets for your DB instances or clusters.
+- **DbInstance**: Provision an RDS database instance.
+- **DbCluster**: Provision an Aurora or Multi-AZ DB cluster.
+
+## DbSubnetGroup
+
+Creates a new DB subnet group. Subnets must span at least two Availability Zones.
+
+```python
+from agno.aws.resource.rds.db_subnet_group import DbSubnetGroup
+
+# Define a subnet group with explicit subnet IDs or reference a VPC stack
+db_subnet_group = DbSubnetGroup(
+    name="mydb-sg",
+    description="Subnet group for my database",
+    subnet_ids=["subnet-01234567","subnet-89abcdef"],
+    tags=[{"Key": "env", "Value": "dev"}],
+)
+```
+
+## DbInstance
+
+Creates an RDS DB instance. Supports engine, version, storage, networking, and secrets.
+
+```python
+from pathlib import Path
+from agno.aws.resource.rds.db_subnet_group import DbSubnetGroup
+from agno.aws.resource.rds.db_instance import DbInstance
+from agno.aws.resource.secret.manager import SecretsManager
+
+# Read credentials from a YAML file or AWS Secrets Manager
+secret = SecretsManager(
+    name="my-db-secret",
+    secret_files=[Path("db_secrets.yml")],
+)
+
+# Create or reference an existing subnet group
+db_subnet_group = DbSubnetGroup(name="mydb-sg")
+
+# Define and create the DB instance
+db_instance = DbInstance(
+    name="mydb",
+    engine="postgres",
+    engine_version="13.4",
+    allocated_storage=20,
+    db_instance_class="db.t3.small",
+    db_subnet_group=db_subnet_group,
+    aws_secret=secret,
+    publicly_accessible=True,
+)
+```
+
+## DbCluster
+
+Creates an Aurora or Multi-AZ DB cluster with one or more instances.
+
+```python
+from pathlib import Path
+from agno.aws.resource.rds.db_cluster import DbCluster
+from agno.aws.resource.rds.db_instance import DbInstance
+from agno.aws.resource.secret.manager import SecretsManager
+
+# Define credentials for the cluster
+cluster_secret = SecretsManager(
+    name="my-cluster-secret",
+    secret_files=[Path("cluster_secrets.yml")],
+)
+
+# Prepare instances (will be joined into the cluster)
+instance1 = DbInstance(name="cluster-inst-1", engine="aurora")
+instance2 = DbInstance(name="cluster-inst-2", engine="aurora")
+
+# Define and create the DB cluster
+db_cluster = DbCluster(
+    name="my-cluster",
+    engine="aurora",
+    engine_version="3.02",
+    db_instances=[instance1, instance2],
+    aws_secret=cluster_secret,
+    db_subnet_group=db_subnet_group,
+    availability_zones=["us-east-1a","us-east-1b"],
+)
+```

@@ -8,12 +8,20 @@ title: SQL Tools
 from agno.agent import Agent
 from agno.tools.sql import SQLTools
 
+# Use a PostgreSQL database URL
+# Adjust host, port, user, password, and database name as needed
+
+db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
+
 agent = Agent(
-    tools=[SQLTools(db_url="sqlite:///database.db")],
+    tools=[SQLTools(db_url=db_url)],
     show_tool_calls=True,
     markdown=True,
 )
-agent.print_response("Show me all tables in the database and their schemas")
+agent.print_response(
+    "List the tables in the database. Tell me about contents of one of the tables",
+    markdown=True,
+)
 ```
 
 ## Usage
@@ -29,7 +37,7 @@ agent.print_response("Show me all tables in the database and their schemas")
 
   <Step title="Install libraries">
     ```bash
-    pip install -U sqlalchemy openai agno
+    pip install -U sqlalchemy psycopg2 openai agno
     ```
   </Step>
 
