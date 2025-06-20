@@ -21,7 +21,7 @@
 | `delete_user_memory` | Deletes a memory | `user_id: str, memory_id: str` | `None` |
 | `create_user_memories` | Creates memories from one or more messages | `message: Optional[str] = None, messages: Optional[List[Message]] = None, user_id: Optional[str] = None` | `str` |
 | `acreate_user_memories` | Creates memories from one or more messages (Async) | `message: Optional[str] = None, messages: Optional[List[Message]] = None, user_id: Optional[str] = None` | `str` |
-| `search_user_memories` | Searches user memories using specified retrieval method | `query: Optional[str] = None, limit: Optional[int] = None, retrieval_method: Optional[Literal["last_n", "first_n", "semantic"]] = None, user_id: Optional[str] = None` | `List[UserMemory]` |
+| `search_user_memories` | Searches user memories using specified retrieval method | `query: Optional[str] = None, limit: Optional[int] = None, retrieval_method: Optional[Literal["last_n", "first_n", "agentic"]] = None, user_id: Optional[str] = None` | `List[UserMemory]` |
 
 #### Session Summary Management
 
@@ -66,4 +66,4 @@
 |-----------|------|-------------|---------|
 | `model` | `Optional[Model]` | Model used for summarizing sessions | `None` |
 | `system_message` | `Optional[str]` | Custom system prompt for the summarizer | `None` |
-| `additional_instructions` | `Optional[str]` | Additional instructions added to the end of the system message | `None` |
+| `additional_instructions` | `Optional[str]` | Additional instructions added to the end of the system prompt | `None` |

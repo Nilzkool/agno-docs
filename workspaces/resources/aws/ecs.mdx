@@ -1,4 +1,63 @@
 ---
 title: ECS
-description: This guide is in the works
+description: AWS ECS resources allow you to define and manage ECS Clusters and Services using Python.
 ---
+
+Amazon ECS lets you run and manage containerized applications on AWS. In Agno, ECS resources are modeled as native Python objects giving you the ability to define and deploy both ECS Clusters and ECS Services with flexibility.
+
+## ECS Cluster
+
+The [EcsCluster](https://github.com/Nilzkool/agno/blob/main/libs/infra/agno_aws/agno/aws/resource/ecs/cluster.py) resource represents an Amazon ECS cluster. You can specify cluster parameters, capacity providers, and settings. This resource automatically uses the default cluster name if one isn’t provided, and supports additional configuration such as tagging and service connect namespace.
+
+## ECS Service
+
+The [EcsService](https://github.com/Nilzkool/agno/blob/main/libs/infra/agno_aws/agno/aws/resource/ecs/service.py) resource defines an ECS service running tasks on your cluster. It supports a wide range of configuration options including:
+
+- Specifying the cluster to run on
+- Defining the task definition (or its family)
+- Configuring load balancers and network settings
+- Managing deployment settings such as desired count and force new deployments
+
+## Example: Creating an ECS Cluster and Service
+
+Below is an example that demonstrates how to create an ECS cluster, define a task definition, and deploy an ECS service:
+
+```python
+from agno.aws.resource.ecs import EcsCluster, EcsService, EcsTaskDefinition
+
+# Create an ECS Cluster
+cluster = EcsCluster(
+    name="my-ecs-cluster",
+    ecs_cluster_name="my-ecs-cluster"
+)
+
+# Define a task definition for your service (this is a simplified example)
+task_definition = EcsTaskDefinition(
+    name="my-task-def",
+    family="my-task-family",
+    cpu="256",
+    memory="512",
+    containers=[{
+        "name": "app",
+        "image": "my-docker-image:latest",
+        "portMappings": [{"containerPort": 80}],
+    }],
+    requires_compatibilities=["FARGATE"],
+)
+
+# Create an ECS Service
+service = EcsService(
+    name="my-ecs-service",
+    desired_count=2,
+    cluster=cluster,
+    task_definition=task_definition,
+)
+```
+
+Ensure your AWS credentials and region settings are properly configured in your workspace. For advanced usage, you can customize additional parameters such as deployment configuration, network settings, and load balancer integration.
+
+## Next Steps
+
+- Review the source code in [EcsCluster](https://github.com/Nilzkool/agno/blob/main/libs/infra/agno_aws/agno/aws/resource/ecs/cluster.py) and [EcsService](https://github.com/Nilzkool/agno/blob/main/libs/infra/agno_aws/agno/aws/resource/ecs/service.py) for a complete list of options.
+- Use Agno’s CLI to deploy your ECS resources (e.g. using `ag start resources.py`).
+- Explore additional AWS resources in the Agno framework through the AWS introduction guide.

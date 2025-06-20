@@ -1,1 +1,30 @@
-dummy content =====> align this empty doc with code
+# BrowserBase
+
+**BrowserBaseTools** enable agents to interact with BrowserBase for advanced browser automation and web scraping.
+
+## Overview
+
+BrowserBaseTools provide methods to launch a headless browser, navigate to target URLs, and extract structured data or HTML content from web pages. This toolkit is built on top of Playwright and allows agents to perform complex scraping tasks while managing browser sessions.
+
+## Features
+
+- Launches a headless browser session via Playwright.
+- Navigates to specified URLs and retrieves page content.
+- Supports integration with agents for dynamic data extraction.
+- Designed for asynchronous operations with robust error handling.
+
+## Example Usage
+
+```python
+from agno.agent import Agent
+from agno.tools.browserbase import BrowserBaseTools
+
+agent = Agent(
+    tools=[BrowserBaseTools()],
+    show_tool_calls=True
+)
+
+agent.print_response("Extract key data from https://example.com", markdown=True)
+```
+
+For further details, please refer to the BrowserBaseTools source code in the Agno repository.

@@ -1,4 +1,26 @@
 ---
 title: Container
-description: This guide is in the works
+description: Documentation for Docker Container resources in Agno
 ---
+
+The Agno Docker module enables you to define and manage Docker containers as Python objects using the `DockerContainer` class. This approach allows you to configure container properties — such as images, commands, environment variables, ports, and volumes — directly in your Python code, making your infrastructure definitions more robust and testable.
+
+**Highlights:**
+
+- **Flexibility:** Define containers programmatically with full Pydantic validation.
+- **Reusability:** Seamlessly integrate container definitions within larger application workflows.
+- **Integration:** Work cohesively with other Docker resources (e.g., `DockerImage`, `DockerNetwork`).
+
+For example, you can define a simple container as follows:
+
+```python
+from agno.docker.resource.container import DockerContainer
+
+whoami = DockerContainer(
+    name='whoami',
+    image='traefik/whoami',
+    ports={'80': 80},
+)
+```
+
+Start and stop your container resources using Agno commands such as `ag start resources.py` and `ag stop resources.py`.

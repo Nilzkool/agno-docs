@@ -1,4 +1,14 @@
 ---
 title: RDS
-description: This guide is in the works
+description: Documentation for AWS RDS resources in Agno
 ---
+
+The Agno AWS RDS module provides robust Python classes to manage your AWS RDS resources. Using classes like `DbInstance`, `DbCluster`, and `DbSubnetGroup`, you can create, update, and delete RDS instances and clusters programmatically.
+
+**Key Features:**
+
+- **DbInstance:** Manage individual RDS database instances with detailed configuration options.
+- **DbCluster:** Easily handle Aurora and Multi-AZ database clusters with support for scaling and high availability.
+- **DbSubnetGroup:** Configure subnet groups to ensure that your RDS instances span multiple availability zones for optimal resilience.
+
+These resources are implemented as Pydantic models, ensuring input validation and type safety. For detailed API behaviors, refer to the [boto3 documentation](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/rds.html).
