@@ -10,7 +10,7 @@ from agno.models.aws import AwsBedrock
 from agno.tools.duckduckgo import DuckDuckGoTools
 
 agent = Agent(
-    model=AwsBedrock(id="mistral.mistral-large-2402-v1:0"),
+    model=AwsBedrock(id="mistral.mistral-small-2402-v1:0"),
     tools=[DuckDuckGoTools()],
     show_tool_calls=True,
     markdown=True,

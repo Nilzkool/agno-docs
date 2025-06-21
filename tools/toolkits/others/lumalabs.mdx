@@ -58,10 +58,10 @@ luma_agent.run("Generate a video of a car in a sky")
 
 ## Toolkit Functions
 
-| Function         | Description                                                           |
-| ---------------- | --------------------------------------------------------------------- |
-| `generate_video` | Generate a video from a prompt.                                       |
-| `image_to_video` | Generate a video from a prompt, a starting image and an ending image. |
+| Function         | Description                                                                                                                                                                                                            |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `generate_video` | Generate a video from a prompt. Parameters include `agent` (Agent), `prompt` (str), `loop` (bool = False), `aspect_ratio` (Literal["1:1", "16:9", "9:16", "4:3", "3:4", "21:9", "9:21"] = "16:9"), and `keyframes` (Optional[Dict[str, Dict[str, str]]]). Adds the generated video artifact to the agent. |
+| `image_to_video` | Generate a video from a prompt, a starting image and an ending image. Parameters include `agent` (Agent), `prompt` (str), `start_image_url` (str), `end_image_url` (Optional[str]), `loop` (bool = False), `aspect_ratio` (Literal["1:1", "16:9", "9:16", "4:3", "3:4", "21:9", "9:21"] = "16:9"). Adds the generated video artifact to the agent. |
 
 ## Developer Resources
 

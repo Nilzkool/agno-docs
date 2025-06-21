@@ -1,8 +1,10 @@
+> **Note:** Weaviate integration uses the Weaviate V4 client and supports asynchronous operations.
+
 | Parameter | Type | Description | Default |
 |-----------|------|-------------|---------|
-| `wcd_url` | `Optional[str]` | Weaviate Cloud URL (or use WCD_URL env var) | `None` |
-| `wcd_api_key` | `Optional[str]` | Weaviate Cloud API key (or use WCD_API_KEY env var) | `None` |
-| `client` | `Optional[weaviate.WeaviateClient]` | Pre-configured Weaviate client | `None` |
+| `wcd_url` | `Optional[str]` | Weaviate Cloud URL (or use `WCD_URL` env var) | `None` |
+| `wcd_api_key` | `Optional[str]` | Weaviate Cloud API key (or use `WCD_API_KEY` env var) | `None` |
+| `client` | `Optional[weaviate.WeaviateClient]` | Pre-configured synchronous Weaviate client instance | `None` |
 | `local` | `bool` | Whether to use a local Weaviate instance | `False` |
 | `collection` | `str` | Name of the Weaviate collection | `"default"` |
 | `vector_index` | `VectorIndex` | Type of vector index (HNSW, FLAT, DYNAMIC) | `VectorIndex.HNSW` |

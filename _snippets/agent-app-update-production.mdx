@@ -1,6 +1,17 @@
 ## Updating Production
 
-Follow [this guide](workspaces/workspace-management/production-app) to update your production application. You'll need to:
+To update your production application, use the `ag ws patch` command. This command will update existing resources for the active workspace.
 
-1. Create a new image
-2. Update the ECS task definition and services.
+<CodeGroup>
+
+```bash all-resources
+ag ws patch
+```
+
+```bash filtered-resources
+ag ws patch --env prd --infra aws --group app
+```
+
+</CodeGroup>
+
+This command handles updating the ECS task definition and services automatically.

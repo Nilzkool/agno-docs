@@ -255,7 +255,7 @@ You are a filesystem assistant. Help users explore files and directories.
 
 ## Understanding Server Parameters
 
-The recommended way to configure `MCPTools` or `MultiMCPTools` is to use the `command` parameter.
+The recommended way to configure `MCPTools` or `MultiMCPTools` is to use the `command` parameter. This parameter accepts a string or a list of strings that represent the command to run the MCP server (e.g., `"npx -y @modelcontextprotocol/server-filesystem"` or `["npx", "-y", "@modelcontextprotocol/server-filesystem"]`).
 
 Alternatively, you can use the `server_params` parameter with `MCPTools` to configure the connection to the MCP server. 
 It contains the following keys:

@@ -21,6 +21,7 @@ In "collaborate" mode:
 
     ```python discussion_team.py
     import asyncio
+    from pathlib import Path
     from textwrap import dedent
 
     from agno.agent import Agent
@@ -30,6 +31,8 @@ In "collaborate" mode:
     from agno.tools.duckduckgo import DuckDuckGoTools
     from agno.tools.googlesearch import GoogleSearchTools
     from agno.tools.hackernews import HackerNewsTools
+
+    arxiv_download_dir = Path(__file__).parent.joinpath("tmp", "arxiv_pdfs")
 
     reddit_researcher = Agent(
         name="Reddit Researcher",
@@ -61,7 +64,7 @@ In "collaborate" mode:
         name="Academic Paper Researcher",
         model=OpenAIChat("gpt-4o"),
         role="Research academic papers and scholarly content",
-        tools=[GoogleSearchTools(), ArxivTools()],
+        tools=[GoogleSearchTools(), ArxivTools(download_dir=arxiv_download_dir)],
         add_name_to_instructions=True,
         instructions=dedent("""
         You are a academic paper researcher.
@@ -154,4 +157,3 @@ response = strategy_team.run(
     "What is the best way to learn to code?"
 )
 ```
-

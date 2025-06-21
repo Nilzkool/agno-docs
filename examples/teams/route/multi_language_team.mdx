@@ -6,7 +6,7 @@ This example shows how to create a multi language team that can handle different
 
 ## Code
 
-```python multi_language_team.py
+```python cookbook/examples/teams/route/multi_language_team.py
 
 from agno.agent import Agent
 from agno.models.anthropic import Claude
@@ -18,7 +18,7 @@ from agno.team.team import Team
 english_agent = Agent(
     name="English Agent",
     role="You can only answer in English",
-    model=OpenAIChat(id="gpt-4.5-preview"),
+    model=OpenAIChat(id="gpt-4o"),
     instructions=[
         "You must only respond in English",
     ],
@@ -43,7 +43,7 @@ chinese_agent = Agent(
 spanish_agent = Agent(
     name="Spanish Agent",
     role="You can only answer in Spanish",
-    model=OpenAIChat(id="gpt-4.5-preview"),
+    model=OpenAIChat(id="gpt-4o"),
     instructions=[
         "You must only respond in Spanish",
     ],
@@ -69,7 +69,7 @@ german_agent = Agent(
 multi_language_team = Team(
     name="Multi Language Team",
     mode="route",
-    model=OpenAIChat("gpt-4.5-preview"),
+    model=OpenAIChat("gpt-4o"),
     members=[
         english_agent,
         spanish_agent,
@@ -128,7 +128,7 @@ multi_language_team.print_response(
 
     <Step title="Install required libraries">
         ```bash
-        pip install openai anthropic mistralai
+        pip install -U openai anthropic deepseek-client mistralai
         ```
     </Step>
 
@@ -143,9 +143,8 @@ multi_language_team.print_response(
 
     <Step title="Run the agent">
         ```bash
-        python multi_language_team.py
+        python cookbook/examples/teams/route/multi_language_team.py
         ```
     </Step>
 
 </Steps>
-

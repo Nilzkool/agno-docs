@@ -3,5 +3,5 @@
 | `collection` | `str` | Name of the Milvus collection | Required |
 | `embedder` | `Optional[Embedder]` | Embedder to use for embedding documents | `OpenAIEmbedder()` |
 | `distance` | `Distance` | Distance metric to use for vector similarity | `Distance.cosine` |
-| `uri` | `str` | URI of the Milvus server or path to local file | `"http://localhost:19530"` |
-| `token` | `Optional[str]` | Token for authentication with the Milvus server | `None` |
+| `uri` | `str` | URI of the Milvus server. If set as a local file (e.g., `./milvus.db`), uses Milvus Lite. For large-scale data, use server address (e.g., `http://localhost:19530`). For Zilliz Cloud, use Public Endpoint. | `"http://localhost:19530"` |
+| `token` | `Optional[str]` | Token for authentication with the Milvus server. For self-hosted Milvus, use "username:password". For Zilliz Cloud, use API key. | `None` |

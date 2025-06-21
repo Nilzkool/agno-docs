@@ -110,7 +110,7 @@ team_with_memory = Team(
     name="Team with Memory",
     members=[agent1, agent2],
     enable_team_history=True,
-    num_of_interactions_from_history=5,
+    num_history_runs=5, # Changed from num_of_interactions_from_history
 )
 
 # The team will remember previous interactions
@@ -287,15 +287,17 @@ Here's an example of a research team that combines multiple specialized agents:
     Create a file `hackernews_team.py`
 
     ```python hackernews_team.py
+    import asyncio # Added import for asyncio as it's used with aprint_response
     from typing import List
+
+    from pydantic import BaseModel
 
     from agno.agent import Agent
     from agno.models.openai import OpenAIChat
     from agno.team import Team
     from agno.tools.duckduckgo import DuckDuckGoTools
     from agno.tools.hackernews import HackerNewsTools
-    from agno.tools.newspaper4k import Newspaper4kTools
-    from pydantic import BaseModel
+    from agno.tools.newspaper4k import Newspaper4kTools # Added import for Newspaper4kTools
 
     class Article(BaseModel):
         title: str
@@ -344,13 +346,15 @@ Here's an example of a research team that combines multiple specialized agents:
     )
 
     # Run the team
-    report = hackernews_team.run(
-        "What are the top stories on hackernews?"
-    ).content
+    report = asyncio.run(hackernews_team.arun(
+        "What are the top stories on hackernews?", stream=False # Changed to arun for async, specify stream=False
+    ))
 
-    print(f"Title: {report.title}")
-    print(f"Summary: {report.summary}")
-    print(f"Reference Links: {report.reference_links}")
+    # The report object from aprint_response is the full RunResponse, not just content
+    # To get the content for printing, we access report.content
+    print(f"Title: {report.content.title}") # Access content.title
+    print(f"Summary: {report.content.summary}") # Access content.summary
+    print(f"Reference Links: {report.content.reference_links}") # Access content.reference_links
     ```
 
   </Step>

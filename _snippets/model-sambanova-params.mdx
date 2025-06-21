@@ -1,7 +1,8 @@
-| Parameter  | Type            | Default                         | Description                                                                                        |
-| ---------- | --------------- | ------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `id`       | `str`           | `"Meta-Llama-3.1-8B-Instruct"`  | The id of the Sambanova model to use                                                               |
-| `name`     | `str`           | `"Sambanova"`                   | The name of this chat model instance                                                               |
-| `provider` | `str`           | `"Sambanova"`                   | The provider of the model                                                                          |
-| `api_key`  | `Optional[str]` | `None`                          | The API key for authenticating with Sambanova (defaults to environment variable SAMBANOVA_API_KEY) |
-| `base_url` | `str`           | `"https://api.sambanova.ai/v1"` | The base URL for API requests                                                                      |
+| Parameter                      | Type            | Default                          | Description                                                                                        |
+| ------------------------------ | --------------- | -------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `id`                           | `str`           | `"Meta-Llama-3.1-8B-Instruct"`   | The id of the Sambanova model to use.                                                              |
+| `name`                         | `str`           | `"Sambanova"`                    | The name of this chat model instance.                                                              |
+| `provider`                     | `str`           | `"Sambanova"`                    | The provider of the model.                                                                         |
+| `api_key`                      | `Optional[str]` | `getenv("SAMBANOVA_API_KEY")`    | The API key for authenticating with Sambanova (defaults to environment variable SAMBANOVA_API_KEY). |
+| `base_url`                     | `str`           | `"https://api.sambanova.ai/v1"`  | The base URL for API requests.                                                                     |
+| `supports_structured_outputs`  | `bool`          | `False`                          | Whether the Model supports structured outputs.                                                     |

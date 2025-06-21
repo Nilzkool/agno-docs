@@ -36,11 +36,13 @@ dev_db = PgVectorDb(
 # -*- Streamlit running on port 8501:8501
 dev_streamlit = Streamlit(
     ...
+    mount_workspace=False, # Default behavior, workspace is not mounted
 )
 
 # -*- FastAPI running on port 8000:8000
 dev_fastapi = FastApi(
     ...
+    mount_workspace=False, # Default behavior, workspace is not mounted
 )
 
 # -*- Dev DockerResources
@@ -116,11 +118,13 @@ prd_db = DbInstance(
 # -*- Streamlit running on ECS
 prd_streamlit = Streamlit(
     ...
+    assign_public_ip=True, # Set to True to assign a public IP to the ECS task
 )
 
 # -*- FastAPI running on ECS
 prd_fastapi = FastApi(
     ...
+    assign_public_ip=True, # Set to True to assign a public IP to the ECS task
 )
 
 # -*- Production DockerResources

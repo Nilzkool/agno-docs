@@ -83,9 +83,9 @@ todoist_agent.print_response("Get all the todoist tasks")
 
 | Function | Description |
 |----------|-------------|
-| `create_task` | Creates a new task in Todoist with optional project assignment, due date, priority, and labels. |
+| `create_task` | Creates a new task in Todoist with optional project assignment, due date, priority, and labels (List[str]). |
 | `get_task` | Fetches a specific task. |
-| `update_task` | Updates an existing task with new properties such as content, due date, priority, etc. |
+| `update_task` | Updates an existing task with new properties such as content (Optional[str]), description (Optional[str]), labels (Optional[List[str]]), priority (Optional[int]), due_string (Optional[str]), due_date (Optional[str]), due_datetime (Optional[str]), due_lang (Optional[str]), assignee_id (Optional[str]), and section_id (Optional[str]). |
 | `close_task` | Marks a task as completed. |
 | `delete_task` | Deletes a specific task from Todoist. |
 | `get_active_tasks` | Retrieves all active (non-completed) tasks. |

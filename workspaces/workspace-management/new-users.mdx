@@ -32,8 +32,8 @@ cd your_workspace_directory
 <CodeGroup>
 
 ```bash Mac
-python3 -m venv aienv
-source aienv/bin/activate
+uv venv --python 3.12
+source .venv/bin/activate
 ```
 
 ```bash Windows
@@ -49,7 +49,7 @@ aienv/scripts/activate
 <CodeGroup>
 
 ```bash Mac
-pip install -U agno
+uv pip install -U agno
 ```
 
 ```bash Windows
@@ -105,6 +105,10 @@ Install [docker desktop](https://docs.docker.com/desktop/install/mac-install/) i
 ag ws up
 ```
 
+```bash terminal
+ag start
+```
+
 ```bash full options
 ag ws up --env dev --infra docker
 ```
@@ -122,6 +126,10 @@ ag ws up dev:docker
 
 ```bash terminal
 ag ws down
+```
+
+```bash terminal
+ag stop
 ```
 
 ```bash full options

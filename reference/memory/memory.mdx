@@ -5,3 +5,29 @@ title: Memory
 Memory is a class that manages conversation history, session summaries, and long-term user memories for AI agents. It provides comprehensive memory management capabilities including adding new memories, searching memories, and deleting memories.
 
 <Snippet file="agent-memory-reference.mdx" />
+
+```python
+from agno.memory.v2.memory import Memory, MemoryManager, SessionSummarizer
+from agno.memory.v2.db.sqlite import SqliteMemoryDb
+from agno.models.openai import OpenAIChat
+
+# Configure a MemoryDb (e.g., SQLite)
+memory_db = SqliteMemoryDb(table_name="user_memories", db_file="tmp/memory.db")
+
+# Optionally configure MemoryManager and SessionSummarizer models
+memory_manager = MemoryManager(
+    model=OpenAIChat(id="gpt-4o-mini"),
+    additional_instructions="Summarize key facts about the user."
+)
+session_summarizer = SessionSummarizer(
+    model=OpenAIChat(id="gpt-4o-mini"),
+    additional_instructions="Be concise in summaries."
+)
+
+# Initialize Memory, passing configured sub-components
+memory = Memory(
+    db=memory_db,
+    memory_manager=memory_manager,
+    summarizer=session_summarizer,
+)
+```

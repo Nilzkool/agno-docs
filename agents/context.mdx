@@ -57,7 +57,7 @@ agent = Agent(
 
         Here are the top stories on HackerNews:
         {top_hackernews_stories}\
-    """),
+    ""),
     # add_state_in_messages will make the `top_hackernews_stories` variable
     # available in the instructions
     add_state_in_messages=True,
@@ -116,7 +116,7 @@ agent = Agent(
     # Each function in the context is resolved when the agent is run,
     # think of it as dependency injection for Agents
     context={"top_hackernews_stories": get_top_hackernews_stories},
-    # We can add the entire context dictionary to the instructions
+    # We can add the entire context dictionary to the user message
     add_context=True,
     markdown=True,
 )
@@ -127,3 +127,12 @@ agent.print_response(
     stream=True,
 )
 ```
+
+## Attributes
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `context` | `Dict[str, Any]` | `None` | A dictionary of functions or values that are resolved before the agent runs, acting as dependency injection for Agents. |
+| `add_context` | `bool` | `False` | If True, resolved context is added to the user message. |
+| `resolve_context` | `bool` | `True` | If True, functions in the context are called and their results are used. |
+| `add_state_in_messages` | `bool` | `False` | If True, session state variables and resolved context variables are available for use in the system and user messages using `{key}` syntax. |

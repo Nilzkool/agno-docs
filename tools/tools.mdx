@@ -124,3 +124,70 @@ agent.print_response("Show me the top news from Hacker News")
 | `cache_results` | `bool` | If True, enable caching of function results |
 | `cache_dir` | `str` | Directory to store cache files |
 | `cache_ttl` | `int` | Time-to-live for cached results in seconds (default: 3600) |
+
+## Default Agent Tools
+
+Agno Agents automatically provide a set of powerful built-in tools when relevant features are enabled. These tools allow the agent to interact with its environment, manage its memory, and leverage knowledge bases.
+
+Here are the default tools and how they are enabled:
+
+### `search_knowledge_base`
+
+Enables the agent to search its configured knowledge base. This is the foundation for Agentic RAG.
+
+- **Enabled by:** Setting the `knowledge` parameter in the `Agent` constructor.
+- **Description:** Searches the knowledge base for information about a query.
+- **Parameters:** `query` (str): The search query.
+
+### `async_search_knowledge_base`
+
+Asynchronous version of `search_knowledge_base`.
+
+- **Enabled by:** Setting the `knowledge` parameter in the `Agent` constructor and running the agent in `async` mode (`.arun()` or `.aprint_response()`).
+- **Description:** Asynchronously searches the knowledge base for information about a query.
+- **Parameters:** `query` (str): The search query.
+
+### `add_to_knowledge`
+
+Allows the agent to add new information to its knowledge base for future use.
+
+- **Enabled by:** Setting `update_knowledge=True` and providing `knowledge` in the `Agent` constructor.
+- **Description:** Adds information (query and result) to the knowledge base.
+- **Parameters:**
+  - `query` (str): The query associated with the information.
+  - `result` (str): The information to be added.
+
+### `get_chat_history`
+
+Enables the agent to retrieve a specified number of past chat interactions.
+
+- **Enabled by:** Setting `read_chat_history=True` in the `Agent` constructor.
+- **Description:** Retrieves the chat history between the user and agent.
+- **Parameters:** `num_chats` (Optional[int]): The number of past chat pairs (user message + agent response) to return.
+
+### `get_tool_call_history`
+
+Allows the agent to review its past tool invocations.
+
+- **Enabled by:** Setting `read_tool_call_history=True` in the `Agent` constructor.
+- **Description:** Retrieves the agent's historical tool calls in reverse chronological order.
+- **Parameters:** `num_calls` (int, default `3`): The number of tool calls to retrieve.
+
+### `update_user_memory`
+
+Enables the agent to manage persistent memories about the user, personalizing future interactions.
+
+- **Enabled by:** Setting `enable_agentic_memory=True` (or the deprecated `enable_user_memories=True` with `memory` object) in the `Agent` constructor.
+- **Description:** Submits a task to modify the agent's memory (e.g., adding, updating, deleting, or clearing memories).
+- **Parameters:** `task` (str): A detailed description of the memory modification task.
+
+### `transfer_task_to_<agent_name>`
+
+If the agent is part of a `Team`, it can delegate tasks to other member agents using a dynamically generated tool for each member.
+
+- **Enabled by:** The agent being part of a `Team` (`team` parameter in `Agent` constructor, or being a member of a `Team` instance).
+- **Description:** Transfers a task to a specific member agent within a team.
+- **Parameters:**
+  - `task_description` (str): A clear description of the task for the member agent.
+  - `expected_output` (str): The anticipated output from the member agent.
+  - `additional_information` (Optional[str]): Any extra context to help the member agent.

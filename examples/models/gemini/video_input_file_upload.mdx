@@ -12,6 +12,7 @@ from agno.agent import Agent
 from agno.media import Video
 from agno.models.google import Gemini
 from agno.utils.log import logger
+from agno.utils.media import download_file
 
 model = Gemini(id="gemini-2.0-flash-exp")
 agent = Agent(
@@ -22,6 +23,13 @@ agent = Agent(
 # Please download a sample video file to test this Agent
 # Run: `wget https://storage.googleapis.com/generativeai-downloads/images/GreatRedSpot.mp4` to download a sample video
 video_path = Path(__file__).parent.joinpath("samplevideo.mp4")
+
+# Download a sample video file
+download_file(
+    "https://storage.googleapis.com/generativeai-downloads/images/GreatRedSpot.mp4",
+    str(video_path),
+)
+
 video_file = None
 remote_file_name = f"files/{video_path.stem.lower().replace('_', '')}"
 try:
@@ -84,4 +92,4 @@ if __name__ == "__main__":
     ```
     </CodeGroup>
   </Step>
-</Steps> 
+</Steps>

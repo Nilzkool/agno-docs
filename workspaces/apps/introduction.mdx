@@ -16,11 +16,11 @@ Copy the following contents to a file `resources.py` and run `ag start resources
 
 ```python resources.py
 from agno.docker.app.jupyter import Jupyter
-from agno.docker.app.postgres import PgVectorDb
+from agno.docker.app.postgres import PostgresDb
 from agno.docker.resources import DockerResources
 
 # -*- PgVector running on port 5432:5432
-vector_db = PgVectorDb(pg_user="ai", pg_password="ai", pg_database="ai")
+vector_db = PostgresDb(pg_user="ai", pg_password="ai", pg_database="ai")
 
 # -*- Jupyter running on port 8888:8888
 jupyter = Jupyter(mount_workspace=True)
@@ -31,7 +31,7 @@ dev_docker_resources = DockerResources(apps=[vector_db, jupyter])
 
 - Each App is a pydantic object providing input and type validation.
 - Note how the `mount_workspace` automatically mounts the directory
-- Note how `PgVectorDb` sets the required settings and creates the volume.
+- Note how `PostgresDb` sets the required settings and creates the volume.
 
 While this is a simple example, these concepts become very powerful for complex applications.
 
@@ -48,13 +48,13 @@ Finally, defining **Applications as python objects** means we can import them in
 ```python
 from resources import vector_db
 
-db_url=vector_db.get_db_connection_local()
+db_url = f"{vector_db.get_db_driver()}://{vector_db.get_db_user()}:{vector_db.get_db_password()}@{vector_db.get_db_host()}:{vector_db.get_db_port()}/{vector_db.get_db_database()}"
 ```
 
 Checkout some example apps you can run on docker:
 
-- [PgVector](storage/postgres)
+- [PgVector](/cookbook/agent_concepts/knowledge/vector_dbs)
 
 Defining **Applications as Code** offers many benefits, such as:
 
-- [Install requirements on startup](/workspaces/workspace-management/install)
+- [Install requirements on startup](/workspaces/apps/features#install-requirements-on-startup)

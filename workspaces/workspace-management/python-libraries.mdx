@@ -2,7 +2,7 @@
 title: Add Python Libraries
 ---
 
-Agno templates are setup to manage dependencies using a [pyproject.toml](https://packaging.python.org/en/latest/specifications/declaring-project-metadata/#declaring-project-metadata) file, **which is used to generate the `requirements.txt` file using [pip-tools](https://pip-tools.readthedocs.io/en/latest/).**
+Agno templates are setup to manage dependencies using a [pyproject.toml](https://packaging.python.org/en/latest/specifications/declaring-project-metadata/#declaring-project-metadata) file, **which is used to generate the `requirements.txt` file using [uv](https://github.com/astral-sh/uv) or [pip-tools](https://pip-tools.readthedocs.io/en/latest/).**
 
 Adding or Updating a python library is a 2 step process:
 
@@ -22,12 +22,12 @@ We highly recommend auto-generating the `requirements.txt` file using this proce
 
 ## Generate requirements
 
-After updating the `dependencies` in the `pyproject.toml` file, auto-generate the `requirements.txt` file using a helper script or running `pip-compile` directly
+After updating the `dependencies` in the `pyproject.toml` file, auto-generate the `requirements.txt` file using a helper script or running `pip-compile` directly.
 
 <CodeGroup>
 
 ```bash terminal
-./scripts/upgrade.sh
+./scripts/generate-requirements.sh
 ```
 
 ```bash pip compile
@@ -44,7 +44,7 @@ If you'd like to upgrade all python libraries to their latest version, run:
 <CodeGroup>
 
 ```bash terminal
-./scripts/upgrade.sh all
+./scripts/generate-requirements.sh upgrade
 ```
 
 ```bash pip compile
@@ -69,6 +69,10 @@ After updating the `requirements.txt` file, rebuild your images.
 ag ws up --env dev --infra docker --type image
 ```
 
+```bash terminal
+ag start --env dev --infra docker --type image
+```
+
 ```bash short options
 ag ws up -e dev -i docker -t image
 ```
@@ -79,7 +83,7 @@ ag ws up -e dev -i docker -t image
 
 <Note>
 
-Remember to [authenticate with ECR](/workspaces/workspace-management/production-app#ecr-images) if needed.
+Remember to [authenticate with ECR](workspaces/workspace-management/production-app#ecr-images) if needed.
 
 </Note>
 
@@ -87,6 +91,10 @@ Remember to [authenticate with ECR](/workspaces/workspace-management/production-
 
 ```bash terminal
 ag ws up --env prd --infra docker --type image
+```
+
+```bash terminal
+ag start --env prd --infra docker --type image
 ```
 
 ```bash short options
@@ -107,18 +115,26 @@ After rebuilding images, recreate the resources.
 ag ws restart --env dev --infra docker --type container
 ```
 
+```bash terminal
+ag restart --env dev --infra docker --type container
+```
+
 ```bash short options
 ag ws restart -e dev -c docker -t container
 ```
 
 </CodeGroup>
 
-### Restart ECS services
+### Update ECS services
 
 <CodeGroup>
 
 ```bash terminal
 ag ws patch --env prd --infra aws --name service
+```
+
+```bash terminal
+ag patch --env prd --infra aws --name service
 ```
 
 ```bash short options

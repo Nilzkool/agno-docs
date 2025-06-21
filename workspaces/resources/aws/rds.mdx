@@ -1,4 +1,104 @@
 ---
 title: RDS
-description: This guide is in the works
+description: Manage RDS resources with Agno
 ---
+
+RDS (Relational Database Service) resources enable you to define and manage your databases on AWS using Agno.
+
+## Example
+
+Let's define a basic RDS PostgreSQL DB cluster using `DbCluster`. Copy the following code to a file `resources.py`:
+
+```python resources.py
+from agno.aws.resource.rds import DbCluster, DbInstance, DbSubnetGroup
+from agno.aws.resource.ec2 import SecurityGroup
+from agno.aws.resource.secret import SecretsManager
+from agno.aws.resources import AwsResources
+import os
+
+# -*- Define a Secrets Manager to store DB credentials
+db_secrets = SecretsManager(
+    name="my-db-credentials",
+    secret_string=os.environ.get("DB_CREDENTIALS_JSON"), # e.g., '{"MASTER_USERNAME": "myuser", "MASTER_USER_PASSWORD": "mypassword", "DATABASE_NAME": "mydb"}'
+)
+
+# -*- Define a DB Subnet Group (assuming you have subnets configured in your AWS account)
+db_subnet_group = DbSubnetGroup(
+    name="my-db-subnet-group",
+    description="DB Subnet Group for Agno RDS Example",
+    # Replace with your actual subnet IDs or retrieve from a VPC stack
+    subnet_ids=["subnet-xxxxxxxxxxxxxxxxx", "subnet-yyyyyyyyyyyyyyyyy"]
+)
+
+# -*- Define a Security Group for the DB
+db_security_group = SecurityGroup(
+    name="my-db-security-group",
+    description="Security Group for Agno RDS Example",
+    # Add inbound rules to allow traffic from your application's security group or IP range
+    # inbound_rules=[InboundRule(port=5432, cidr_ip="0.0.0.0/0")]
+)
+
+# -*- Define the DB Cluster
+mydb_cluster = DbCluster(
+    name="my-agno-db-cluster",
+    engine="aurora-postgresql",
+    engine_version="16.2",
+    db_cluster_identifier="my-agno-db-cluster", # Optional: uses 'name' if not provided
+    aws_secret=db_secrets, # Link to your secrets manager
+    db_subnet_group=db_subnet_group,
+    db_security_groups=[db_security_group],
+    deletion_protection=False,
+    # Add DB instances to the cluster
+    db_instances=[
+        DbInstance(
+            name="my-agno-db-instance-1",
+            db_instance_identifier="my-agno-db-instance-1",
+            db_instance_class="db.t4g.medium",
+            engine="aurora-postgresql", # Must match cluster engine
+        )
+    ]
+)
+
+# -*- Define AWS Resources group
+dev_aws_resources = AwsResources(
+    apps=[],
+    resources=[db_secrets, db_subnet_group, db_security_group, mydb_cluster],
+)
+```
+
+To run this example, you need to set the `DB_CREDENTIALS_JSON` environment variable:
+
+```bash
+export DB_CREDENTIALS_JSON='{"MASTER_USERNAME": "your_username", "MASTER_USER_PASSWORD": "your_password", "DATABASE_NAME": "your_database"}'
+```
+
+Run the following command to create the RDS cluster and its associated resources:
+
+<CodeGroup>
+
+```bash terminal
+ag start resources.py
+```
+
+```bash full options
+ag start resources.py --yes
+```
+
+</CodeGroup>
+
+This will provision an RDS DB Cluster and an instance within it. You can verify their creation in the AWS RDS console.
+
+To delete the resources, run:
+
+<CodeGroup>
+
+```bash terminal
+ag stop resources.py
+```
+
+```bash full options
+ag stop resources.py --yes
+```
+
+</CodeGroup>
+

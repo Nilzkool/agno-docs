@@ -16,6 +16,10 @@ Run `ag ws create` to create a new workspace, the command will ask your for a st
 ag ws create
 ```
 
+```bash Create Workspace
+ag ws create
+```
+
 ```bash Create Agent App
 ag ws create -t agent-app-aws -n agent-app
 ```
@@ -33,11 +37,19 @@ Run `ag ws up` to start i.e. create workspace resources
 <CodeGroup>
 
 ```bash terminal
+ag start
+```
+
+```bash terminal
 ag ws up
 ```
 
 ```bash shorthand
 ag ws up dev:docker
+```
+
+```bash shorthand
+ag start dev:docker
 ```
 
 ```bash full options
@@ -46,6 +58,10 @@ ag ws up --env dev --infra docker
 
 ```bash short options
 ag ws up -e dev -i docker
+```
+
+```bash short options
+ag start -e dev -i docker
 ```
 
 </CodeGroup>
@@ -57,11 +73,19 @@ Run `ag ws down` to stop i.e. delete workspace resources
 <CodeGroup>
 
 ```bash terminal
+ag stop
+```
+
+```bash terminal
 ag ws down
 ```
 
 ```bash shorthand
 ag ws down dev:docker
+```
+
+```bash shorthand
+ag stop dev:docker
 ```
 
 ```bash full options
@@ -70,6 +94,10 @@ ag ws down --env dev --infra docker
 
 ```bash short options
 ag ws down -e dev -i docker
+```
+
+```bash short options
+ag stop -e dev -i docker
 ```
 
 </CodeGroup>
@@ -81,11 +109,19 @@ Run `ag ws patch` to patch i.e. update workspace resources
 <CodeGroup>
 
 ```bash terminal
+ag patch
+```
+
+```bash terminal
 ag ws patch
 ```
 
 ```bash shorthand
 ag ws patch dev:docker
+```
+
+```bash shorthand
+ag patch dev:docker
 ```
 
 ```bash full options
@@ -96,13 +132,17 @@ ag ws patch --env dev --infra docker
 ag ws patch -e dev -i docker
 ```
 
+```bash short options
+ag patch -e dev -i docker
+```
+
 </CodeGroup>
 
 <br />
 
 <Note>
-
-The `patch` command in under development for some resources. Use `restart` if needed
+The `patch` command updates existing resources.
+To force a new deployment with no service definition changes (e.g., to pick up a new image with the same tag), use the `--force` flag.
 
 </Note>
 
@@ -113,11 +153,19 @@ Run `ag ws restart` to stop resources and start them again
 <CodeGroup>
 
 ```bash terminal
+ag restart
+```
+
+```bash terminal
 ag ws restart
 ```
 
 ```bash shorthand
 ag ws restart dev:docker
+```
+
+```bash shorthand
+ag restart dev:docker
 ```
 
 ```bash full options
@@ -126,6 +174,10 @@ ag ws restart --env dev --infra docker
 
 ```bash short options
 ag ws restart -e dev -i docker
+```
+
+```bash short options
+ag restart -e dev -i docker
 ```
 
 </CodeGroup>
@@ -148,8 +200,8 @@ ag ws setup -d
 
 ## Command Options
 
-<Note>Run `ag ws up --help` to view all options</Note>
-
+<Note>Run `ag ws up --help` or `ag start --help` to view all options for respective commands.</Note>
+<Note>Command filtering can be provided using a positional `RESOURCE_FILTER` or using individual flags.</Note>
 ### Environment (`--env`)
 
 Use the `--env` or `-e` flag to filter the environment (dev/prd)
@@ -162,6 +214,10 @@ ag ws up --env dev
 
 ```bash shorthand
 ag ws up dev
+```
+
+```bash shorthand
+ag start dev
 ```
 
 ```bash short options
@@ -182,6 +238,10 @@ ag ws up --infra docker
 
 ```bash shorthand
 ag ws up :docker
+```
+
+```bash shorthand
+ag start :docker
 ```
 
 ```bash short options
@@ -209,6 +269,10 @@ ag ws up \
 
 ```bash shorthand
 ag ws up dev:docker:app
+```
+
+```bash shorthand
+ag start dev:docker:app
 ```
 
 ```bash short options
@@ -241,6 +305,10 @@ ag ws up \
 ag ws up dev:docker::app
 ```
 
+```bash shorthand
+ag start dev:docker::app
+```
+
 ```bash short options
 ag ws up \
   -e dev \
@@ -269,6 +337,10 @@ ag ws up \
 
 ```bash shorthand
 ag ws up dev:docker:app::container
+```
+
+```bash shorthand
+ag start dev:docker:app::container
 ```
 
 ```bash short options
@@ -301,6 +373,10 @@ ag ws up \
 ag ws up dev:docker -dr
 ```
 
+```bash shorthand
+ag start dev:docker -dr
+```
+
 ```bash short options
 ag ws up \
   -e dev \
@@ -320,6 +396,10 @@ Use the `--debug` or `-d` flag to show debug logs.
 ag ws up -d
 ```
 
+```bash terminal
+ag start -d
+```
+
 ```bash full options
 ag ws up \
   --env dev \
@@ -329,6 +409,10 @@ ag ws up \
 
 ```bash shorthand
 ag ws up dev:docker -d
+```
+
+```bash shorthand
+ag start dev:docker -d
 ```
 
 ```bash short options
@@ -350,6 +434,10 @@ Use the `--force` or `-f` flag to force recreate images & containers
 ag ws up -f
 ```
 
+```bash terminal
+ag start -f
+```
+
 ```bash full options
 ag ws up \
   --env dev \
@@ -361,11 +449,31 @@ ag ws up \
 ag ws up dev:docker -f
 ```
 
+```bash shorthand
+ag start dev:docker -f
+```
+
 ```bash short options
 ag ws up \
   -e dev \
   -i docker \
   -f
+```
+
+</CodeGroup>
+
+### Pull Images (`--pull`)
+
+Use the `--pull` or `-p` flag to force pull images from the registry.
+
+<CodeGroup>
+
+```bash flag
+ag start --pull
+```
+
+```bash short options
+ag start -p
 ```
 
 </CodeGroup>

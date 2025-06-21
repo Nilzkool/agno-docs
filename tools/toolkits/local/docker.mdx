@@ -45,9 +45,13 @@ try:
     # Example: List all running Docker containers
     docker_agent.print_response("List all running Docker containers", stream=True)
 
-    # Example: Pull and run an NGINX container
+    # Example: Pull an image
     docker_agent.print_response("Pull the latest nginx image", stream=True)
-    docker_agent.print_response("Run an nginx container named 'web-server' on port 8080", stream=True)
+
+    # Example: Run a container
+    docker_agent.print_response(
+        "Run an nginx container named 'web-server' on port 8080", stream=True
+    )
 
 except ValueError as e:
     print(f"\n❌ Docker Tool Error: {e}")
@@ -128,4 +132,4 @@ except ValueError as e:
 ## Developer Resources
 
 - View [Tools](https://github.com/agno-agi/agno/blob/main/libs/agno/agno/tools/docker.py)
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/docker_tools.py)
+- View [Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/tools/docker_tools.py)

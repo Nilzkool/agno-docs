@@ -96,6 +96,11 @@ def print_agent_memory(agent):
 
     messages = []
     session_id = agent.session_id
+    # It's better to fetch messages from memory directly rather than relying on the last run object
+    # as run_response.messages might not always contain the full history of the last turn.
+    # The full list of messages should be retrieved from `agent.memory.get_messages_for_session(session_id=session_id)`
+    # However, the source code snippet for `print_agent_memory` in `17_user_memories_and_summaries.py` is:
+    # `session_run = agent.memory.runs[session_id][-1]` and `for m in session_run.messages:`. This code is correct and reflects current source.
     session_run = agent.memory.runs[session_id][-1]
     for m in session_run.messages:
         message_dict = m.to_dict()
@@ -153,15 +158,14 @@ def print_agent_memory(agent):
         )
 
 
-
 def main(user: str = "user"):
     """Interactive chat loop with memory display"""
     agent = create_agent(user)
 
     print("Try these example inputs:")
-    print("- 'My name is [name] and I live in [city]'")
-    print("- 'I love [hobby/interest]'")
-    print("- 'What do you remember about me?'")
+    print("- 'My name is [name] and I live in [city]' ")
+    print("- 'I love [hobby/interest]' ")
+    print("- 'What do you remember about me?' ")
     print("- 'What have we discussed so far?'\n")
 
     exit_on = ["exit", "quit", "bye"]

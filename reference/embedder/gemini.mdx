@@ -5,3 +5,11 @@ title: Gemini
 Gemini Embedder is a class that allows you to embed documents using Google's Gemini embedding models through the Google Generative AI API.
 
 <Snippet file="embedder-gemini-reference.mdx" /> 
+
+```python
+from agno.embedder.google import GeminiEmbedder
+
+embedder = GeminiEmbedder(
+    id="gemini-embedding-exp-03-07" # Default model
+)
+```

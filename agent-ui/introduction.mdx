@@ -88,8 +88,8 @@ web_agent = Agent(
     add_datetime_to_instructions=True,
     # Adds the history of the conversation to the messages
     add_history_to_messages=True,
-    # Number of history responses to add to the messages
-    num_history_responses=5,
+    # Number of history runs to add to the messages
+    num_history_runs=5,
     # Adds markdown formatting to the messages
     markdown=True,
 )
@@ -102,7 +102,7 @@ finance_agent = Agent(
     storage=SqliteStorage(table_name="finance_agent", db_file=agent_storage),
     add_datetime_to_instructions=True,
     add_history_to_messages=True,
-    num_history_responses=5,
+    num_history_runs=5,
     markdown=True,
 )
 

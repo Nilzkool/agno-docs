@@ -21,6 +21,7 @@ from textwrap import dedent
 
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
+from agno.team.team import Team
 from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.tools.yfinance import YFinanceTools
 
@@ -29,25 +30,7 @@ web_agent = Agent(
     role="Search the web for information",
     model=OpenAIChat(id="gpt-4o"),
     tools=[DuckDuckGoTools()],
-    instructions=dedent("""\
-        You are an experienced web researcher and news analyst! 🔍
-
-        Follow these steps when searching for information:
-        1. Start with the most recent and relevant sources
-        2. Cross-reference information from multiple sources
-        3. Prioritize reputable news outlets and official sources
-        4. Always cite your sources with links
-        5. Focus on market-moving news and significant developments
-
-        Your style guide:
-        - Present information in a clear, journalistic style
-        - Use bullet points for key takeaways
-        - Include relevant quotes when available
-        - Specify the date and time for each piece of news
-        - Highlight market sentiment and industry trends
-        - End with a brief analysis of the overall narrative
-        - Pay special attention to regulatory news, earnings reports, and strategic announcements\
-    """),
+    instructions="Always include sources",
     show_tool_calls=True,
     markdown=True,
 )
@@ -59,32 +42,18 @@ finance_agent = Agent(
     tools=[
         YFinanceTools(stock_price=True, analyst_recommendations=True, company_info=True)
     ],
-    instructions=dedent("""\
-        You are a skilled financial analyst with expertise in market data! 📊
-
-        Follow these steps when analyzing financial data:
-        1. Start with the latest stock price, trading volume, and daily range
-        2. Present detailed analyst recommendations and consensus target prices
-        3. Include key metrics: P/E ratio, market cap, 52-week range
-        4. Analyze trading patterns and volume trends
-        5. Compare performance against relevant sector indices
-
-        Your style guide:
-        - Use tables for structured data presentation
-        - Include clear headers for each data section
-        - Add brief explanations for technical terms
-        - Highlight notable changes with emojis (📈 📉)
-        - Use bullet points for quick insights
-        - Compare current values with historical averages
-        - End with a data-driven financial outlook\
-    """),
+    instructions="Use tables to display data",
     show_tool_calls=True,
     markdown=True,
 )
 
-agent_team = Agent(
-    team=[web_agent, finance_agent],
+agent_team = Team(
+    mode="coordinate",
+    members=[web_agent, finance_agent],
     model=OpenAIChat(id="gpt-4o"),
+    success_criteria=dedent("""\
+A comprehensive financial news report with clear sections and data-driven insights.
+    """),
     instructions=dedent("""\
         You are the lead editor of a prestigious financial news desk! 📰
 
@@ -109,18 +78,20 @@ agent_team = Agent(
     add_datetime_to_instructions=True,
     show_tool_calls=True,
     markdown=True,
+    enable_agentic_context=True,
+    show_members_responses=False,
 )
 
 # Example usage with diverse queries
 agent_team.print_response(
-    "Summarize analyst recommendations and share the latest news for NVDA", stream=True
+    "Summarize analyst recommendations and share the latest news for NVDA", stream=True, show_full_reasoning=True, stream_intermediate_steps=True
 )
 agent_team.print_response(
     "What's the market outlook and financial performance of AI semiconductor companies?",
-    stream=True,
+    stream=True, show_full_reasoning=True, stream_intermediate_steps=True
 )
 agent_team.print_response(
-    "Analyze recent developments and financial performance of TSLA", stream=True
+    "Analyze recent developments and financial performance of TSLA", stream=True, show_full_reasoning=True, stream_intermediate_steps=True
 )
 
 # More example prompts to try:

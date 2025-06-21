@@ -5,3 +5,11 @@ title: Together
 Together Embedder is a class that allows you to embed documents using Together AI's embedding models. It extends the OpenAI Embedder class and uses a compatible API interface.
 
 <Snippet file="embedder-together-reference.mdx" /> 
+
+```python
+from agno.embedder.together import TogetherEmbedder
+
+embedder = TogetherEmbedder(
+    id="togethercomputer/m2-bert-80M-32k-retrieval" # Default model
+)
+```

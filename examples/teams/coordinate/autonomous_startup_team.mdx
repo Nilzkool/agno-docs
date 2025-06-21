@@ -6,7 +6,7 @@ This example shows how to create an autonomous startup team that can self-organi
 
 ## Code
 
-```python autonomous_startup_team.py
+```python cookbook/examples/teams/coordinate/autonomous_startup_team.py
 from agno.agent import Agent
 from agno.knowledge.pdf import PDFKnowledgeBase, PDFReader
 from agno.models.openai import OpenAIChat
@@ -18,7 +18,7 @@ from agno.tools.yfinance import YFinanceTools
 from agno.vectordb.pgvector.pgvector import PgVector
 
 knowledge_base = PDFKnowledgeBase(
-    path="tmp/data",
+    path="cookbook/teams/coordinate/data",
     vector_db=PgVector(
         table_name="autonomous_startup_team",
         db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
@@ -217,6 +217,7 @@ autonomous_startup_team = Team(
     markdown=True,
     debug_mode=True,
     show_members_responses=True,
+    enable_team_history=True,
 )
 
 autonomous_startup_team.print_response(
@@ -247,7 +248,7 @@ autonomous_startup_team.print_response(
 
     <Step title="Install required libraries">
         ```bash
-        pip install openai duckduckgo-search exa_py slack yfinance
+        pip install -U openai duckduckgo-search exa_py slack yfinance pgvector 'psycopg[binary]' sqlalchemy pypdf
         ```
     </Step>
 
@@ -261,9 +262,8 @@ autonomous_startup_team.print_response(
 
     <Step title="Run the agent">
         ```bash
-        python autonomous_startup_team.py
+        python cookbook/examples/teams/coordinate/autonomous_startup_team.py
         ```
     </Step>
 
 </Steps>
-

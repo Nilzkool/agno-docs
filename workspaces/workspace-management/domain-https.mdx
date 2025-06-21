@@ -69,12 +69,18 @@ prd_fastapi = FastApi(
 
 4. Create new Loadbalancer Listeners
 
-Create new listeners for the loadbalancer to pickup the HTTPs configuration.
+<Note>
+The `ag start` command creates new resources.
+</Note>
 
 <CodeGroup>
 
 ```bash terminal
 ag ws up --env prd --infra aws --name listener
+```
+
+```bash terminal
+ag start --env prd --infra aws --name listener
 ```
 
 ```bash shorthand
@@ -89,10 +95,18 @@ After this, `https` should be working on your custom domain.
 
 5. Update existing listeners to redirect HTTP to HTTPS
 
+<Note>
+The `ag patch` command updates existing resources.
+</Note>
+
 <CodeGroup>
 
 ```bash terminal
 ag ws patch --env prd --infra aws --name listener
+```
+
+```bash terminal
+ag patch --env prd --infra aws --name listener
 ```
 
 ```bash shorthand

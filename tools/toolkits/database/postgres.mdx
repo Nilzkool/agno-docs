@@ -40,17 +40,15 @@ postgres_tools = PostgresTools(
     port=5532,
     db_name="ai",
     user="ai",
-    password="ai"
+    password="ai",
+    table_schema="ai",
 )
 
 # Create an agent with the PostgresTools
 agent = Agent(tools=[postgres_tools])
 
 # Example: Ask the agent to run a SQL query
-agent.print_response("""
-Please run a SQL query to get all users from the users table
-who signed up in the last 30 days
-""")
+agent.print_response("List the tables in the database", markdown=True)
 ```
 
 ## Toolkit Params
@@ -82,4 +80,4 @@ who signed up in the last 30 days
 ## Developer Resources
 
 - View [Tools](https://github.com/agno-agi/agno/blob/main/libs/agno/agno/tools/postgres.py)
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/postgres_tools.py)
+- View [Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/tools/postgres_tools.py)

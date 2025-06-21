@@ -72,15 +72,15 @@ agent.print_response("Please tell me about the contents of the spreadsheet")
 | Parameter          | Type            | Default | Description                                                                 |
 | ------------------ | --------------- | ------- | --------------------------------------------------------------------------- |
 | `scopes`           | `List[str]`     | `None`  | Custom OAuth scopes. If None, determined by operations.                     |
-| `spreadsheet_id`   | `str`           | `None`  | ID of the target spreadsheet.                                              |
-| `spreadsheet_range`| `str`           | `None`  | Range within the spreadsheet.                                              |
-| `creds`            | `Credentials`   | `None`  | Pre-existing credentials.                                                  |
-| `creds_path`       | `str`           | `None`  | Path to credentials file.                                                  |
-| `token_path`       | `str`           | `None`  | Path to token file.                                                        |
-| `read`             | `bool`          | `True`  | Enable read operations.                                                    |
-| `create`           | `bool`          | `False` | Enable create operations.                                                  |
-| `update`           | `bool`          | `False` | Enable update operations.                                                  |
-| `duplicate`        | `bool`          | `False` | Enable duplicate operations.                                               |
+| `spreadsheet_id`   | `str`           | `None`  | ID of the target spreadsheet.                                               |
+| `spreadsheet_range`| `str`           | `None`  | Range within the spreadsheet.                                               |
+| `creds`            | `Credentials`   | `None`  | Pre-existing credentials.                                                   |
+| `creds_path`       | `str`           | `None`  | Path to credentials file.                                                   |
+| `token_path`       | `str`           | `None`  | Path to token file.                                                         |
+| `read`             | `bool`          | `True`  | Enable read operations.                                                     |
+| `create`           | `bool`          | `False` | Enable create operations.                                                   |
+| `update`           | `bool`          | `False` | Enable update operations.                                                   |
+| `duplicate`        | `bool`          | `False` | Enable duplicate operations.                                                |
 
 ## Toolkit Functions
 
@@ -89,7 +89,7 @@ agent.print_response("Please tell me about the contents of the spreadsheet")
 | `read_sheet`            | Read values from a Google Sheet                 |
 | `create_sheet`          | Create a new Google Sheet                       |
 | `update_sheet`          | Update data in a Google Sheet                   |
-| `create_duplicate_sheet`| Create a duplicate of an existing Google Sheet  |
+| `create_duplicate_sheet`| Create a duplicate of an existing Google Sheet, optionally copying permissions. |
 
 ## Developer Resources
 

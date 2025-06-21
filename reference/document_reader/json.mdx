@@ -6,3 +6,11 @@ sidebarTitle: JSON
 JSONReader is a reader class that allows you to read data from JSON files.
 
 <Snippet file="json-reader-reference.mdx" />
+
+```python
+from agno.document.reader.json_reader import JSONReader
+
+reader = JSONReader(
+    chunk=False # JSONReader defaults to not chunking due to its structured nature
+)
+```

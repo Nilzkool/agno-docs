@@ -1,7 +1,7 @@
 ### Parameters
 
 | Parameter | Type | Default | Description |
-|-----------|------|-------------|---------|
+|---|---|---|---|
 | `runs` | `List[TeamRun]` | `[]` | List of team conversation runs |
 | `messages` | `List[Message]` | `[]` | List of messages sent to the model |
 | `update_system_message_on_change` | `bool` | `True` | Whether to update system message when it changes |
@@ -15,11 +15,12 @@
 | `classifier` | `Optional[MemoryClassifier]` | `None` | Classifier for memory importance |
 | `manager` | `Optional[MemoryManager]` | `None` | Manager for memory operations |
 | `num_memories` | `Optional[int]` | `None` | Number of memories to retrieve |
+| `updating_memory` | `bool` | `False` | True when memory is being updated |
 
 ### TeamRun
 
 | Parameter | Type | Default | Description |
-|-----------|------|-------------|---------|
+|---|---|---|---|
 | `message` | `Optional[Message]` | `None` | Message associated with the team run |
 | `member_runs` | `Optional[List[AgentRun]]` | `None` | List of member agent runs |
 | `response` | `Optional[TeamRunResponse]` | `None` | Response generated during the team run |
@@ -27,14 +28,14 @@
 ### TeamContext
 
 | Parameter | Type | Default | Description |
-|-----------|------|-------------|---------|
+|---|---|---|---|
 | `member_interactions` | `List[TeamMemberInteraction]` | `[]` | List of interactions between team members |
 | `text` | `Optional[str]` | `None` | Shared text context for the team |
 
 ### TeamMemberInteraction
 
 | Parameter | Type | Description |
-|-----------|------|-------------|
+|---|---|---|
 | `member_name` | `str` | Name of the team member |
 | `task` | `str` | Task assigned to the team member |
 | `response` | `RunResponse` | Response from the team member |
@@ -42,7 +43,7 @@
 ### Memory Retrieval
 
 | Parameter | Type | Description |
-|-----------|------|-------------|
+|---|---|---|
 | `last_n` | `str` | Retrieve the last N memories from history |
 | `first_n` | `str` | Retrieve the first N memories from history |
 | `semantic` | `str` | Retrieve memories based on semantic similarity |
@@ -50,16 +51,19 @@
 ### Memory
 
 | Parameter | Type | Description | Default |
-|-----------|------|-------------|---------|
+|---|---|---|
 | `memory` | `str` | The actual memory content | Required |
 | `id` | `Optional[str]` | Unique identifier for the memory | `None` |
 | `topic` | `Optional[str]` | Topic or category of the memory | `None` |
 | `input` | `Optional[str]` | Original input that generated the memory | `None` |
+| `created_at` | `datetime` | Timestamp of memory creation | Required |
+| `last_updated` | `datetime` | Timestamp of last memory update | Required |
+| `metadata` | `Optional[Dict[str, Any]]` | Additional metadata for the memory | `None` |
 
 ### Memory Classifier
 
 | Parameter | Type | Description | Default |
-|-----------|------|-------------|---------|
+|---|---|---|
 | `model` | `Optional[Model]` | Model used for classifying memories | `None` |
 | `system_prompt` | `Optional[str]` | Custom system prompt for the classifier | `None` |
 | `existing_memories` | `Optional[List[Memory]]` | List of existing memories to check against | `None` |
@@ -67,7 +71,7 @@
 ### Memory Manager
 
 | Parameter | Type | Description | Default |
-|-----------|------|-------------|---------|
+|---|---|---|
 | `model` | `Optional[Model]` | Model used for managing memories | `None` |
 | `user_id` | `Optional[str]` | Unique identifier for the user | `None` |
 | `system_prompt` | `Optional[str]` | Custom system prompt for the memory manager | `None` |

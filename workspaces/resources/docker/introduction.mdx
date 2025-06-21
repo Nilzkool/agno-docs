@@ -26,7 +26,9 @@ We still love docker-compose, just want to elevate the experience. With agno we 
 
 ## Container
 
-The `DockerContainer` class defines a container, for example use the following code to define a container running the [whoami](https://github.com/traefik/whoami) image. Start it using `ag start resources.py`
+The `DockerContainer` class defines a container, for example use the following code to define a container running the [whoami](https://github.com/traefik/whoami) image. Start it using `ag start resources.py`.
+
+For more details on `DockerContainer` parameters, refer to [Container](/workspaces/resources/docker/container).
 
 ```python resources.py
 from agno.docker.resource.container import DockerContainer
@@ -34,7 +36,10 @@ from agno.docker.resource.container import DockerContainer
 whoami = DockerContainer(
     name='whoami',
     image='traefik/whoami',
-    ports={'80': 80},
+    ports={'80': 80}, # Map container port 80 to host port 80
+    remove=True, # Automatically remove the container when it finishes
+    auto_remove=True, # Enable auto-removal for daemon-side cleanup
+    detach=True, # Run container in the background
 )
 ```
 
@@ -68,6 +73,7 @@ python_image = DockerImage(
     name="my/python",
     tag="3.12",
     path=".",
+    pull=True, # Always pull the latest image before building/running
     # push_image=True,
 )
 
@@ -92,3 +98,9 @@ CMD ["chill"]
 Make sure to add the `Dockerfile` in the current directory.
 
 </Note>
+
+When running `ag start`, you can also use the `--pull` flag to force pulling images:
+
+```bash
+ag start resources.py --pull
+```

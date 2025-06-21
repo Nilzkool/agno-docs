@@ -6,7 +6,7 @@ This example illustrates how to create an AI support team that can route custome
 
 ## Code
 
-```python ai_support_team.py
+```python cookbook/examples/teams/route/ai_customer_support_team.py
 
 from agno.agent import Agent
 from agno.knowledge.website import WebsiteKnowledgeBase
@@ -136,7 +136,7 @@ customer_support_team.print_response(
 
     <Step title="Install required libraries">
         ```bash
-        pip install openai duckduckgo-search slack_sdk exa_py
+        pip install -U openai duckduckgo-search slack_sdk exa_py pgvector 'psycopg[binary]' sqlalchemy
         ```
     </Step>
 
@@ -150,9 +150,8 @@ customer_support_team.print_response(
 
     <Step title="Run the agent">
         ```bash
-        python ai_support_team.py
+        python cookbook/examples/teams/route/ai_customer_support_team.py
         ```
     </Step>
 
 </Steps>
-

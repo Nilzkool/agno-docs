@@ -146,11 +146,11 @@ Storage is such a critical part of your Agentic infrastructure that it should ne
     <CodeGroup>
 
     ```bash Mac
-    pip install -U agno openai pgvector pypdf "psycopg[binary]" sqlalchemy
+pip install -U agno openai pgvector pypdf "psycopg[binary]" sqlalchemy
     ```
 
     ```bash Windows
-    pip install -U agno openai pgvector pypdf "psycopg[binary]" sqlalchemy
+pip install -U agno openai pgvector pypdf "psycopg[binary]" sqlalchemy
     ```
 
     </CodeGroup>
@@ -186,7 +186,7 @@ Storage is such a critical part of your Agentic infrastructure that it should ne
 
 ## Schema Upgrades
 
-When using `AgentStorage`, the SQL-based storage classes have fixed schemas. As new Agno features are released, the schemas might need to be updated.
+When using `AgentStorage`, the SQL-based storage classes have fixed schemas. As new Agno features are released, the schemas might need to be updated. For example, the `team_session_id` column was recently added to agent sessions to support hierarchical teams.
 
 Upgrades can either be done manually or automatically.
 
@@ -214,7 +214,8 @@ storage.upgrade_schema()
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `storage` | `Optional[AgentStorage]` | `None` | Storage mechanism for the agent. |
+| `storage` | `Optional[Storage]` | `None` | Storage mechanism for the agent. Use `mode` to specify the entity type (e.g., `"agent"`, `"team"`, `"workflow"`). |
+| `mode` | `Literal["agent", "team", "workflow"]` | `"agent"` | Specifies the type of entity whose sessions are stored. This affects the table schema and filtering behavior. |
 
  ## Developer Resources
 

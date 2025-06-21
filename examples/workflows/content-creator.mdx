@@ -136,7 +136,6 @@ tasks_config = {
     },
 }
 ```
-
 For Scheduling logic, create `scheduler.py`
 
 ```python scheduler.py
@@ -148,7 +147,7 @@ from agno.utils.log import logger
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
-from cookbook.workflows.content_creator_workflow.config import (
+from cookbook.workflows.content_creator.config import (
     HEADERS,
     TYPEFULLY_API_URL,
     PostType,
@@ -278,12 +277,12 @@ from agno.workflow import Workflow
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
-from cookbook.workflows.content_creator_workflow.config import PostType
-from cookbook.workflows.content_creator_workflow.prompts import (
+from cookbook.workflows.content_creator.config import PostType
+from cookbook.workflows.content_creator.prompts import (
     agents_config,
     tasks_config,
 )
-from cookbook.workflows.content_creator_workflow.scheduler import schedule
+from cookbook.workflows.content_creator.scheduler import schedule
 
 # Load environment variables
 load_dotenv()
@@ -482,7 +481,7 @@ if __name__ == "__main__":
 
   <Step title="Run the agent">
     ```bash
-    python workflow.py
+    python cookbook/workflows/content_creator/workflow.py
     ```
   </Step>
 

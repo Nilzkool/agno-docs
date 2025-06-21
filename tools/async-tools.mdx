@@ -14,6 +14,11 @@ from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from agno.utils.log import logger
 
+#####################################
+# Async execution
+#####################################
+
+
 async def atask1(delay: int):
     """Simulate a task that takes a random amount of time to complete
     Args:
@@ -60,9 +65,66 @@ async_agent = Agent(
     markdown=True,
 )
 
+# Non-streaming response
+# asyncio.run(async_agent.aprint_response("Please run all tasks with a delay of 3s"))
+# Streaming response
 asyncio.run(
     async_agent.aprint_response("Please run all tasks with a delay of 3s", stream=True)
 )
+
+
+#####################################
+# Sync execution
+#####################################
+def task1(delay: int):
+    """Simulate a task that takes a random amount of time to complete
+    Args:
+        delay (int): The amount of time to delay the task
+    """
+    logger.info("Task 1 has started")
+    for _ in range(delay):
+        time.sleep(1)
+        logger.info("Task 1 has slept for 1s")
+    logger.info("Task 1 has completed")
+    return f"Task 1 completed in {delay:.2f}s"
+
+
+def task2(delay: int):
+    """Simulate a task that takes a random amount of time to complete
+    Args:
+        delay (int): The amount of time to delay the task
+    """
+    logger.info("Task 2 has started")
+    for _ in range(delay):
+        time.sleep(1)
+        logger.info("Task 2 has slept for 1s")
+    logger.info("Task 2 has completed")
+    return f"Task 2 completed in {delay:.2f}s"
+
+
+def task3(delay: int):
+    """Simulate a task that takes a random amount of time to complete
+    Args:
+        delay (int): The amount of time to delay the task
+    """
+    logger.info("Task 3 has started")
+    for _ in range(delay):
+        time.sleep(1)
+        logger.info("Task 3 has slept for 1s")
+    logger.info("Task 3 has completed")
+    return f"Task 3 completed in {delay:.2f}s"
+
+sync_agent = Agent(
+    model=OpenAIChat(id="gpt-4o-mini"),
+    tools=[task2, task1, task3],
+    show_tool_calls=True,
+    markdown=True,
+)
+
+# Non-streaming response
+# sync_agent.print_response("Please run all tasks with a delay of 3s")
+# Streaming response
+sync_agent.print_response("Please run all tasks with a delay of 3s", stream=True)
 ```
 
 Run the Agent:
@@ -87,7 +149,7 @@ How to use:
   executed simultaneously.
 </Note>
 
-In this example, `gpt-4o` makes three simultaneous tool calls to `atask1`, `atask2` and `atask3`. Normally these tool calls would execute sequentially, but using the `aprint_response` function, they run concurrently, improving execution time.
+In this example, `gpt-4o-mini` makes three simultaneous tool calls to `atask1`, `atask2` and `atask3`. Normally these tool calls would execute sequentially, but using the `aprint_response` function, they run concurrently, improving execution time.
 
 <img
   height="200"

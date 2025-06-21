@@ -25,6 +25,7 @@ from typing import Iterator
 import httpx
 from agno.agent import Agent
 from agno.exceptions import StopAgentRun
+from agno.models.openai import OpenAIChat
 from agno.tools import FunctionCall, tool
 from rich.console import Console
 from rich.pretty import pprint
@@ -88,6 +89,7 @@ def get_top_hackernews_stories(num_stories: int) -> Iterator[str]:
 
 # Initialize the agent with a tech-savvy personality and clear instructions
 agent = Agent(
+    model=OpenAIChat(id="gpt-4o"),
     description="A Tech News Assistant that fetches and summarizes Hacker News stories",
     instructions=dedent("""\
         You are an enthusiastic Tech Reporter
@@ -113,6 +115,9 @@ agent = Agent(
 agent.print_response(
     "What are the top 2 hackernews stories?", stream=True, console=console
 )
+
+# View all messages
+pprint(agent.run_response.messages)
 ```
 
 ## Usage

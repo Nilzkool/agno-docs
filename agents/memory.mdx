@@ -92,7 +92,7 @@ pprint(memory.get_user_memories(user_id=user_id))
 
 ### Notes
 
-- `enable_agentic_memory=True` gives the Agent a tool to manage memories of the user, this tool passes the task to the `MemoryManager` class. You may also set `enable_user_memories=True` which always runs the `MemoryManager` after each user message.
+- `enable_agentic_memory=True` gives the Agent a tool to manage memories of the user, this tool passes the task to the `Memory` class (v2). You may also set `enable_user_memories=True` which always runs the `Memory` class (v2) after each user message.
 - `add_history_to_messages=True` adds the chat history to the messages sent to the Model, the `num_history_runs` determines how many runs to add.
 - `read_chat_history=True` adds a tool to the Agent that allows it to read chat history, as it may be larger than what's included in the `num_history_runs`.
 
@@ -104,7 +104,7 @@ You can access these messages using `agent.get_messages_for_session()`.
 
 We can give the Agent access to the chat history in the following ways:
 
-- We can set `add_history_to_messages=True` and `num_history_runs=5` to add the messages from the last 5 runs automatically to every message sent to the agent.
+- We can set `add_history_to_messages=True` and `num_history_runs=3` to add the messages from the last 3 runs automatically to every message sent to the agent.
 - We can set `read_chat_history=True` to provide a `get_chat_history()` tool to your agent allowing it to read any message in the entire chat history.
 - **We recommend setting all 3: `add_history_to_messages=True`, `num_history_runs=3` and `read_chat_history=True` for the best experience.**
 - We can also set `read_tool_call_history=True` to provide a `get_tool_call_history()` tool to your agent allowing it to read tool calls in reverse chronological order.
@@ -126,8 +126,8 @@ You can persist this memory in a database by adding a `storage` driver to the Ag
         model=OpenAIChat(id="gpt-4o"),
         # Set add_history_to_messages=true to add the previous chat history to the messages sent to the Model.
         add_history_to_messages=True,
-        # Number of historical responses to add to the messages.
-        num_history_responses=3,
+        # Number of historical runs to add to the messages.
+        num_history_runs=3,
         description="You are a helpful assistant that always responds in a polite, upbeat and positive manner.",
     )
 
@@ -342,14 +342,14 @@ To enable session summaries, set `enable_session_summaries=True` on the `Agent`.
 
 ## Attributes
 
-| Parameter                          | Type          | Default         | Description                                                                                                     |
-| ---------------------------------- | ------------- | --------------- | --------------------------------------------------------------------------------------------------------------- |
-| `memory`                           | `Memory`      | `Memory()` | Agent's memory object used for storing and retrieving information.                                              |
-| `add_history_to_messages`          | `bool`        | `False`         | If true, adds the chat history to the messages sent to the Model. Also known as `add_chat_history_to_messages`. |
-| `num_history_responses`            | `int`         | `3`             | Number of historical responses to add to the messages.                                                          |
-| `enable_user_memories`             | `bool`        | `False`         | If true, create and store personalized memories for the user.                                                   |
-| `enable_session_summaries`         | `bool`        | `False`         | If true, create and store session summaries.                                                                    |
-| `enable_agentic_memory`            | `bool`        | `False`         | If true, enables the agent to manage the user's memory.                                                         |
+| Parameter | Type | Default | Description |
+|----------------------------------|-------------|---------------|-----------------------------------------------------------------------------------------------------------------| 
+| `memory` | `Memory` | `Memory()` | Agent's memory object used for storing and retrieving information. |
+| `add_history_to_messages` | `bool` | `False` | If true, adds the chat history to the messages sent to the Model. Also known as `add_chat_history_to_messages`. |
+| `num_history_runs` | `int` | `3` | Number of historical runs to add to the messages. |
+| `enable_user_memories` | `bool` | `False` | If true, creates and stores personalized memories for the user, and automatically updates them after each run. |
+| `enable_session_summaries` | `bool` | `False` | If true, creates and stores session summaries, and automatically updates them after each run. |
+| `enable_agentic_memory` | `bool` | `False` | If true, enables the agent to manage the user's memory via a tool. |
 
  ## Developer Resources
 

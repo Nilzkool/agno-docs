@@ -52,7 +52,7 @@ def create_agent(user: str = "user"):
         storage=agent_storage,
         # Add chat history to messages
         add_history_to_messages=True,
-        num_history_responses=3,
+        num_history_runs=3,
         markdown=True,
     )
 
@@ -76,7 +76,7 @@ def print_messages(agent):
                 json.dumps(
                     [
                         m.model_dump(include={"role", "content"})
-                        for m in agent.memory.messages
+                        for m in agent.get_messages_for_session()
                     ]
                 ),
                 indent=4,

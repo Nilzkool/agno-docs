@@ -26,10 +26,8 @@ Example companies to analyze:
 - "XOM, CVX, BP" (Energy Sector)
 
 Run `pip install openai yfinance agno` to install dependencies.
-"""
 
-
-```python investment_report_generator.py
+```python cookbook/workflows/investment_report_generator.py
 from pathlib import Path
 from shutil import rmtree
 from textwrap import dedent
@@ -54,7 +52,7 @@ investment_report = str(reports_dir.joinpath("investment_report.md"))
 class InvestmentReportGenerator(Workflow):
     """Advanced workflow for generating professional investment analysis with strategic recommendations."""
 
-    description: str = dedent("""\
+    description: str = dedent("""
     An intelligent investment analysis system that produces comprehensive financial research and
     strategic investment recommendations. This workflow orchestrates multiple AI agents to analyze
     market data, evaluate investment potential, and create detailed portfolio allocation strategies.
@@ -69,7 +67,7 @@ class InvestmentReportGenerator(Workflow):
                 company_info=True, analyst_recommendations=True, company_news=True
             )
         ],
-        description=dedent("""\
+        description=dedent("""
         You are MarketMaster-X, an elite Senior Investment Analyst at Goldman Sachs with expertise in:
 
         - Comprehensive market analysis
@@ -79,7 +77,7 @@ class InvestmentReportGenerator(Workflow):
         - Risk factor analysis
         - Growth potential evaluation\
         """),
-        instructions=dedent("""\
+        instructions=dedent("""
         1. Market Research 📊
            - Analyze company fundamentals and metrics
            - Review recent market performance
@@ -103,7 +101,7 @@ class InvestmentReportGenerator(Workflow):
 
     research_analyst: Agent = Agent(
         name="Research Analyst",
-        description=dedent("""\
+        description=dedent("""
         You are ValuePro-X, an elite Senior Research Analyst at Goldman Sachs specializing in:
 
         - Investment opportunity evaluation
@@ -112,7 +110,7 @@ class InvestmentReportGenerator(Workflow):
         - Growth potential ranking
         - Strategic recommendations\
         """),
-        instructions=dedent("""\
+        instructions=dedent("""
         1. Investment Analysis 🔍
            - Evaluate each company's potential
            - Compare relative valuations
@@ -135,7 +133,7 @@ class InvestmentReportGenerator(Workflow):
 
     investment_lead: Agent = Agent(
         name="Investment Lead",
-        description=dedent("""\
+        description=dedent("""
         You are PortfolioSage-X, a distinguished Senior Investment Lead at Goldman Sachs expert in:
 
         - Portfolio strategy development
@@ -144,7 +142,7 @@ class InvestmentReportGenerator(Workflow):
         - Investment rationale articulation
         - Client recommendation delivery\
         """),
-        instructions=dedent("""\
+        instructions=dedent("""
         1. Portfolio Strategy 💼
            - Develop allocation strategy
            - Optimize risk-reward balance
@@ -240,13 +238,13 @@ if __name__ == "__main__":
 
   <Step title="Install libraries">
     ```bash
-    pip install openai yfinance agno
+    pip install -U openai yfinance agno
     ```
   </Step>
 
   <Step title="Run the agent">
     ```bash
-    python investment_report_generator.py
+    python cookbook/workflows/investment_report_generator.py
     ```
   </Step>
 

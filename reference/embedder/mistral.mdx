@@ -5,3 +5,12 @@ title: Mistral
 Mistral Embedder is a class that allows you to embed documents using Mistral AI's embedding models.
 
 <Snippet file="embedder-mistral-reference.mdx" /> 
+
+```python
+from agno.embedder.mistral import MistralEmbedder
+
+embedder = MistralEmbedder(
+    id="mistral-embed", # Default model
+    dimensions=1024 # Default dimensions
+)
+```

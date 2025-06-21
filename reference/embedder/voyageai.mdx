@@ -5,3 +5,12 @@ title: VoyageAI
 VoyageAI Embedder is a class that allows you to embed documents using VoyageAI's embedding models, which are specifically designed for high-performance text embeddings.
 
 <Snippet file="embedder-voyageai-reference.mdx" /> 
+
+```python
+from agno.embedder.voyageai import VoyageAIEmbedder
+
+embedder = VoyageAIEmbedder(
+    id="voyage-2", # Default model
+    dimensions=1024 # Default dimensions
+)
+```

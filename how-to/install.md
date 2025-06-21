@@ -6,36 +6,51 @@ title: Install & Setup
 
 We highly recommend:
 
-- Installing `agno` using `pip` in a python virtual environment.
+- Installing `agno` using `uv` in a python virtual environment.
 
 <Steps>
-  <Step title="Create a virtual environment">
+  <Step title="Install uv">
+    Install `uv`, the fastest python package installer and dependency resolver.
+
     <CodeGroup>
 
     ```bash Mac
-    python3 -m venv ~/.venvs/agno
-    source ~/.venvs/agno/bin/activate
+    curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
 
     ```bash Windows
-    python3 -m venv agnoenv
-    agnoenv/scripts/activate
+    irm https://astral.sh/uv/install.ps1 | iex
     ```
 
     </CodeGroup>
 
   </Step>
-  <Step title="Install agno">
-    Install `agno` using pip
+  <Step title="Create and activate a virtual environment">
+    Create a new virtual environment for your project and activate it.
 
     <CodeGroup>
 
     ```bash Mac
-    pip install -U agno
+    uv venv --python 3.12
+    source .venv/bin/activate
     ```
 
     ```bash Windows
-    pip install -U agno
+    uv venv --python 3.12
+    .venv\Scripts\activate
+    ```
+
+    </CodeGroup>
+  </Step>
+  <Step title="Install agno">
+    <CodeGroup>
+
+    ```bash Mac
+    uv pip install -U agno
+    ```
+
+    ```bash Windows
+    uv pip install -U agno
     ```
 
     </CodeGroup>
@@ -58,7 +73,7 @@ If you encounter errors, try updating pip using `python -m pip install --upgrade
 To upgrade `agno`, run this in your virtual environment
 
 ```bash
-pip install -U agno --no-cache-dir
+uv pip install -U agno --no-cache-dir
 ```
 
 ---

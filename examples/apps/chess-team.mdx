@@ -53,10 +53,16 @@ The complete code is available in the [Agno repository](https://github.com/agno-
   </Step>
 
   <Step title="Set up API Key">
-    The Chess Team Agent uses the Anthropic API for agent reasoning:
+    The Chess Team Agent supports multiple AI models. Export the API keys for the models you want to use:
 
     ```bash
-    export ANTHROPIC_API_KEY=your_api_key_here
+    # Required for OpenAI models
+    export OPENAI_API_KEY=***
+
+    # Optional - for additional models
+    export ANTHROPIC_API_KEY=***  # For Claude models
+    export GOOGLE_API_KEY=***     # For Gemini models
+    export GROQ_API_KEY=***       # For Groq models
     ```
   </Step>
 

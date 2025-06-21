@@ -113,7 +113,7 @@ class TeamWorkflow(Workflow):
 
 if __name__ == "__main__":
     # Run workflow
-    report: Iterator[RunResponse] = TeamWorkflow(debug_mode=False).run()
+    report: Iterator[RunResponse] = TeamWorkflow().run()
     # Print the report
     pprint_run_response(report, markdown=True, show_time=True)
 ```
@@ -125,7 +125,7 @@ if __name__ == "__main__":
 
   <Step title="Install libraries">
     ```bash
-    pip install openai newspaper4k exa_py agno
+    pip install openai exa_py newspaper4k agno
     ```
   </Step>
 

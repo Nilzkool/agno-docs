@@ -6,6 +6,10 @@
 | `memory_manager` | `Optional[MemoryManager]` | Manager for memory operations | `None` |
 | `summarizer` | `Optional[SessionSummarizer]` | Summarizer for generating session summaries | `None` |
 | `db` | `Optional[MemoryDb]` | Database for storing memories | `None` |
+| `runs` | `Optional[Dict[str, List[Union[RunResponse, TeamRunResponse]]]]` | Stores runs for each session | `None` |
+| `team_context` | `Optional[Dict[str, TeamContext]]` | Stores context for team interactions per session | `None` |
+| `delete_memories` | `bool` | Whether to enable memory deletion | `False` |
+| `clear_memories` | `bool` | Whether to enable clearing all memories | `False` |
 | `debug_mode` | `bool` | Whether to enable debug logging | `False` |
 
 ### Key Methods
@@ -17,11 +21,11 @@
 | `get_user_memories` | Retrieves all memories for a user | `user_id: str` | `List[UserMemory]` |
 | `get_user_memory` | Gets a specific memory | `user_id: str, memory_id: str` | `UserMemory` |
 | `add_user_memory` | Adds a new memory and gets the memory id | `memory: UserMemory, user_id: Optional[str] = None` | `str` |
-| `replace_user_memory` | Updates an existing memory and gets the memory id | `memory_id: str, memory: UserMemory, user_id: Optional[str] = None` | `str` |
+| `replace_user_memory` | Updates an existing memory and gets the memory id | `memory_id: str, memory: UserMemory, user_id: Optional[str] = None` | `Optional[str]` |
 | `delete_user_memory` | Deletes a memory | `user_id: str, memory_id: str` | `None` |
 | `create_user_memories` | Creates memories from one or more messages | `message: Optional[str] = None, messages: Optional[List[Message]] = None, user_id: Optional[str] = None` | `str` |
 | `acreate_user_memories` | Creates memories from one or more messages (Async) | `message: Optional[str] = None, messages: Optional[List[Message]] = None, user_id: Optional[str] = None` | `str` |
-| `search_user_memories` | Searches user memories using specified retrieval method | `query: Optional[str] = None, limit: Optional[int] = None, retrieval_method: Optional[Literal["last_n", "first_n", "semantic"]] = None, user_id: Optional[str] = None` | `List[UserMemory]` |
+| `search_user_memories` | Searches user memories using specified retrieval method | `query: Optional[str] = None, limit: Optional[int] = None, retrieval_method: Optional[Literal["last_n", "first_n", "agentic"]] = None, user_id: Optional[str] = None` | `List[UserMemory]` |
 
 #### Session Summary Management
 
@@ -57,6 +61,7 @@
 |-----------|------|-------------|---------|
 | `model` | `Optional[Model]` | Model used for managing memories | `None` |
 | `system_message` | `Optional[str]` | Custom system prompt for the memory manager | `None` |
+| `memory_capture_instructions` | `Optional[str]` | Instructions for capturing memories | `None` |
 | `additional_instructions` | `Optional[str]` | Additional instructions added to the end of the system message | `None` |
 
 

@@ -4,3 +4,12 @@ sidebarTitle: Cohere
 ---
 
 <Snippet file="reranker-cohere-params.mdx" />
+
+```python
+from agno.reranker.cohere import CohereReranker
+
+reranker = CohereReranker(
+    model="rerank-multilingual-v3.0", # Default model
+    top_n=5 # Returns top 5 reranked documents
+)
+```

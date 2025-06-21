@@ -10,10 +10,12 @@ sidebarTitle: Python
 The following agent will write a python script that creates the fibonacci series, save it to a file, run it and return the result.
 
 ```python cookbook/tools/python_tools.py
+from pathlib import Path
+
 from agno.agent import Agent
 from agno.tools.python import PythonTools
 
-agent = Agent(tools=[PythonTools()], show_tool_calls=True)
+agent = Agent(tools=[PythonTools(base_dir=Path("tmp/python"))], show_tool_calls=True)
 agent.print_response("Write a python script for fibonacci series and display the result till the 10th number")
 ```
 
@@ -24,6 +26,7 @@ agent.print_response("Write a python script for fibonacci series and display the
 | `base_dir`     | `Path` | `None`  | Specifies the base directory for operations. Default is None, indicating the current working directory. |
 | `save_and_run` | `bool` | `True`  | If True, saves and runs the code. Useful for execution of scripts after saving.                         |
 | `pip_install`  | `bool` | `False` | Enables pip installation of required packages before running the code.                                  |
+| `uv_pip_install` | `bool` | `False` | Enables uv and pip installation of required packages before running the code.                         |
 | `run_code`     | `bool` | `False` | Determines whether the code should be executed.                                                         |
 | `list_files`   | `bool` | `False` | If True, lists all files in the specified base directory.                                               |
 | `run_files`    | `bool` | `False` | If True, runs the Python files found in the specified directory.                                        |
@@ -41,6 +44,7 @@ agent.print_response("Write a python script for fibonacci series and display the
 | `list_files`                      | Returns a list of files in the base directory                                                                                                                                                                                                                         |
 | `run_python_code`                 | This function runs Python code in the current environment. If successful, returns the value of `variable_to_return` if provided otherwise returns a success message. If failed, returns an error message.                                                             |
 | `pip_install_package`             | This function installs a package using pip in the current environment. If successful, returns a success message. If failed, returns an error message.                                                                                                                 |
+| `uv_pip_install_package`          | This function installs a package using uv and pip in the current environment. If successful, returns a success message. If failed, returns an error message.                                                                                                        |
 
 ## Developer Resources
 

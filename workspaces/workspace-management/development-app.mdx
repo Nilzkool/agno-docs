@@ -1,7 +1,3 @@
----
-title: Development Application
----
-
 Your development application runs locally on docker and its resources are defined in the `workspace/dev_resources.py` file. This guide shows how to:
 
 1. [Build a development image](#build-your-development-image)
@@ -33,7 +29,7 @@ ws_settings = WorkspaceSettings(
 
 ### Build a new image
 
-Build the development image using:
+Build the development image using the `ag start` command (recommended) or `ag ws up`:
 
 <CodeGroup>
 
@@ -41,22 +37,26 @@ Build the development image using:
 ag ws up --env dev --infra docker --type image
 ```
 
-```bash short options
-ag ws up -e dev -i docker -t image
+```bash terminal
+ag start --env dev --infra docker --type image
 ```
 
 </CodeGroup>
 
-To `force` rebuild images, use the `--force` or `-f` flag
+To force rebuild images, use the `--force` or `-f` flag. To pull images from the registry, use the `--pull` or `-p` flag.
 
 <CodeGroup>
 
 ```bash terminal
-ag ws up --env dev --infra docker --type image --force
+ag start --env dev --infra docker --type image --force --pull
 ```
 
 ```bash short options
-ag ws up -e dev -i docker -t image -f
+ag ws up -e dev -i docker -t image
+```
+
+```bash short options
+ag start -e dev -i docker -t image -f -p
 ```
 
 </CodeGroup>
@@ -67,10 +67,22 @@ ag ws up -e dev -i docker -t image -f
 
 Restart all docker containers using:
 
+<Note>
+The `ag restart` command runs `ag stop` followed by `ag start`.
+</Note>
+
 <CodeGroup>
 
 ```bash terminal
 ag ws restart --env dev --infra docker --type container
+```
+
+```bash terminal
+ag restart --env dev --infra docker --type container
+```
+
+```bash shorthand
+ag restart dev:docker::container
 ```
 
 ```bash short options
@@ -78,8 +90,6 @@ ag ws restart -e dev -c docker -t container
 ```
 
 </CodeGroup>
-
----
 
 ## Recreate development resources
 
@@ -89,6 +99,14 @@ To recreate all dev resources, use the `--force` flag:
 
 ```bash terminal
 ag ws up -f
+```
+
+```bash terminal
+ag start -f
+```
+
+```bash shorthand
+ag start dev:docker -f
 ```
 
 ```bash full options

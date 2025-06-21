@@ -5,3 +5,11 @@ title: Cohere
 Cohere Embedder is a class that allows you to embed documents using Cohere's embedding models.
 
 <Snippet file="embedder-cohere-reference.mdx" /> 
+
+```python
+from agno.embedder.cohere import CohereEmbedder
+
+embedder = CohereEmbedder(
+    id="embed-english-v3.0" # Default model
+)
+```

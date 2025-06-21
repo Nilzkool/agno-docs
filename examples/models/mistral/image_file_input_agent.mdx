@@ -15,16 +15,24 @@ from agno.agent import Agent
 from agno.media import Image
 from agno.models.mistral.mistral import MistralChat
 from agno.tools.duckduckgo import DuckDuckGoTools
+from agno.utils.media import download_image
 
 agent = Agent(
     model=MistralChat(id="pixtral-12b-2409"),
-    tools=[DuckDuckGoTools()],
+    tools=[
+        DuckDuckGoTools()
+    ],  # pixtral-12b-2409 is not so great at tool calls, but it might work.
     show_tool_calls=True,
     markdown=True,
 )
 
 # Load image from local file system
 image_path = Path(__file__).parent.joinpath("sample.jpeg")
+
+download_image(
+    url="https://upload.wikimedia.org/wikipedia/commons/0/0c/GoldenGateBridge-001.jpg",
+    output_path=str(image_path),
+)
 
 # Analyze the image and search for related news
 agent.print_response(
@@ -64,4 +72,4 @@ agent.print_response(
     ```
     </CodeGroup>
   </Step>
-</Steps> 
+</Steps>

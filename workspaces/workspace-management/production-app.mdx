@@ -82,12 +82,20 @@ The `image_repo` defines the repo for your image.
 
 ### Build a new image
 
-Build the production image using:
+Build the production image using the `ag start` command (recommended) or `ag ws up`:
+
+<Note>
+The `ag start` command creates new resources and is the recommended command for deploying.
+</Note>
 
 <CodeGroup>
 
 ```bash terminal
 ag ws up --env prd --infra docker --type image
+```
+
+```bash terminal
+ag start --env prd --infra docker --type image
 ```
 
 ```bash shorthand
@@ -98,10 +106,18 @@ ag ws up -e prd -i docker -t image
 
 To `force` rebuild images, use the `--force` or `-f` flag
 
+<Note>
+The `--pull` or `-p` flag forces pulling images from the registry.
+</Note>
+
 <CodeGroup>
 
 ```bash terminal
 ag ws up --env prd --infra docker --type image --force
+```
+
+```bash terminal
+ag start --env prd --infra docker --type image --force --pull
 ```
 
 ```bash shorthand
@@ -111,6 +127,10 @@ ag ws up -e prd -i docker -t image -f
 </CodeGroup>
 
 Because the only docker resources in the production env are docker images, you can also use:
+
+<Note>
+The `ag start` command is recommended for deploying resources.
+</Note>
 
 <CodeGroup>
 
@@ -122,16 +142,28 @@ ag ws up prd:docker
 ag ws up prd:docker -f
 ```
 
+```bash Build Images
+ag start prd:docker
+```
+
+```bash Force Build Images
+ag start prd:docker -f
+```
+
 </CodeGroup>
 
 ## ECS Task Definition
 
-If you updated the Image, CPU, Memory or Environment Variables, update the Task Definition using:
+If you updated the Image, CPU, Memory or Environment Variables, update the Task Definition using the `ag patch` command (recommended) or `ag ws patch`:
 
 <CodeGroup>
 
 ```bash terminal
 ag ws patch --env prd --infra aws --name td
+```
+
+```bash terminal
+ag patch --env prd --infra aws --name td
 ```
 
 ```bash shorthand
@@ -142,12 +174,16 @@ ag ws patch -e prd -i aws -n td
 
 ## ECS Service
 
-To redeploy the production application, update the ECS Service using:
+To redeploy the production application, update the ECS Service using the `ag patch` command (recommended) or `ag ws patch`:
 
 <CodeGroup>
 
 ```bash terminal
 ag ws patch --env prd --infra aws --name service
+```
+
+```bash terminal
+ag patch --env prd --infra aws --name service
 ```
 
 ```bash shorthand

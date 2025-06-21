@@ -20,7 +20,7 @@ export TELEGRAM_TOKEN=***
 
 The following agent will send a message to a Telegram chat.
 
-```python cookbook/tools/tavily_tools.py
+```python cookbook/tools/telegram_tools.py
 from agno.agent import Agent
 from agno.tools.telegram import TelegramTools
 
@@ -53,7 +53,7 @@ agent.print_response("Send message to telegram chat a paragraph about the moon")
 
 | Function | Description |
 |----------|-------------|
-| `send_message` | Sends a message to the specified Telegram chat. Takes a message string as input and returns the API response as text. If an error occurs, returns an error message. |
+| `send_message` | Sends a message to the specified Telegram chat. Takes a message string as input and returns the API response as text. Logs an error if an error occurs. |
 
 ## Developer Resources
 

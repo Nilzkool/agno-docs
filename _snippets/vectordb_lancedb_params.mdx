@@ -1,13 +1,17 @@
-| Parameter     | Type           | Default | Description                                                                                                            |
-| ------------- | -------------- | ------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `uri`         | `str`          | -       | The URI to connect to.                                                                                                 |
-| `table`       | `LanceTable`   | -       | The Lance table to use.                                                                                                |
-| `table_name`  | `str`          | -       | The name of the table to use.                                                                                          |
-| `connection`  | `DBConnection` | -       | The database connection to use.                                                                                        |
-| `api_key`     | `str`          | -       | The API key to use.                                                                                                    |
-| `embedder`    | `Embedder`     | -       | The embedder to use.                                                                                                   |
-| `search_type` | `SearchType`   | vector  | The search type to use.                                                                                                |
-| `distance`    | `Distance`     | cosine  | The distance to use.                                                                                                   |
-| `nprobes`     | `int`          | -       | The number of probes to use. [More Info](https://lancedb.github.io/lancedb/ann_indexes/#use-gpu-to-build-vector-index) |
-| `reranker`    | `Reranker`     | -       | The reranker to use. [More Info](https://lancedb.github.io/lancedb/hybrid_search/eval/)                                |
-| `use_tantivy` | `bool`         | -       | Whether to use tantivy.                                                                                                |
+| Parameter     | Type           | Default          | Description                                                                                                            |
+| ------------- | -------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `uri`         | `str`          | `"/tmp/lancedb"` | The URI to connect to.                                                                                                 |
+| `table`       | `LanceTable`   | -                | The Lance table to use.                                                                                                |
+| `table_name`  | `str`          | -                | The name of the table to use.                                                                                          |
+| `connection`  | `DBConnection` | -                | The database connection to use.                                                                                        |
+| `async_connection` | `Optional[lancedb.AsyncConnection]` | `None` | The LanceDB async connection to use. |
+| `async_table` | `Optional[lancedb.db.AsyncTable]` | `None` | The LanceDB async table instance to use. |
+| `api_key`     | `str`          | -                | The API key to use.                                                                                                    |
+| `embedder`    | `Embedder`     | -                | The embedder to use.                                                                                                   |
+| `search_type` | `SearchType`   | vector           | The search type to use.                                                                                                |
+| `distance`    | `Distance`     | cosine           | The distance to use.                                                                                                   |
+| `nprobes`     | `int`          | -                | The number of probes to use. [More Info](https://lancedb.github.io/lancedb/ann_indexes/#use-gpu-to-build-vector-index) |
+| `reranker`    | `Reranker`     | -                | The reranker to use. [More Info](https://lancedb.github.io/lancedb/hybrid_search/eval/)                                |
+| `use_tantivy` | `bool`         | `True`           | Whether to use tantivy.                                                                                                |
+| `on_bad_vectors` | `Optional[str]` | `None`          | What to do if the vector is bad. One of "error", "drop", "fill", "null". |
+| `fill_value`  | `Optional[float]` | `None`          | The value to fill the vector with if on_bad_vectors is "fill". |

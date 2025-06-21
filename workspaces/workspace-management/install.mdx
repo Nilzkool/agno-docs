@@ -1,8 +1,4 @@
----
-title: Install & Setup
----
-
-## Install Agno
+Install Agno
 
 We highly recommend:
 
@@ -16,17 +12,17 @@ We highly recommend:
     <CodeGroup>
 
     ```bash Mac
-    mkdir ai && cd ai
+mkdir ai && cd ai
 
-    python3 -m venv aienv
-    source aienv/bin/activate
+uv venv --python 3.12
+source .venv/bin/activate
     ```
 
     ```bash Windows
-    mkdir ai; cd ai
+mkdir ai; cd ai
 
-    python3 -m venv aienv
-    aienv/scripts/activate
+python3 -m venv aienv
+aienv/scripts/activate
     ```
 
     </CodeGroup>
@@ -38,11 +34,11 @@ We highly recommend:
     <CodeGroup>
 
     ```bash Mac
-    pip install -U agno
+uv pip install -U agno
     ```
 
     ```bash Windows
-    pip install -U agno
+pip install -U agno
     ```
 
     </CodeGroup>
@@ -64,10 +60,10 @@ If you encounter errors, try updating pip using `python -m pip install --upgrade
 ---
 ## Upgrade Agno
 
-To upgrade `agno`, run this in your virtual environment
+To upgrade `agno`, run this in your virtual environment:
 
 ```bash
-pip install -U agno --no-cache-dir
+uv pip install -U agno --no-cache-dir
 ```
 
 ---

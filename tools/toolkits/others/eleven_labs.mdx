@@ -24,16 +24,34 @@ The following agent will use Eleven Labs to generate audio based on a user promp
 
 ```python cookbook/tools/eleven_labs_tools.py
 from agno.agent import Agent
+from agno.models.openai import OpenAIChat
 from agno.tools.eleven_labs import ElevenLabsTools
 
-# Create an Agent with the ElevenLabs tool
-agent = Agent(tools=[
-    ElevenLabsTools(
-        voice_id="JBFqnCBsd6RMkjVDRZzb", model_id="eleven_multilingual_v2", target_directory="audio_generations"
-    )
-], name="ElevenLabs Agent")
+audio_agent = Agent(
+    model=OpenAIChat(id="gpt-4o"),
+    tools=[
+        ElevenLabsTools(
+            voice_id="21m00Tcm4TlvDq8ikWAM",
+            model_id="eleven_multilingual_v2",
+            target_directory="audio_generations",
+        )
+    ],
+    description="You are an AI agent that can generate audio using the ElevenLabs API.",
+    instructions=[
+        "When the user asks you to generate audio, use the `text_to_speech` tool to generate the audio.",
+        "You'll generate the appropriate prompt to send to the tool to generate audio.",
+        "You don't need to find the appropriate voice first, I already specified the voice to user."
+        "Don't return file name or file url in your response or markdown just tell the audio was created successfully.",
+        "The audio should be long and detailed.",
+    ],
+    markdown=True,
+    debug_mode=True,
+    show_tool_calls=True,
+)
 
-agent.print_response("Generate a audio summary of the big bang theory", markdown=True)
+audio_agent.print_response("Generate a very long audio of history of french revolution")
+
+audio_agent.print_response("Generate a kick sound effect")
 ```
 
 ## Toolkit Params
@@ -57,4 +75,4 @@ agent.print_response("Generate a audio summary of the big bang theory", markdown
 ## Developer Resources
 
 - View [Tools](https://github.com/agno-agi/agno/blob/main/libs/agno/agno/tools/eleven_labs.py)
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/eleven_labs_tools.py)
+- View [Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/tools/elevenlabs_tools.py)

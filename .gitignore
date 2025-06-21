@@ -4,3 +4,7 @@ node_modules
 *.code-workspace
 
 .DS_Store
+
+qdrant_storage
+audio_generations
+*.db

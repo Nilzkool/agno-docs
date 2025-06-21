@@ -36,7 +36,7 @@ export WEBEX_ACCESS_TOKEN=your_access_token_here
 
 The following agent will list all spaces and send a message using Webex:
 
-```python cookbook/tools/webex_tool.py
+```python cookbook/tools/webex_tools.py
 from agno.agent import Agent
 from agno.tools.webex import WebexTools
 
@@ -55,7 +55,7 @@ agent.print_response(
 
 | Parameter      | Type   | Default | Description                                                                                |
 | -------------- | ------ | ------- | ------------------------------------------------------------------------------------------ |
-| `access_token` | `str`  | `None`  | Webex access token for authentication. If not provided, uses WEBEX_ACCESS_TOKEN environment variable. |
+| `access_token` | `Optional[str]` | `None`  | Webex access token for authentication. If not provided, uses WEBEX_ACCESS_TOKEN environment variable. |
 | `send_message` | `bool` | `True`  | Enable sending messages to Webex spaces.                                                   |
 | `list_rooms`   | `bool` | `True`  | Enable listing Webex spaces/rooms.                                                         |
 

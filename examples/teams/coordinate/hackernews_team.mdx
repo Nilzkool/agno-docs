@@ -6,7 +6,7 @@ This example shows how to create a HackerNews team that can aggregate, curate, a
 
 ## Code
 
-```python hackernews_team.py
+```python cookbook/examples/teams/coordinate/hackernews_team.py
 from typing import List
 
 from agno.agent import Agent
@@ -59,6 +59,8 @@ hn_team = Team(
         "Finally, provide a thoughtful and engaging summary.",
     ],
     response_model=Article,
+    enable_agentic_context=True,
+    share_member_interactions=True,
     show_tool_calls=True,
     markdown=True,
     debug_mode=True,
@@ -77,7 +79,7 @@ hn_team.print_response("Write an article about the top 2 stories on hackernews")
 
     <Step title="Install required libraries">
         ```bash
-        pip install openai duckduckgo-search newspaper4k lxml_html_clean
+        pip install -U openai duckduckgo-search newspaper4k lxml_html_clean
         ```
     </Step>
 
@@ -89,9 +91,8 @@ hn_team.print_response("Write an article about the top 2 stories on hackernews")
 
     <Step title="Run the agent">
         ```bash
-        python hackernews_team.py
+        python cookbook/examples/teams/coordinate/hackernews_team.py
         ```
     </Step>
 
 </Steps>
-

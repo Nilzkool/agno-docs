@@ -59,6 +59,10 @@ agent.print_response("Ask me about something from the knowledge base")
 
 `WebsiteKnowledgeBase` is a subclass of the [AgentKnowledge](/reference/knowledge/base) class and has access to the same params.
 
+### Specific Behaviors
+- When `recreate=False`, the `load()` and `aload()` methods check if a website URL already exists in the vector database using its name and skips processing it.
+- Setting `skip_existing=True` in `load()` or `aload()` will also prevent re-inserting documents with the same content.
+
 ## Developer Resources
 
 - View [Sync loading Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/website_kb.py)

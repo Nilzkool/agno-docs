@@ -45,7 +45,9 @@ ws_settings = WorkspaceSettings(
     aws_az1="us-east-1a",
     aws_az2="us-east-1b",
     # Subnet IDs in the aws_region
-    # subnet_ids=["subnet-xyz", "subnet-xyz"],
+    # subnet_ids=["subnet-xyz", "subnet-abc"], # Explicitly set subnet IDs
+    # Or provide public and private subnets, which will be combined into subnet_ids if not explicitly set
+    aws_public_subnets=["subnet-xyz"],
     #
     # -*- Image Settings
     #

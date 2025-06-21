@@ -33,36 +33,79 @@ export ZOOM_CLIENT_SECRET=your_client_secret
 
 ## Example Usage
 
-```python
+```python cookbook/tools/zoom_tools.py
+import os
+
 from agno.agent import Agent
+from agno.models.openai import OpenAIChat
 from agno.tools.zoom import ZoomTools
+
+# Get environment variables
+ACCOUNT_ID = os.getenv("ZOOM_ACCOUNT_ID")
+CLIENT_ID = os.getenv("ZOOM_CLIENT_ID")
+CLIENT_SECRET = os.getenv("ZOOM_CLIENT_SECRET")
 
 # Initialize Zoom tools with credentials
 zoom_tools = ZoomTools(
-    account_id="your_account_id",
-    client_id="your_client_id",
-    client_secret="your_client_secret"
+    account_id=ACCOUNT_ID, client_id=CLIENT_ID, client_secret=CLIENT_SECRET
 )
 
 # Create an agent with Zoom capabilities
-agent = Agent(tools=[zoom_tools], show_tool_calls=True)
+agent = Agent(
+    name="Zoom Meeting Manager",
+    agent_id="zoom-meeting-manager",
+    model=OpenAIChat(id="gpt-4"),
+    tools=[zoom_tools],
+    markdown=True,
+    debug_mode=True,
+    show_tool_calls=True,
+    instructions=[
+        "You are an expert at managing Zoom meetings using the Zoom API.",
+        "You can:",
+        "1. Schedule new meetings (schedule_meeting)",
+        "2. Get meeting details (get_meeting)",
+        "3. List all meetings (list_meetings)",
+        "4. Get upcoming meetings (get_upcoming_meetings)",
+        "5. Delete meetings (delete_meeting)",
+        "6. Get meeting recordings (get_meeting_recordings)",
+        "",
+        "For recordings, you can:",
+        "- Retrieve recordings for any past meeting using the meeting ID",
+        "- Include download tokens if needed",
+        "- Get recording details like duration, size, download link and file types",
+        "",
+        "Guidelines:",
+        "- Use ISO 8601 format for dates (e.g., '2024-12-28T10:00:00Z')",
+        "- Accept and use user's timezone (e.g., 'America/New_York', 'Asia/Tokyo', 'UTC')",
+        "- If no timezone is specified, default to UTC",
+        "- Ensure meeting times are in the future",
+        "- Provide meeting details after scheduling (ID, URL, time)",
+        "- Handle errors gracefully",
+        "- Confirm successful operations",
+    ],
+)
 
-# Schedule a meeting
-response = agent.print_response("""
-Schedule a team meeting with the following details:
-- Topic: Weekly Team Sync
-- Time: Tomorrow at 2 PM UTC
-- Duration: 45 minutes
-""", markdown=True)
+# Example usage - uncomment the ones you want to try
+agent.print_response(
+    "Schedule a meeting titled 'Team Sync' for tomorrow at 2 PM UTC for 45 minutes"
+)
+
+# More examples (uncomment to use):
+# agent.print_response("What meetings do I have coming up?")
+# agent.print_response("List all my scheduled meetings")
+# agent.print_response("Get details for my most recent meeting")
+# agent.print_response("Get the recordings for my last team meeting")
+# agent.print_response("Delete the meeting titled 'Team Sync'")
+# agent.print_response("Schedule daily standup meetings for next week at 10 AM UTC")
 ```
 
 ## Toolkit Parameters
 
 | Parameter           | Type     | Default      | Description                                                |
 | ------------------ | -------- | ------------ | ---------------------------------------------------------- |
-| `account_id`       | `str`    | `None`       | Zoom account ID (from Server-to-Server OAuth app)          |
-| `client_id`        | `str`    | `None`       | Client ID (from Server-to-Server OAuth app)                |
-| `client_secret`    | `str`    | `None`       | Client secret (from Server-to-Server OAuth app)            |
+| `account_id`       | `Optional[str]`    | `None`       | Zoom account ID (from Server-to-Server OAuth app)          |
+| `client_id`        | `Optional[str]`    | `None`       | Client ID (from Server-to-Server OAuth app)                |
+| `client_secret`    | `Optional[str]`    | `None`       | Client secret (from Server-to-Server OAuth app)            |
 
 
 ## Toolkit Functions
@@ -72,7 +115,7 @@ Schedule a team meeting with the following details:
 | `schedule_meeting`     | Schedule a new Zoom meeting                                |
 | `get_upcoming_meetings`| Get a list of upcoming meetings                            |
 | `list_meetings`        | List all meetings based on type                            |
-| `get_meeting_recordings`| Get recordings for a specific meeting                      |
+| `get_meeting_recordings`| Get recordings for a specific meeting. Parameters include `meeting_id` (str), `include_download_token` (bool, default `False`), and `token_ttl` (int, optional, max 604800). |
 | `delete_meeting`       | Delete a scheduled meeting                                 |
 | `get_meeting`          | Get detailed information about a specific meeting          |
 

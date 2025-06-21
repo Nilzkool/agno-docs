@@ -28,7 +28,7 @@ from typing import Dict, Iterator, Optional
 
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
-from agno.storage.workflow.sqlite import SqliteWorkflowStorage
+from agno.storage.sqlite import SqliteStorage
 from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.tools.newspaper4k import Newspaper4kTools
 from agno.utils.log import logger
@@ -62,7 +62,7 @@ class ScrapedArticle(BaseModel):
 
 
 class ResearchReportGenerator(Workflow):
-    description: str = dedent("""\
+    description: str = dedent("""
     Generate comprehensive research reports that combine academic rigor
     with engaging storytelling. This workflow orchestrates multiple AI agents to search, analyze,
     and synthesize information from diverse sources into well-structured reports.
@@ -71,10 +71,10 @@ class ResearchReportGenerator(Workflow):
     web_searcher: Agent = Agent(
         model=OpenAIChat(id="gpt-4o-mini"),
         tools=[DuckDuckGoTools()],
-        description=dedent("""\
+        description=dedent("""
         You are ResearchBot-X, an expert at discovering and evaluating academic and scientific sources.\
         """),
-        instructions=dedent("""\
+        instructions=dedent("""
         You're a meticulous research assistant with expertise in source evaluation! 🔍
         Search for 10-15 sources and identify the 5-7 most authoritative and relevant ones.
         Prioritize:
@@ -90,10 +90,10 @@ class ResearchReportGenerator(Workflow):
     article_scraper: Agent = Agent(
         model=OpenAIChat(id="gpt-4o-mini"),
         tools=[Newspaper4kTools()],
-        description=dedent("""\
+        description=dedent("""
         You are ContentBot-X, an expert at extracting and structuring academic content.\
         """),
-        instructions=dedent("""\
+        instructions=dedent("""
         You're a precise content curator with attention to academic detail! 📚
         When processing content:
            - Extract content from the article
@@ -109,10 +109,10 @@ class ResearchReportGenerator(Workflow):
 
     writer: Agent = Agent(
         model=OpenAIChat(id="gpt-4o"),
-        description=dedent("""\
+        description=dedent("""
         You are Professor X-2000, a distinguished AI research scientist combining academic rigor with engaging narrative style.\
         """),
-        instructions=dedent("""\
+        instructions=dedent("""
         Channel the expertise of a world-class academic researcher!
         🎯 Analysis Phase:
           - Evaluate source credibility and relevance
@@ -130,7 +130,7 @@ class ResearchReportGenerator(Workflow):
           - Maintain academic tone while ensuring readability
           - End with implications and future directions\
         """),
-        expected_output=dedent("""\
+        expected_output=dedent("""
         # {Compelling Academic Title}
 
         ## Executive Summary
@@ -408,7 +408,7 @@ if __name__ == "__main__":
     # Initialize the news report generator workflow
     generate_research_report = ResearchReportGenerator(
         session_id=f"generate-report-on-{url_safe_topic}",
-        storage=SqliteWorkflowStorage(
+        storage=SqliteStorage(
             table_name="generate_research_report_workflow",
             db_file="tmp/workflows.db",
         ),
@@ -433,7 +433,7 @@ if __name__ == "__main__":
 
   <Step title="Install libraries">
     ```bash
-    openai duckduckgo-search newspaper4k lxml_html_clean sqlalchemy agno
+    pip install openai duckduckgo-search newspaper4k lxml_html_clean sqlalchemy agno
     ```
   </Step>
 

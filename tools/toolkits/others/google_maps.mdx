@@ -7,7 +7,7 @@ description: "Tools for interacting with Google Maps services including place se
 
 ## Prerequisites
 
-The following example requires the `googlemaps` library and an API key which can be obtained from the [Google Cloud Console](https://console.cloud.google.com/projectselector2/google/maps-apis/credentials).
+The following example requires the `googlemaps` library and an API key which can be obtained from the [Google Cloud Console](https://console.cloud.com/projectselector2/google/maps-apis/credentials).
 
 ```shell
 pip install googlemaps
@@ -58,7 +58,7 @@ For more examples, see the [Google Maps Tools Examples](/examples/concepts/tools
 
 | Function | Description |
 |----------|-------------|
-| `search_places` | Search for places using Google Maps Places API. Parameters: `query` (str) for the search query. Returns stringified JSON with place details including name, address, phone, website, rating, and hours. |
+| `search_places` | Search for places using Google Maps Places API. Parameters: `query` (str) for the search query. Returns stringified JSON with place details including name, address, phone, website, rating, reviews, and hours. |
 | `get_directions` | Get directions between locations. Parameters: `origin` (str), `destination` (str), optional `mode` (str) for travel mode, optional `avoid` (List[str]) for features to avoid. Returns route information. |
 | `validate_address` | Validate an address. Parameters: `address` (str), optional `region_code` (str), optional `locality` (str). Returns address validation results. |
 | `geocode_address` | Convert address to coordinates. Parameters: `address` (str), optional `region` (str). Returns location information with coordinates. |

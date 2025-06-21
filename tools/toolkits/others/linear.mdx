@@ -44,15 +44,15 @@ agent.print_response("Show all the issues assigned to user id: 12021")
 
 ## Toolkit Functions
 
-| Function                   | Description                                                      |
-| -------------------------- | ---------------------------------------------------------------- |
-| `get_user_details`         | Fetch authenticated user details.                                |
-| `get_issue_details`        | Retrieve details of a specific issue by issue ID.                |
-| `create_issue`             | Create a new issue within a specific project and team.           |
-| `update_issue`             | Update the title or state of a specific issue by issue ID.       |
-| `get_user_assigned_issues` | Retrieve issues assigned to a specific user by user ID.          |
-| `get_workflow_issues`      | Retrieve issues within a specific workflow state by workflow ID. |
-| `get_high_priority_issues` | Retrieve issues with a high priority (priority `<=` 2).          |
+| Function                   | Description                                                                                                              |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `get_user_details`         | Fetch authenticated user details.                                                                                        |
+| `get_issue_details`        | Retrieve details of a specific issue by issue ID.                                                                        |
+| `create_issue`             | Create a new issue within a specific project and team. Parameters include `title` (str), `description` (str), `team_id` (str), `project_id` (str), `assignee_id` (str). |
+| `update_issue`             | Update the title or state of a specific issue by issue ID.                                                               |
+| `get_user_assigned_issues` | Retrieve issues assigned to a specific user by user ID.                                                                  |
+| `get_workflow_issues`      | Retrieve issues within a specific workflow state by workflow ID.                                                         |
+| `get_high_priority_issues` | Retrieve issues with a high priority (priority `<=` 2).                                                                  |
 
 ## Developer Resources
 

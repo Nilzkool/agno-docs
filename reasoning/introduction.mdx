@@ -67,14 +67,14 @@ The research was first published by Anthropic in [this blog post](https://www.an
 
 ```python claude_thinking_tools.py
 from agno.agent import Agent
-from agno.models.anthropic import Claude
-from agno.tools.thinking import ThinkingTools
+from agno.models.openai import OpenAIChat
+from agno.tools.reasoning import ReasoningTools
 from agno.tools.yfinance import YFinanceTools
 
 reasoning_agent = Agent(
-    model=Claude(id="claude-3-7-sonnet-latest"),
+    model=OpenAIChat(id="gpt-4o"),
     tools=[
-        ThinkingTools(add_instructions=True),
+        ReasoningTools(add_instructions=True),
         YFinanceTools(
             stock_price=True,
             analyst_recommendations=True,

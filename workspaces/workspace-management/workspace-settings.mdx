@@ -41,7 +41,7 @@ The `ws_name` is used to name:
 - Apps like db, streamlit app and fastapi server
 - Resources like buckets, secrets and loadbalancers
 
-Checkout the `workspace/dev_resources.py` and `workspace/prd_resources.py` file to see how its used.
+Checkout the `dev_image` in `workspace/dev_resources.py` and `prd_image` in `workspace/prd_resources.py` to see how its used.
 
 ## Image Repository
 
@@ -77,3 +77,10 @@ Read more about:
 ## AWS Settings
 
 The `aws_region` and `subnet_ids` provide values used for creating production resources. Checkout the `workspace/prd_resources.py` file to see how its used.
+
+<Note>
+
+When `aws_subnet_ids` is not explicitly set, `aws_public_subnets` and `aws_private_subnets` will be combined to form the `aws_subnet_ids`. If `aws_subnet_ids` is provided, `aws_public_subnets` and `aws_private_subnets` will be ignored.
+
+</Note>
+

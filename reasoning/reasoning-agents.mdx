@@ -74,7 +74,7 @@ task = (
     "How can all six people get across the river safely? Provide a step-by-step solution and show the solutions as an ascii diagram"
 )
 reasoning_agent = Agent(
-    model=OpenAIChat(id="gpt-4o-2024-08-06"), reasoning=True, markdown=True
+    model=OpenAIChat(id="gpt-4o"), reasoning=True, markdown=True
 )
 reasoning_agent.print_response(task, stream=True, show_full_reasoning=True)
 ```
@@ -87,7 +87,7 @@ from agno.models.openai import OpenAIChat
 
 task = "Prove that for any positive integer n, the sum of the first n odd numbers is equal to n squared. Provide a detailed proof."
 reasoning_agent = Agent(
-    model=OpenAIChat(id="gpt-4o-2024-08-06"), reasoning=True, markdown=True
+    model=OpenAIChat(id="gpt-4o"), reasoning=True, markdown=True
 )
 reasoning_agent.print_response(task, stream=True, show_full_reasoning=True)
 ```
@@ -107,7 +107,7 @@ task = (
     "The study concludes that the new teaching method is effective in improving mathematical performance among high school students."
 )
 reasoning_agent = Agent(
-    model=OpenAIChat(id="gpt-4o-2024-08-06"), reasoning=True, markdown=True
+    model=OpenAIChat(id="gpt-4o"), reasoning=True, markdown=True
 )
 reasoning_agent.print_response(task, stream=True, show_full_reasoning=True)
 ```
@@ -126,7 +126,7 @@ task = (
     "Provide your answer also as an ascii art diagram."
 )
 reasoning_agent = Agent(
-    model=OpenAIChat(id="gpt-4o-2024-08-06"), reasoning=True, markdown=True
+    model=OpenAIChat(id="gpt-4o"), reasoning=True, markdown=True
 )
 reasoning_agent.print_response(task, stream=True, show_full_reasoning=True)
 ```
@@ -139,7 +139,7 @@ from agno.models.openai import OpenAIChat
 
 task = "Plan an itinerary from Los Angeles to Las Vegas"
 reasoning_agent = Agent(
-    model=OpenAIChat(id="gpt-4o-2024-08-06"), reasoning=True, markdown=True
+    model=OpenAIChat(id="gpt-4o"), reasoning=True, markdown=True
 )
 reasoning_agent.print_response(task, stream=True, show_full_reasoning=True)
 ```
@@ -152,7 +152,7 @@ from agno.models.openai import OpenAIChat
 
 task = "Write a short story about life in 5000000 years"
 reasoning_agent = Agent(
-    model=OpenAIChat(id="gpt-4o-2024-08-06"), reasoning=True, markdown=True
+    model=OpenAIChat(id="gpt-4o"), reasoning=True, markdown=True
 )
 reasoning_agent.print_response(task, stream=True, show_full_reasoning=True)
 ```

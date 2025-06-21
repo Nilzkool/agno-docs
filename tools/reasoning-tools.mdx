@@ -18,14 +18,14 @@ Here's an example of how to use the `ReasoningTools` toolkit:
 
 ```python
 from agno.agent import Agent
-from agno.models.anthropic import Claude
+from agno.models.openai import OpenAIChat
 from agno.tools.reasoning import ReasoningTools
 from agno.tools.yfinance import YFinanceTools
 
 thinking_agent = Agent(
-    model=Claude(id="claude-3-7-sonnet-latest"),
+    model=OpenAIChat(id="gpt-4o"),
     tools=[
-        ReasoningTools(add_instructions=True),
+        ReasoningTools(add_instructions=True, add_few_shot=True),
         YFinanceTools(
             stock_price=True,
             analyst_recommendations=True,
@@ -38,14 +38,14 @@ thinking_agent = Agent(
     markdown=True,
 )
 
-thinking_agent.print_response("Write a report comparing NVDA to TSLA", stream=True)
+thinking_agent.print_response("Write a report comparing NVDA to TSLA", stream=True, stream_intermediate_steps=True, show_full_reasoning=True)
 ```
 
 The toolkit comes with default instructions and few-shot examples to help the Agent use the tool effectively. Here is how you can enable them:
 
 ```python
 reasoning_agent = Agent(
-    model=Claude(id="claude-3-7-sonnet-latest"),
+    model=OpenAIChat(id="gpt-4o"),
     tools=[
         ReasoningTools(
             think=True,

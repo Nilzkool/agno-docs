@@ -13,7 +13,7 @@ docker run -d --name singlestoredb \
   -e SINGLESTORE_DB=AGNO \
   -e SINGLESTORE_USER=root \
   -e SINGLESTORE_PASSWORD=password \
-  singlestore/cluster-in-a-box
+  singlestore/cluster-in-a-box:latest
 
 docker start singlestoredb
 ```
@@ -28,11 +28,11 @@ export SINGLESTORE_PASSWORD="admin"
 export SINGLESTORE_DATABASE="AGNO"
 ```
 
-SingleStore supports both cloud-based and local deployments. For step-by-step guidance on setting up your cloud deployment, please refer to the [SingleStore Setup Guide](https://docs.singlestore.com/cloud/connect-to-singlestore/connect-with-mysql/connect-with-mysql-client/connect-to-singlestore-helios-using-tls-ssl/).
+SingleStore supports both cloud-based and local deployments. For step-by-step guidance on setting up your cloud deployment, please refer to the [SingleStore Setup Guide](https://docs.singlestore.com/cloud/connect-to-singlestore/connect-with-mysql/connect-to-singlestore-helios-using-tls-ssl/).
 
 ## Example
 
-```python agent_with_knowledge.py
+```python cookbook/agent_concepts/knowledge/vector_dbs/singlestore.py
 import typer
 from typing import Optional
 from os import getenv
@@ -65,32 +65,20 @@ knowledge_base = PDFUrlKnowledgeBase(
     ),
 )
 
-def pdf_assistant(user: str = "user"):
-    run_id: Optional[str] = None
+# Comment out after first run
+knowledge_base.load(recreate=False)
 
-    agent = Agent(
-        run_id=run_id,
-        user_id=user,
-        knowledge_base=knowledge_base,
-        use_tools=True,
-        show_tool_calls=True,
-        # Uncomment the following line to use traditional RAG
-        # add_references_to_prompt=True,
-    )
-    if run_id is None:
-        run_id = agent.run_id
-        print(f"Started Run: {run_id}\n")
-    else:
-        print(f"Continuing Run: {run_id}\n")
+agent = Agent(
+    knowledge=knowledge_base,
+    # Show tool calls in the response
+    show_tool_calls=True,
+    # Enable the agent to search the knowledge base
+    search_knowledge=True,
+    # Enable the agent to read the chat history
+    read_chat_history=True,
+)
 
-    while True:
-        agent.cli_app(markdown=True)
-
-if __name__ == "__main__":
-    # Comment out after first run
-    knowledge_base.load(recreate=False)
-
-    typer.run(pdf_assistant)
+agent.print_response("How do I make pad thai?", markdown=True)
 ```
 
 ## SingleStore Params
@@ -99,4 +87,4 @@ if __name__ == "__main__":
 
 ## Developer Resources
 
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/singlestore_db.py)
+- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/singlestore.py)

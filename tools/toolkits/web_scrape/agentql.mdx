@@ -18,18 +18,35 @@ export AGENTQL_API_KEY=***
 
 ## Example
 
-The following agent will open a web browser and scrape all the text from the page.
+The following agent will open a web browser and scrape all the text from the page. It also shows how to use a custom query for specific data extraction.
 
 ```python cookbook/tools/agentql_tools.py
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from agno.tools.agentql import AgentQLTools
 
+# Create agent with default AgentQL tool
 agent = Agent(
     model=OpenAIChat(id="gpt-4o"), tools=[AgentQLTools()], show_tool_calls=True
 )
-
 agent.print_response("https://docs.agno.com/introduction", markdown=True)
+
+# Define custom AgentQL query for specific data extraction (see https://docs.agentql.com/concepts/query-language)
+custom_query = """
+{
+    title
+    text_content[]
+}
+"""
+
+# Create AgentQL tool with custom query
+custom_scraper = AgentQLTools(agentql_query=custom_query)
+
+# Create agent with custom AgentQL tool
+custom_agent = Agent(
+    model=OpenAIChat(id="gpt-4o"), tools=[custom_scraper], show_tool_calls=True
+)
+custom_agent.print_response("https://docs.agno.com/introduction", markdown=True)
 ```
 
 <Note>
@@ -43,7 +60,7 @@ agent.print_response("https://docs.agno.com/introduction", markdown=True)
 | --------------- | ------ | ------- | ----------------------------------- |
 | `api_key`       | `str`  | `None`  | API key for AgentQL                 |
 | `scrape`        | `bool` | `True`  | Whether to use the scrape text tool |
-| `agentql_query` | `str`  | `None`  | Custom AgentQL query                |
+| `agentql_query` | `str`  | `""`  | Custom AgentQL query                |
 
 ## Toolkit Functions
 

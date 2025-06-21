@@ -5,3 +5,30 @@ title: MongoMemoryDb
 MongoMemoryDb is a class that implements the MemoryDb interface using MongoDB as the backend storage system. It provides persistent storage for agent memories with support for indexing and efficient querying.
 
 <Snippet file="memory-mongo-reference.mdx" /> 
+
+```python
+from agno.memory.v2.db.mongodb import MongoMemoryDb
+from pymongo import MongoClient
+
+# Option 1: Provide a connection URL
+memory_db_url = MongoMemoryDb(
+    collection_name="my_memories",
+    db_url="mongodb://localhost:27017", # Or your MongoDB Atlas connection string
+    db_name="my_database",
+)
+
+# Option 2: Provide an existing MongoClient instance
+client = MongoClient("mongodb://localhost:27017")
+memory_db_client = MongoMemoryDb(
+    collection_name="my_memories",
+    client=client,
+    db_name="my_database",
+)
+
+# Option 3: Connect to default local MongoDB instance
+memory_db_default = MongoMemoryDb(
+    collection_name="my_memories",
+    # No db_url or client provided, connects to default 'mongodb://localhost:27017'
+    db_name="agno", # Default database name
+)
+```

@@ -1,4 +1,59 @@
 ---
 title: ECS
-description: This guide is in the works
+description: Manage ECS resources with Agno
 ---
+
+ECS (Elastic Container Service) resources enable you to define and manage your containerized applications on AWS using Agno.
+
+## Example
+
+Let's define a basic ECS cluster using `EcsCluster`. Copy the following code to a file `resources.py`:
+
+```python resources.py
+from agno.aws.resource.ecs import EcsCluster
+from agno.aws.resources import AwsResources
+
+# -*- Define an ECS cluster
+my_ecs_cluster = EcsCluster(
+    name="my-agno-cluster",
+    ecs_cluster_name="my-agno-cluster", # Optional: uses 'name' if not provided
+    capacity_providers=["FARGATE"] # Specify FARGATE or EC2
+)
+
+# -*- Define AWS Resources group
+dev_aws_resources = AwsResources(
+    apps=[], # Add apps that use ECS later
+    resources=[my_ecs_cluster],
+)
+```
+
+Run the following command to create the ECS cluster:
+
+<CodeGroup>
+
+```bash terminal
+ag start resources.py
+```
+
+```bash full options
+ag start resources.py --yes
+```
+
+</CodeGroup>
+
+This will provision an ECS cluster named `my-agno-cluster` in your default AWS region (or configured region). You can verify its creation in the AWS ECS console.
+
+To delete the cluster, run:
+
+<CodeGroup>
+
+```bash terminal
+ag stop resources.py
+```
+
+```bash full options
+ag stop resources.py --yes
+```
+
+</CodeGroup>
+

@@ -90,7 +90,8 @@ The Agent creates a default system message that can be customized using the foll
 | `additional_context` | `str` | `None` | Additional context added to the end of the system message. |
 | `expected_output` | `str` | `None` | Provide the expected output from the Agent. This is added to the end of the system message. |
 | `markdown` | `bool` | `False` | Add an instruction to format the output using markdown. |
-| `add_datetime_to_instructions` | `bool` | `False` | If True, add the current datetime to the prompt to give the agent a sense of time. This allows for relative times like "tomorrow" to be used in the prompt |
+| `add_datetime_to_instructions` | `bool` | `False` | If True, add the current datetime to the prompt to give the agent a sense of time. This allows for relative times like "tomorrow" to be used in the prompt. Can also specify `timezone_identifier` for custom timezones. |
+| `add_state_in_messages` | `bool` | `False` | If True, session state variables and resolved context variables are available for use in the system and user messages using `{key}` syntax. |
 | `system_message` | `str` | `None` | System prompt: provide the system prompt as a string |
 | `system_message_role` | `str` | `system` | Role for the system message. |
 | `create_default_system_message` | `bool` | `True` | If True, build a default system prompt using agent settings and use that. |
@@ -105,14 +106,14 @@ The Agent creates a default user message, which is either the input message or a
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `context` | `str` | `None` | Additional context added to the end of the user message. |
+| `context` | `Dict[str, Any]` | `None` | Additional context added to the end of the user message. |
 | `add_context` | `bool` | `False` | If True, add the context to the user prompt. |
 | `resolve_context` | `bool` | `True` | If True, resolve the context (i.e. call any functions in the context) before adding it to the user prompt. |
 | `add_references` | `bool` | `False` | Enable RAG by adding references from the knowledge base to the prompt. |
 | `retriever` | `Callable` | `None` | Function to get references to add to the user_message. This function, if provided, is called when `add_references` is True. |
 | `references_format` | `Literal["json", "yaml"]` | `"json"` | Format of the references. |
 | `add_history_to_messages` | `bool` | `False` | If true, adds the chat history to the messages sent to the Model. |
-| `num_history_responses` | `int` | `3` | Number of historical responses to add to the messages. |
+| `num_history_runs` | `int` | `3` | Number of historical runs to add to the messages. |
 | `user_message` | `Union[List, Dict, str]` | `None` | Provide the user prompt as a string. Note: this will ignore the message sent to the run function. |
 | `user_message_role` | `str` | `user` | Role for the user message. |
 | `create_default_user_message` | `bool` | `True` | If True, build a default user prompt using references and chat history. |

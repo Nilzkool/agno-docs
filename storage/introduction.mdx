@@ -14,7 +14,7 @@ In production environments, we serve (or trigger) Agents via an API and need to 
 Storage also let's us inspect and evaluate Agent sessions, extract few-shot examples and build internal monitoring tools. It lets us **look at the data** which helps us build better Agents.
 </Tip>
 
-Adding storage to an Agent, Team or Workflow is as simple as providing a `Storage` driver and Agno handles the rest. You can use Sqlite, Postgres, Mongo or any other database you want.
+Adding storage to an Agent, Team or Workflow is as simple as providing a `Storage` driver and Agno handles the rest. This is achieved by setting the `mode` parameter in the `Storage` driver, which defaults to `agent`. You can use Sqlite, Postgres, Mongo or any other database you want.
 
 Here's a simple example that demostrates persistence across execution cycles:
 
@@ -75,7 +75,7 @@ from agno.tools.duckduckgo import DuckDuckGoTools
 
 agent = Agent(
     storage=SqliteStorage(
-        table_name="agent_sessions", db_file="tmp/data.db", auto_upgrade_schema=True
+        table_name="agent_sessions", db_file="tmp/data.db", auto_upgrade_schema=True, mode="agent"
     ),
     tools=[DuckDuckGoTools()],
     add_history_to_messages=True,

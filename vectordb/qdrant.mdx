@@ -9,7 +9,7 @@ Follow the instructions in the [Qdrant Setup Guide](https://qdrant.tech/document
 
 ## Example
 
-```python agent_with_knowledge.py
+```python cookbook/agent_concepts/knowledge/vector_dbs/qdrant_db/qdrant_db.py
 import os
 import typer
 from typing import Optional
@@ -34,36 +34,11 @@ knowledge_base = PDFUrlKnowledgeBase(
     vector_db=vector_db,
 )
 
-def qdrant_agent(user: str = "user"):
-    run_id: Optional[str] = None
+knowledge_base.load(recreate=False)  # Comment out after first run
 
-    agent = Agent(
-        run_id=run_id,
-        user_id=user,
-        knowledge=knowledge_base,
-        tool_calls=True,
-        use_tools=True,
-        show_tool_calls=True,
-        debug_mode=True,
-    )
-
-    if run_id is None:
-        run_id = agent.run_id
-        print(f"Started Run: {run_id}\n")
-    else:
-        print(f"Continuing Run: {run_id}\n")
-
-    while True:
-        message = Prompt.ask(f"[bold] :sunglasses: {user} [/bold]")
-        if message in ("exit", "bye"):
-            break
-        agent.print_response(message)
-
-if __name__ == "__main__":
-    # Comment out after first run
-    knowledge_base.load(recreate=True, upsert=True)
-
-    typer.run(qdrant_agent)
+# Create and use the agent
+agent = Agent(knowledge=knowledge_base, show_tool_calls=True)
+agent.print_response("List down the ingredients to make Massaman Gai", markdown=True)
 ```
 
 <Card title="Async Support ⚡">
@@ -116,4 +91,4 @@ if __name__ == "__main__":
 ## Developer Resources
 
 - View [Cookbook (Sync)](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/qdrant_db/qdrant_db.py)
-- View [Cookbook (Async)](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/qdrant_db/async_qdrant_db.py)
+- View [Cookbook (Async)](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/qdrant_db/async_qdrant_db.py)

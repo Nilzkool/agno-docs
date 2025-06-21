@@ -5,3 +5,27 @@ title: SqliteMemoryDb
 SqliteMemoryDb is a class that implements the MemoryDb interface using SQLite as the backend storage system. It provides lightweight, file-based or in-memory storage for agent memories with automatic timestamp management.
 
 <Snippet file="memory-sqlite-reference.mdx" /> 
+
+```python
+from agno.memory.v2.db.sqlite import SqliteMemoryDb
+
+# Option 1: File-based SQLite database
+memory_db_file = SqliteMemoryDb(
+    table_name="my_memories",
+    db_file="my_memories.db", # Creates 'my_memories.db' in the current directory
+)
+
+# Option 2: In-memory SQLite database (data is lost when application exits)
+memory_db_in_memory = SqliteMemoryDb(
+    table_name="my_memories",
+    # No db_file or db_url provided, defaults to in-memory
+)
+
+# Option 3: Custom database URL (e.g., for persistent connection strings)
+# from sqlalchemy import create_engine
+# engine = create_engine("sqlite:///path/to/my_db.db")
+# memory_db_engine = SqliteMemoryDb(
+#     table_name="my_memories",
+#     db_engine=engine,
+# )
+```
