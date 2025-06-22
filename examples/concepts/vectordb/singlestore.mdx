@@ -4,7 +4,7 @@ title: SingleStore Integration
 
 ## Code
 
-```python cookbook/agent_concepts/vector_dbs/singlestore.py
+```python cookbook/agent_concepts/knowledge/vector_dbs/singlestore.py
 from os import getenv
 
 from agno.agent import Agent
@@ -19,13 +19,8 @@ PORT = getenv("SINGLESTORE_PORT")
 DATABASE = getenv("SINGLESTORE_DATABASE")
 SSL_CERT = getenv("SINGLESTORE_SSL_CERT", None)
 
-db_url = (
-    f"mysql+pymysql://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}?charset=utf8mb4"
-)
-if SSL_CERT:
-    db_url += f"&ssl_ca={SSL_CERT}&ssl_verify_cert=true"
-
-db_engine = create_engine(db_url)
+# Build connection URL
+...  # omitted for brevity
 
 knowledge_base = PDFUrlKnowledgeBase(
     urls=["https://agno-public.s3.amazonaws.com/recipes/ThaiRecipes.pdf"],
@@ -36,6 +31,7 @@ knowledge_base = PDFUrlKnowledgeBase(
     ),
 )
 
+# Comment out after first run
 knowledge_base.load(recreate=False)
 
 agent = Agent(
@@ -73,11 +69,11 @@ agent.print_response("How do I make pad thai?", markdown=True)
   <Step title="Run Agent">
     <CodeGroup>
     ```bash Mac
-    python cookbook/agent_concepts/vector_dbs/singlestore.py
+    python cookbook/agent_concepts/knowledge/vector_dbs/singlestore.py
     ```
 
     ```bash Windows
-    python cookbook/agent_concepts/vector_dbs/singlestore.py
+    python cookbook/agent_concepts/knowledge/vector_dbs/singlestore.py
     ```
     </CodeGroup>
   </Step>

@@ -4,21 +4,19 @@ title: Team Workflow
 **TeamWorkflow** generates summarised reports on top reddit and hackernews posts. 
 This example demonstrates the usage of teams as nodes of a workflow.
 
-Create a file `team_worklfow.py` with the following code:
+Create a file `team_workflow.py` with the following code:
 
-
-
-```python team_worklfow.py
-
+```python team_workflow.py
 from textwrap import dedent
 from typing import Iterator
 
 from agno.agent import Agent, RunResponse
 from agno.models.openai import OpenAIChat
 from agno.team.team import Team
-from agno.tools.exa import ExaTools
+from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.tools.hackernews import HackerNewsTools
 from agno.tools.newspaper4k import Newspaper4kTools
+from agno.tools.exa import ExaTools
 from agno.utils.log import logger
 from agno.utils.pprint import pprint_run_response
 from agno.workflow import Workflow
@@ -33,7 +31,7 @@ class TeamWorkflow(Workflow):
         name="Reddit Researcher",
         role="Research a topic on Reddit",
         model=OpenAIChat(id="gpt-4o"),
-        tools=[ExaTools()],
+        tools=[DuckDuckGoTools(cache_results=True)],
         add_name_to_instructions=True,
         instructions=dedent("""
             You are a Reddit researcher.
@@ -44,7 +42,7 @@ class TeamWorkflow(Workflow):
 
     hackernews_researcher = Agent(
         name="HackerNews Researcher",
-        model=OpenAIChat("gpt-4o"),
+        model=OpenAIChat(id="gpt-4o"),
         role="Research a topic on HackerNews.",
         tools=[HackerNewsTools()],
         add_name_to_instructions=True,
@@ -58,7 +56,7 @@ class TeamWorkflow(Workflow):
     agent_team = Team(
         name="Discussion Team",
         mode="collaborate",
-        model=OpenAIChat("gpt-4o"),
+        model=OpenAIChat(id="gpt-4o"),
         members=[
             reddit_researcher,
             hackernews_researcher,
@@ -97,7 +95,7 @@ class TeamWorkflow(Workflow):
     )
 
     def run(self) -> Iterator[RunResponse]:
-        logger.info(f"Getting top stories from HackerNews.")
+        logger.info("Getting top stories from HackerNews.")
         discussion: RunResponse = self.agent_team.run(
             "Getting 2 top stories from HackerNews and reddit and write a brief report on them"
         )
@@ -125,13 +123,13 @@ if __name__ == "__main__":
 
   <Step title="Install libraries">
     ```bash
-    pip install openai newspaper4k exa_py agno
+    pip install openai newspaper4k duckduckgo-search agno
     ```
   </Step>
 
   <Step title="Run the workflow">
     ```bash
-    python team_worklfow.py
+    python team_workflow.py
     ```
   </Step>
 

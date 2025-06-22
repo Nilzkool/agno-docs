@@ -4,14 +4,14 @@ title: LanceDB Integration
 
 ## Code
 
-```python cookbook/agent_concepts/vector_dbs/lance_db.py
+```python cookbook/agent_concepts/knowledge/vector_dbs/lance_db/lance_db.py
 from agno.agent import Agent
 from agno.knowledge.pdf_url import PDFUrlKnowledgeBase
 from agno.vectordb.lancedb import LanceDb
 
 vector_db = LanceDb(
     table_name="recipes",
-    uri="/tmp/lancedb",  # You can change this path to store data elsewhere
+    uri="tmp/lancedb",  # You can change this path to store data elsewhere
 )
 
 knowledge_base = PDFUrlKnowledgeBase(
@@ -39,11 +39,11 @@ agent.print_response("How to make Tom Kha Gai", markdown=True)
   <Step title="Run Agent">
     <CodeGroup>
     ```bash Mac
-    python cookbook/agent_concepts/vector_dbs/lance_db.py
+    python cookbook/agent_concepts/knowledge/vector_dbs/lance_db/lance_db.py
     ```
 
     ```bash Windows
-    python cookbook/agent_concepts/vector_dbs/lance_db.py
+    python cookbook/agent_concepts/knowledge/vector_dbs/lance_db/lance_db.py
     ```
     </CodeGroup>
   </Step>

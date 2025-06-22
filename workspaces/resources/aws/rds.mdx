@@ -1,4 +1,60 @@
 ---
 title: RDS
-description: This guide is in the works
+description: Guides for RDS resources in Agno
 ---
+
+Agno provides RDS resources as Pydantic classes to manage RDS services like Subnet Groups, Instances, and Clusters.
+
+<CodeGroup>
+
+```python resources.py
+from pathlib import Path
+from agno.aws.resource.secret.manager import SecretsManager
+from agno.aws.resource.rds.db_subnet_group import DbSubnetGroup
+from agno.aws.resource.rds.db_instance import DbInstance
+from agno.aws.resource.rds.db_cluster import DbCluster
+
+# Define DB secret
+ db_secret = SecretsManager(
+     name="my-db-secret",
+     secret_files=[Path("db_secrets.yml")],
+ )
+
+# Define Subnet Group
+ db_subnet_group = DbSubnetGroup(
+     name="my-db-sg",
+     description="My DB Subnet Group",
+     subnet_ids=["subnet-123", "subnet-456"],
+     tags=[{"Key": "env", "Value": "prod"}],
+ )
+
+# Define a standalone DB instance
+ db_instance = DbInstance(
+     name="my-db",
+     db_name="llm",
+     engine="postgres",
+     engine_version="16.1",
+     db_instance_class="db.t4g.medium",
+     allocated_storage=64,
+     port=5432,
+     publicly_accessible=True,
+     db_subnet_group=db_subnet_group,
+     aws_secret=db_secret,
+ )
+
+# OR define an Aurora DB cluster
+ db_cluster = DbCluster(
+     name="my-cluster",
+     engine="aurora-postgresql",
+     engine_version="13.6",
+     database_name="mydb",
+     db_subnet_group=db_subnet_group,
+     db_instance_class="db.r6g.large",
+     db_instances=[db_instance],
+     aws_secret=db_secret,
+ )
+```
+
+</CodeGroup>
+
+Start resources using `ag start resources.py`

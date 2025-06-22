@@ -1,5 +1,5 @@
 | Parameter             | Type                   | Default | Description                                                             |
-| --------------------- | ---------------------- | ------- | ----------------------------------------------------------------------- |
+|-----------------------|------------------------|---------|-------------------------------------------------------------------------|
 | `table_name`          | `str`                  | -       | The name of the table to use.                                           |
 | `schema`              | `str`                  | -       | The schema to use.                                                      |
 | `db_url`              | `str`                  | -       | The database URL to connect to.                                         |
@@ -13,3 +13,4 @@
 | `content_language`    | `str`                  | -       | The content language to use.                                            |
 | `schema_version`      | `int`                  | -       | The schema version to use.                                              |
 | `auto_upgrade_schema` | `bool`                 | -       | Whether to auto upgrade the schema.                                     |
+| `reranker`            | `Optional[Reranker]`   | `None`  | Reranker instance to post-process search results.                       |

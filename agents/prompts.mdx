@@ -82,18 +82,21 @@ The input `message` sent to the `Agent.run()` or `Agent.print_response()` functi
 
 The Agent creates a default system message that can be customized using the following parameters:
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `description` | `str` | `None` | A description of the Agent that is added to the start of the system message. |
-| `goal` | `str` | `None` | Describe the task the agent should achieve. |
-| `instructions` | `List[str]` | `None` | List of instructions added to the system prompt in `<instructions>` tags. Default instructions are also created depending on values for `markdown`, `output_model` etc. |
-| `additional_context` | `str` | `None` | Additional context added to the end of the system message. |
-| `expected_output` | `str` | `None` | Provide the expected output from the Agent. This is added to the end of the system message. |
-| `markdown` | `bool` | `False` | Add an instruction to format the output using markdown. |
-| `add_datetime_to_instructions` | `bool` | `False` | If True, add the current datetime to the prompt to give the agent a sense of time. This allows for relative times like "tomorrow" to be used in the prompt |
-| `system_message` | `str` | `None` | System prompt: provide the system prompt as a string |
-| `system_message_role` | `str` | `system` | Role for the system message. |
-| `create_default_system_message` | `bool` | `True` | If True, build a default system prompt using agent settings and use that. |
+| Parameter                     | Type                              | Default  | Description                                                                                          |
+|-------------------------------|-----------------------------------|----------|------------------------------------------------------------------------------------------------------|
+| `description`                 | `str`                             | `None`   | A description of the Agent that is added to the start of the system message.                        |
+| `goal`                        | `str`                             | `None`   | Describe the task the agent should achieve.                                                          |
+| `instructions`                | `List[str]`                       | `None`   | List of instructions added to the system prompt in `<instructions>` tags.                            |
+| `additional_context`          | `str`                             | `None`   | Additional context added to the end of the system message.                                           |
+| `expected_output`             | `str`                             | `None`   | Provide the expected output from the Agent. This is added to the end of the system message.         |
+| `markdown`                    | `bool`                            | `False`  | Add an instruction to format the output using markdown.                                              |
+| `add_datetime_to_instructions`| `bool`                            | `False`  | If True, add the current datetime to the prompt to give the agent a sense of time.                  |
+| `timezone_identifier`         | `str`                             | `None`   | Timezone identifier (e.g. `Etc/UTC`) used when adding datetime.                                      |
+| `add_name_to_instructions`    | `bool`                            | `False`  | If True, add the Agent's name to the instructions list in the system message.                       |
+| `add_state_in_messages`       | `bool`                            | `False`  | If True, format both system and user messages using session state variables.                        |
+| `system_message`              | `str`                             | `None`   | Provide the system prompt directly as a string.                                                      |
+| `system_message_role`         | `str`                             | `system` | Role for the system message.                                                                        |
+| `create_default_system_message`| `bool`                           | `True`   | If True, build a default system prompt using agent settings and use that.                            |
 
 <Tip>
 Disable the default system message by setting `create_default_system_message=False`.
@@ -101,21 +104,21 @@ Disable the default system message by setting `create_default_system_message=Fal
 
 ## Default user message
 
-The Agent creates a default user message, which is either the input message or a message with the `context` if `enable_rag=True`. The default user message can be customized using:
+The Agent creates a default user message, which is either the input message or a message with the context (if `add_context=True`). The default user message can be customized using:
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `context` | `str` | `None` | Additional context added to the end of the user message. |
-| `add_context` | `bool` | `False` | If True, add the context to the user prompt. |
-| `resolve_context` | `bool` | `True` | If True, resolve the context (i.e. call any functions in the context) before adding it to the user prompt. |
-| `add_references` | `bool` | `False` | Enable RAG by adding references from the knowledge base to the prompt. |
-| `retriever` | `Callable` | `None` | Function to get references to add to the user_message. This function, if provided, is called when `add_references` is True. |
-| `references_format` | `Literal["json", "yaml"]` | `"json"` | Format of the references. |
-| `add_history_to_messages` | `bool` | `False` | If true, adds the chat history to the messages sent to the Model. |
-| `num_history_responses` | `int` | `3` | Number of historical responses to add to the messages. |
-| `user_message` | `Union[List, Dict, str]` | `None` | Provide the user prompt as a string. Note: this will ignore the message sent to the run function. |
-| `user_message_role` | `str` | `user` | Role for the user message. |
-| `create_default_user_message` | `bool` | `True` | If True, build a default user prompt using references and chat history. |
+| Parameter                   | Type                       | Default  | Description                                                                                           |
+|-----------------------------|----------------------------|----------|-------------------------------------------------------------------------------------------------------|
+| `context`                   | `Dict[str, Any]`           | `None`   | Additional context (a dict) to add to the user message.                                               |
+| `add_context`               | `bool`                     | `False`  | If True, add the context to the user prompt.                                                         |
+| `resolve_context`           | `bool`                     | `True`   | If True, call any functions in the context before adding it to the prompt.                           |
+| `add_references`            | `bool`                     | `False`  | If True, enable RAG by adding knowledge base references to the user message.                         |
+| `retriever`                 | `Callable`                 | `None`   | Function to fetch references when `add_references` is True.                                          |
+| `references_format`         | `"json"  "yaml"` | `"json"`| Format of the inserted references.                                                                   |
+| `add_history_to_messages`   | `bool`                     | `False`  | If True, include chat history in messages sent to the model.                                          |
+| `num_history_responses`     | `int`                      | `3`      | Number of historical assistant responses to include.                                                  |
+| `user_message`              | `Union[List, Dict, str]`   | `None`   | Provide the user prompt directly as a string or structure.                                           |
+| `user_message_role`         | `str`                      | `user`   | Role for the user message.                                                                           |
+| `create_default_user_message`| `bool`                    | `True`   | If True, build a default user prompt using context, references and history.                          |
 
 <Tip>
 Disable the default user message by setting `create_default_user_message=False`.

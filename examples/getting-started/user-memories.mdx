@@ -22,7 +22,7 @@ Agent: *Recalls previous memories about John*
 
 ## Code
 
-```python user_memories.py
+```python cookbook/getting_started/17_user_memories_and_summaries.py
 import json
 from textwrap import dedent
 from typing import Optional
@@ -101,7 +101,6 @@ def print_agent_memory(agent):
         message_dict = m.to_dict()
         messages.append(message_dict)
 
-
     # Print chat history
     console.print(
         Panel(
@@ -122,10 +121,10 @@ def print_agent_memory(agent):
             Panel(
                 JSON(
                     json.dumps(
-                    [
-                        user_memory.to_dict()
-                        for user_memory in agent.memory.get_user_memories(user_id=user_id)
-                    ],
+                        [
+                            user_memory.to_dict()
+                            for user_memory in agent.memory.get_user_memories(user_id=user_id)
+                        ],
                         indent=4,
                     ),
                 ),
@@ -162,7 +161,7 @@ def main(user: str = "user"):
     print("- 'My name is [name] and I live in [city]'")
     print("- 'I love [hobby/interest]'")
     print("- 'What do you remember about me?'")
-    print("- 'What have we discussed so far?'\n")
+    print("- 'What have we discussed so far?'")
 
     exit_on = ["exit", "quit", "bye"]
     while True:
@@ -176,7 +175,6 @@ def main(user: str = "user"):
 
 if __name__ == "__main__":
     typer.run(main)
-
 ```
 
 ## Usage
@@ -192,7 +190,7 @@ if __name__ == "__main__":
 
   <Step title="Run the agent">
     ```bash
-    python user_memories.py
+    python cookbook/getting_started/17_user_memories_and_summaries.py
     ```
   </Step>
 

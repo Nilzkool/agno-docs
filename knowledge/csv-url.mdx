@@ -13,18 +13,26 @@ We are using a local PgVector database for this example. [Make sure it's running
 
 </Note>
 
+```shell
+pip install -U pgvector "psycopg[binary]" sqlalchemy openai agno
+pip install -U requests  # required for CSVUrlReader
+```
+
 ```python knowledge_base.py
 from agno.knowledge.csv_url import CSVUrlKnowledgeBase
 from agno.vectordb.pgvector import PgVector
 
 knowledge_base = CSVUrlKnowledgeBase(
-    urls=["csv_url"],
+    urls=["https://agno-public.s3.amazonaws.com/csvs/employees.csv"],
     # Table name: ai.csv_documents
     vector_db=PgVector(
         table_name="csv_documents",
         db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
     ),
+    num_documents=5,  # Number of documents to return on search
 )
+# Load the knowledge base
+knowledge_base.load(recreate=False)
 ```
 
 Then use the `knowledge_base` with an Agent:
@@ -37,21 +45,24 @@ agent = Agent(
     knowledge=knowledge_base,
     search_knowledge=True,
 )
-agent.knowledge.load(recreate=False)
 
-agent.print_response("Ask me about something from the knowledge base")
+agent.print_response(
+    "What is the average salary of employees in the Marketing department?",
+    markdown=True,
+)
 ```
 
 ## Params
 
-| Parameter | Type           | Default          | Description                                                                                                    |
-| --------- | -------------- | ---------------- | -------------------------------------------------------------------------------------------------------------- |
-| `urls`    | `List[str]`    | -                | URLs for `PDF` files.                                                                                          |
-| `reader`  | `CSVUrlReader` | `CSVUrlReader()` | A `CSVUrlReader` that reads the CSV file from the URL and converts it into `Documents` for the vector database |
+| Parameter       | Type            | Default             | Description                                    |
+| --------------- | --------------- | ------------------- | ---------------------------------------------- |
+| `urls`          | `List[str]`     | -                   | URLs for `CSV` files.                          |
+| `reader`        | `CSVUrlReader`  | `CSVUrlReader()`    | Reader for fetching CSVs from URLs.            |
+| `num_documents` | `int`           | `5`                 | Number of documents to return on search.       |
 
 `CSVUrlKnowledgeBase` is a subclass of the [AgentKnowledge](/reference/knowledge/base) class and has access to the same params.
 
 ## Developer Resources
 
-- View [Sync loading Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/csv_url_kb.py)
-- View [Async loading Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/csv_url_kb_async.py)
+- View [Sync loading Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/csv_url_kb.py)
+- View [Async loading Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/csv_url_kb_async.py)

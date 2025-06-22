@@ -81,7 +81,6 @@ agent.print_response("How to make Thai curry?", markdown=True)
         distance=Distance.COSINE,
         local=True,  # Set to False if using Weaviate Cloud and True if using local instance
     )
-    
     # Create knowledge base
     knowledge_base = PDFUrlKnowledgeBase(
         urls=["https://agno-public.s3.amazonaws.com/recipes/ThaiRecipes.pdf"],
@@ -103,7 +102,7 @@ agent.print_response("How to make Thai curry?", markdown=True)
     ```
     
     <Tip className="mt-4">
-      Weaviate's async capabilities leverage <code>WeaviateAsyncClient</code> to provide non-blocking vector operations. This is particularly valuable for applications requiring high concurrency and throughput.
+      Weaviate’s async capabilities leverage <code>WeaviateAsyncClient</code> to provide non-blocking vector operations. This is particularly valuable for applications requiring high concurrency and throughput.
     </Tip>
   </div>
 </Card>
@@ -114,5 +113,5 @@ agent.print_response("How to make Thai curry?", markdown=True)
 
 ## Developer Resources
 
-- View [Cookbook (Sync)](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/weaviate_db/weaviate_db.py)
-- View [Cookbook (Async)](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/weaviate_db/async_weaviate_db.py)
+- View [Cookbook (Sync)](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/weaviate_db/weaviate_db.py)
+- View [Cookbook (Async)](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/weaviate_db/async_weaviate_db.py)

@@ -32,6 +32,7 @@ Copy the following code to a file `resources.py` and run `ag start resources.py`
 
 ```python resources.py
 import json
+from pathlib import Path
 from agno.aws.resource.secret import SecretsManager
 
 # -*- Secret called my-secret
@@ -45,14 +46,14 @@ prd_secret = SecretsManager(
 
 </CodeGroup>
 
-Read the secret in another file called `read_my_secret.py`
+Read the secret in another file called `read_my_secret.py`:
 
 <CodeGroup>
 
 ```python read_my_secret.py
-from resources import my_secret
+from resources import prd_secret
 
-print(my_secret.get_secret_value("mysecretkey"))
+print(prd_secret.get_secret_value("mysecretkey"))
 ```
 
 </CodeGroup>
@@ -60,3 +61,55 @@ print(my_secret.get_secret_value("mysecretkey"))
 Run this file using `python read_my_secret.py`.
 
 Delete the secret using `ag stop resources.py`
+
+### Amazon ECS
+
+Copy the following code to `resources.py` and run `ag start resources.py` to create an ECS cluster, task definition, and service.
+
+<CodeGroup>
+
+```python resources.py
+from agno.aws.resource.ecs import EcsCluster, EcsTaskDefinition, EcsService
+from agno.aws.resource.ecs.container import EcsContainer
+
+# Create an ECS cluster
+cluster = EcsCluster(name="my-cluster")
+
+# Define a container
+container = EcsContainer(
+    name="my-app",
+    image="nginx:latest",
+    port_mappings=[{"containerPort": 80}],
+)
+
+# Task definition for Fargate
+task_def = EcsTaskDefinition(
+    name="my-taskdef",
+    family="my-app",
+    network_mode="awsvpc",
+    cpu="256",
+    memory="512",
+    containers=[container],
+    requires_compatibilities=["FARGATE"],
+)
+
+# Deploy ECS service
+service = EcsService(
+    name="my-service",
+    cluster=cluster,
+    task_definition=task_def,
+    desired_count=2,
+    launch_type="FARGATE",
+    subnets=["subnet-01234567"],
+    security_groups=["sg-01234567"],
+    assign_public_ip=True,
+)
+```
+
+</CodeGroup>
+
+Delete all ECS resources with:
+
+```bash
+ag stop resources.py
+```

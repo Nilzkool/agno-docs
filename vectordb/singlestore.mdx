@@ -33,10 +33,8 @@ SingleStore supports both cloud-based and local deployments. For step-by-step gu
 ## Example
 
 ```python agent_with_knowledge.py
-import typer
-from typing import Optional
+import os
 from os import getenv
-
 from sqlalchemy.engine import create_engine
 
 from agno.agent import Agent
@@ -50,7 +48,9 @@ PORT = getenv("SINGLESTORE_PORT")
 DATABASE = getenv("SINGLESTORE_DATABASE")
 SSL_CERT = getenv("SINGLESTORE_SSL_CERT", None)
 
-db_url = f"mysql+pymysql://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}?charset=utf8mb4"
+db_url = (
+    f"mysql+pymysql://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}?charset=utf8mb4"
+)
 if SSL_CERT:
     db_url += f"&ssl_ca={SSL_CERT}&ssl_verify_cert=true"
 
@@ -65,32 +65,17 @@ knowledge_base = PDFUrlKnowledgeBase(
     ),
 )
 
-def pdf_assistant(user: str = "user"):
-    run_id: Optional[str] = None
+# Comment out after first run
+knowledge_base.load(recreate=False)
 
-    agent = Agent(
-        run_id=run_id,
-        user_id=user,
-        knowledge_base=knowledge_base,
-        use_tools=True,
-        show_tool_calls=True,
-        # Uncomment the following line to use traditional RAG
-        # add_references_to_prompt=True,
-    )
-    if run_id is None:
-        run_id = agent.run_id
-        print(f"Started Run: {run_id}\n")
-    else:
-        print(f"Continuing Run: {run_id}\n")
+agent = Agent(
+    knowledge=knowledge_base,
+    show_tool_calls=True,
+    search_knowledge=True,
+    read_chat_history=True,
+)
 
-    while True:
-        agent.cli_app(markdown=True)
-
-if __name__ == "__main__":
-    # Comment out after first run
-    knowledge_base.load(recreate=False)
-
-    typer.run(pdf_assistant)
+agent.print_response("How do I make pad thai?", markdown=True)
 ```
 
 ## SingleStore Params
@@ -99,4 +84,4 @@ if __name__ == "__main__":
 
 ## Developer Resources
 
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/singlestore_db.py)
+- View [Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/singlestore.py)

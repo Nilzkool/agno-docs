@@ -3,6 +3,34 @@ title: IBM WatsonX
 sidebarTitle: IBM WatsonX
 ---
 
-The IBM WatsonX model provides access to IBM's language models.
+The IBM WatsonX model provides access to IBM's language models. Supported models and usage details can be found in the [Models overview](https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html?context=wx).
+
+### Environment Variables
+
+- `IBM_WATSONX_API_KEY`: Your API key for IBM WatsonX.
+- `IBM_WATSONX_PROJECT_ID`: The project ID for your IBM WatsonX instance.
+- `IBM_WATSONX_URL` (optional): The custom API endpoint URL. Defaults to `https://eu-de.ml.cloud.ibm.com`.
+
+### Model Parameters
+
+| Name               | Type        | Default                                  | Description                                     |
+|--------------------|-------------|------------------------------------------|-------------------------------------------------|
+| `id`               | `str`       | `"ibm/granite-20b-code-instruct"`        | Model ID to use.                                |
+| `frequency_penalty`| `float`     | `None`                                   | Penalizes frequent tokens.                      |
+| `presence_penalty` | `float`     | `None`                                   | Penalizes tokens based on presence.             |
+| `max_tokens`       | `int`       | `None`                                   | Maximum tokens to generate.                     |
+| `temperature`      | `float`     | `None`                                   | Sampling temperature.                           |
+| `top_p`            | `float`     | `None`                                   | Cumulative probability cutoff.                  |
+| `logprobs`         | `int`       | `None`                                   | Include log probabilities.                      |
+| `top_logprobs`     | `int`       | `None`                                   | Include top log probabilities.                  |
+| `response_format`  | `Any`       | `None`                                   | Response format or Pydantic model.              |
+| `request_params`   | `Dict`      | `None`                                   | Extra request parameters.                       |
+| `api_key`          | `str`       | `None`                                   | API key (fallback from env var).                |
+| `project_id`       | `str`       | `None`                                   | Project ID (fallback from env var).             |
+| `url`              | `str`       | `"https://eu-de.ml.cloud.ibm.com"`       | API endpoint URL.                               |
+| `verify`           | `bool`      | `True`                                   | SSL certificate verification.                   |
+| `client_params`    | `Dict`      | `None`                                   | Additional client parameters.                   |
 
 <Snippet file="model-ibm-watsonx-params.mdx" />
+
+Ensure all required environment variables are set before instantiating the model.

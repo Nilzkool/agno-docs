@@ -1,4 +1,62 @@
 ---
 title: ECS
-description: This guide is in the works
+description: Work with Amazon Elastic Container Service (ECS)
 ---
+
+# Amazon ECS
+
+This guide shows how to define and deploy Amazon ECS resources—clusters, task definitions, and services—using pydantic objects.
+
+## Quickstart Example
+
+Create a file `resources.py`:
+
+```python resources.py
+from agno.aws.resource.ecs import EcsCluster, EcsTaskDefinition, EcsService
+from agno.aws.resource.ecs.container import EcsContainer
+
+# 1. Create an ECS cluster
+cluster = EcsCluster(name="my-cluster")
+
+# 2. Define a container
+container = EcsContainer(
+    name="my-app",
+    image="nginx:latest",
+    port_mappings=[{"containerPort": 80}],
+)
+
+# 3. Create a task definition for Fargate
+task_def = EcsTaskDefinition(
+    name="my-taskdef",
+    family="my-app",
+    network_mode="awsvpc",
+    cpu="256",
+    memory="512",
+    containers=[container],
+    requires_compatibilities=["FARGATE"],
+)
+
+# 4. Deploy a service
+service = EcsService(
+    name="my-service",
+    cluster=cluster,
+    task_definition=task_def,
+    desired_count=1,
+    launch_type="FARGATE",
+    subnets=["subnet-01234567"],
+    security_groups=["sg-01234567"],
+    assign_public_ip=True,
+)
+```
+
+Then run:
+
+```bash
+ag start resources.py
+```
+
+To delete the resources, run:
+
+```bash
+ag stop resources.py
+```

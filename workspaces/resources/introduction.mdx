@@ -28,7 +28,7 @@ from agno.docker.resource.image import DockerImage
 dev_image = DockerImage(
     name="repo/image",
     tag="latest",
-    push_image=True,,
+    push_image=True,
 )
 ```
 
@@ -41,7 +41,7 @@ prd_bucket = S3Bucket(name="my-bucket")
 
 ```python Secret
 from pathlib import Path
-from agno.aws.resource.secret import SecretsManager
+from agno.aws.resource.secret.manager import SecretsManager
 
 # -*- Secret called my-secret
 my_secret = SecretsManager(
@@ -53,7 +53,9 @@ my_secret = SecretsManager(
 
 ```python RDS Database
 from pathlib import Path
-from agno.aws.resource.secret import SecretsManager
+from agno.aws.resource.secret.manager import SecretsManager
+from agno.aws.resource.rds.db_subnet_group import DbSubnetGroup
+from agno.aws.resource.rds.db_instance import DbInstance
 
 # -*- Database Secret
 db_secret = SecretsManager(
@@ -90,14 +92,3 @@ db = DbInstance(
 Each Resource is a pydantic object providing input and type validation.
 
 </Tip>
-
-## Motivation
-
-Resources provide the **"Infrastructure Layer"** for our AI products. The software we write needs to be served by an Application, which in turn needs to run on an Infrastructure Resoure.
-
-Defining **Applications as Code** and **Infrastructure as Code** allows us completely write our application as python code - providing numerous benefits like re-usability, version control, unit testing, formatting.
-
-Agno currently provides:
-
-- [Docker Resources](/workspaces/resources/docker/introduction)
-- [AWS Resources](/workspaces/resources/aws/introduction)

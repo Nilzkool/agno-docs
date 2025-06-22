@@ -1,4 +1,23 @@
 ---
 title: Container
-description: This guide is in the works
+description: Defines Docker containers as resources in Agno
 ---
+
+The `DockerContainer` class represents a Docker container resource. You can define and run containers directly in Python.
+
+<CodeGroup>
+
+```python resources.py
+from agno.docker.resource.container import DockerContainer
+
+# Define a simple 'whoami' container
+whoami = DockerContainer(
+    name="whoami",
+    image="traefik/whoami",
+    ports={"80/tcp": 80},
+)
+
+# Start the container using `ag start resources.py`
+```
+
+</CodeGroup>
