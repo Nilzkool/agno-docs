@@ -11,48 +11,35 @@ pip install chromadb
 
 ## Example
 
-```python agent_with_knowledge.py
-import typer
-from rich.prompt import Prompt
-from typing import Optional
+```python sync_chroma.py
+# install chromadb: pip install chromadb
 
 from agno.agent import Agent
 from agno.knowledge.pdf_url import PDFUrlKnowledgeBase
 from agno.vectordb.chroma import ChromaDb
 
-knowledge_base = PDFUrlKnowledgeBase(
-    urls=["https://agno-public.s3.amazonaws.com/recipes/ThaiRecipes.pdf"],
-    vector_db=ChromaDb(collection="recipes"),
+# Initialize ChromaDB
+vector_db = ChromaDb(
+    collection="recipes",
+    path="tmp/chromadb",
+    persistent_client=True,
 )
 
-def pdf_agent(user: str = "user"):
-    run_id: Optional[str] = None
+# Create knowledge base
+knowledge_base = PDFUrlKnowledgeBase(
+    urls=["https://agno-public.s3.amazonaws.com/recipes/ThaiRecipes.pdf"],
+    vector_db=vector_db,
+)
 
-    agent = Agent(
-        run_id=run_id,
-        user_id=user,
-        knowledge_base=knowledge_base,
-        use_tools=True,
-        show_tool_calls=True,
-        debug_mode=True,
-    )
-    if run_id is None:
-        run_id = agent.run_id
-        print(f"Started Run: {run_id}\n")
-    else:
-        print(f"Continuing Run: {run_id}\n")
+# Load the knowledge base (run once)
+knowledge_base.load(recreate=False)
 
-    while True:
-        message = Prompt.ask(f"[bold] :sunglasses: {user} [/bold]")
-        if message in ("exit", "bye"):
-            break
-        agent.print_response(message)
-
-if __name__ == "__main__":
-    # Comment out after first run
-    knowledge_base.load(recreate=False)
-
-    typer.run(pdf_agent)
+# Create and use the agent
+agent = Agent(
+    knowledge=knowledge_base,
+    show_tool_calls=True,
+)
+agent.print_response("Show me how to make Tom Kha Gai", markdown=True)
 ```
 
 <Card title="Async Support ⚡">
@@ -61,17 +48,18 @@ if __name__ == "__main__":
       ChromaDB also supports asynchronous operations, enabling concurrency and leading to better performance.
     </p>
     
-    ```python async_chroma_db.py
-    # install chromadb - `pip install chromadb`
-
+    ```python async_chroma.py
     import asyncio
-
     from agno.agent import Agent
     from agno.knowledge.pdf_url import PDFUrlKnowledgeBase
     from agno.vectordb.chroma import ChromaDb
 
     # Initialize ChromaDB
-    vector_db = ChromaDb(collection="recipes", path="tmp/chromadb", persistent_client=True)
+    vector_db = ChromaDb(
+        collection="recipes",
+        path="tmp/chromadb",
+        persistent_client=True,
+    )
 
     # Create knowledge base
     knowledge_base = PDFUrlKnowledgeBase(
@@ -80,13 +68,16 @@ if __name__ == "__main__":
     )
 
     # Create and use the agent
-    agent = Agent(knowledge=knowledge_base, show_tool_calls=True)
+    agent = Agent(
+        knowledge=knowledge_base,
+        show_tool_calls=True,
+    )
 
     if __name__ == "__main__":
-        # Comment out after first run
+        # Load the knowledge base asynchronously (run once)
         asyncio.run(knowledge_base.aload(recreate=False))
 
-        # Create and use the agent
+        # Create and use the agent asynchronously
         asyncio.run(agent.aprint_response("How to make Tom Kha Gai", markdown=True))
     ```
     
@@ -102,5 +93,5 @@ if __name__ == "__main__":
 
 ## Developer Resources
 
-- View [Cookbook (Sync)](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/chroma_db/chroma_db.py)
-- View [Cookbook (Async)](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/chroma_db/async_chroma_db.py)
+- View [Cookbook (Sync)](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/chroma_db/chroma_db.py)
+- View [Cookbook (Async)](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/chroma_db/async_chroma_db.py)

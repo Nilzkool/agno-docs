@@ -146,6 +146,34 @@ ag ws setup -d
 
 </CodeGroup>
 
+## Workspace Config
+
+Run `ag ws config` to print the active workspace configuration
+
+<CodeGroup>
+
+```bash
+ag ws config
+```
+
+</CodeGroup>
+
+## Delete workspace record
+
+Run `ag ws delete` to delete the workspace record from Agno (does not delete files)
+
+<CodeGroup>
+
+```bash
+ag ws delete
+```
+
+```bash
+ag ws delete -a  # Delete all workspaces
+```
+
+</CodeGroup>
+
 ## Command Options
 
 <Note>Run `ag ws up --help` to view all options</Note>
@@ -216,156 +244,6 @@ ag ws up \
   -e dev \
   -i docker \
   -g app
-```
-
-</CodeGroup>
-
-### Name (`--name`)
-
-Use the `--name` or `-n` flag to filter by resource name
-
-<CodeGroup>
-
-```bash flag
-ag ws up --name app
-```
-
-```bash full options
-ag ws up \
-  --env dev \
-  --infra docker \
-  --name app
-```
-
-```bash shorthand
-ag ws up dev:docker::app
-```
-
-```bash short options
-ag ws up \
-  -e dev \
-  -i docker \
-  -n app
-```
-
-</CodeGroup>
-
-### Type (`--type`)
-
-Use the `--type` or `-t` flag to filter by resource type.
-
-<CodeGroup>
-
-```bash flag
-ag ws up --type container
-```
-
-```bash full options
-ag ws up \
-  --env dev \
-  --infra docker \
-  --type container
-```
-
-```bash shorthand
-ag ws up dev:docker:app::container
-```
-
-```bash short options
-ag ws up \
-  -e dev \
-  -i docker \
-  -t container
-```
-
-</CodeGroup>
-
-### Dry Run (`--dry-run`)
-
-The `--dry-run` or `-dr` flag can be used to **dry-run** the command. `ag ws up -dr` will only print resources, not create them.
-
-<CodeGroup>
-
-```bash flag
-ag ws up --dry-run
-```
-
-```bash full options
-ag ws up \
-  --env dev \
-  --infra docker \
-  --dry-run
-```
-
-```bash shorthand
-ag ws up dev:docker -dr
-```
-
-```bash short options
-ag ws up \
-  -e dev \
-  -i docker \
-  -dr
-```
-
-</CodeGroup>
-
-### Show Debug logs (`--debug`)
-
-Use the `--debug` or `-d` flag to show debug logs.
-
-<CodeGroup>
-
-```bash flag
-ag ws up -d
-```
-
-```bash full options
-ag ws up \
-  --env dev \
-  --infra docker \
-  -d
-```
-
-```bash shorthand
-ag ws up dev:docker -d
-```
-
-```bash short options
-ag ws up \
-  -e dev \
-  -i docker \
-  -d
-```
-
-</CodeGroup>
-
-### Force recreate images & containers (`-f`)
-
-Use the `--force` or `-f` flag to force recreate images & containers
-
-<CodeGroup>
-
-```bash flag
-ag ws up -f
-```
-
-```bash full options
-ag ws up \
-  --env dev \
-  --infra docker \
-  -f
-```
-
-```bash shorthand
-ag ws up dev:docker -f
-```
-
-```bash short options
-ag ws up \
-  -e dev \
-  -i docker \
-  -f
 ```
 
 </CodeGroup>

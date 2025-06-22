@@ -59,6 +59,8 @@ hn_team = Team(
         "Finally, provide a thoughtful and engaging summary.",
     ],
     response_model=Article,
+    enable_agentic_context=True,
+    share_member_interactions=True,
     show_tool_calls=True,
     markdown=True,
     debug_mode=True,
@@ -67,31 +69,3 @@ hn_team = Team(
 
 hn_team.print_response("Write an article about the top 2 stories on hackernews")
 ```
-
-
-## Usage
-
-<Steps>
-
-    <Snippet file="create-venv-step.mdx" />
-
-    <Step title="Install required libraries">
-        ```bash
-        pip install openai duckduckgo-search newspaper4k lxml_html_clean
-        ```
-    </Step>
-
-    <Step title="Set environment variables">
-        ```bash
-        export OPENAI_API_KEY=****
-        ```
-    </Step>
-
-    <Step title="Run the agent">
-        ```bash
-        python hackernews_team.py
-        ```
-    </Step>
-
-</Steps>
-

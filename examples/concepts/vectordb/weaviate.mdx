@@ -4,7 +4,7 @@ title: Weaviate Integration
 
 ## Code
 
-```python cookbook/agent_concepts/vector_dbs/weaviate_db.py
+```python cookbook/agent_concepts/knowledge/vector_dbs/weaviate_db/weaviate_db.py
 from agno.agent import Agent
 from agno.knowledge.pdf_url import PDFUrlKnowledgeBase
 from agno.vectordb.search import SearchType
@@ -15,7 +15,7 @@ vector_db = Weaviate(
     search_type=SearchType.hybrid,
     vector_index=VectorIndex.HNSW,
     distance=Distance.COSINE,
-    local=True,  # Set to False if using Weaviate Cloud and True if using local instance
+    local=True,  # False for cloud, True for local instance
 )
 # Create knowledge base
 knowledge_base = PDFUrlKnowledgeBase(
@@ -31,7 +31,6 @@ agent = Agent(
     show_tool_calls=True,
 )
 agent.print_response("How to make Thai curry?", markdown=True)
-
 ```
 
 ## Usage
@@ -48,11 +47,11 @@ agent.print_response("How to make Thai curry?", markdown=True)
   <Step title="Run Agent">
     <CodeGroup>
     ```bash Mac
-    python cookbook/agent_concepts/vector_dbs/weaviate_db.py
+    python cookbook/agent_concepts/knowledge/vector_dbs/weaviate_db/weaviate_db.py
     ```
 
     ```bash Windows
-    python cookbook/agent_concepts/vector_dbs/weaviate_db.py
+    python cookbook/agent_concepts/knowledge/vector_dbs/weaviate_db/weaviate_db.py
     ```
     </CodeGroup>
   </Step>

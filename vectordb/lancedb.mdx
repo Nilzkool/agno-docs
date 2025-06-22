@@ -12,56 +12,32 @@ pip install lancedb
 ## Example
 
 ```python agent_with_knowledge.py
-import typer
-from typing import Optional
-from rich.prompt import Prompt
-
 from agno.agent import Agent
 from agno.knowledge.pdf_url import PDFUrlKnowledgeBase
 from agno.vectordb.lancedb import LanceDb
-from agno.vectordb.search import SearchType
 
-# LanceDB Vector DB
+# Initialize LanceDB
 vector_db = LanceDb(
     table_name="recipes",
     uri="/tmp/lancedb",
-    search_type=SearchType.keyword,
 )
 
-# Knowledge Base
+# Create knowledge base
 knowledge_base = PDFUrlKnowledgeBase(
     urls=["https://agno-public.s3.amazonaws.com/recipes/ThaiRecipes.pdf"],
     vector_db=vector_db,
 )
 
-def lancedb_agent(user: str = "user"):
-    run_id: Optional[str] = None
+# Load the knowledge base (run once)
+knowledge_base.load(recreate=False)
 
-    agent = Agent(
-        run_id=run_id,
-        user_id=user,
-        knowledge=knowledge_base,
-        show_tool_calls=True,
-        debug_mode=True,
-    )
-
-    if run_id is None:
-        run_id = agent.run_id
-        print(f"Started Run: {run_id}\n")
-    else:
-        print(f"Continuing Run: {run_id}\n")
-
-    while True:
-        message = Prompt.ask(f"[bold] :sunglasses: {user} [/bold]")
-        if message in ("exit", "bye"):
-            break
-        agent.print_response(message)
-
-if __name__ == "__main__":
-    # Comment out after first run
-    knowledge_base.load(recreate=True)
-
-    typer.run(lancedb_agent)
+# Create and use the agent
+agent = Agent(
+    knowledge=knowledge_base,
+    show_tool_calls=True,
+    debug_mode=True,
+)
+agent.print_response("How to make Tom Kha Gai", markdown=True)
 ```
 
 <Card title="Async Support ⚡">
@@ -71,9 +47,7 @@ if __name__ == "__main__":
     </p>
     
     ```python async_lance_db.py
-    # install lancedb - `pip install lancedb`
     import asyncio
-
     from agno.agent import Agent
     from agno.knowledge.pdf_url import PDFUrlKnowledgeBase
     from agno.vectordb.lancedb import LanceDb
@@ -81,7 +55,7 @@ if __name__ == "__main__":
     # Initialize LanceDB
     vector_db = LanceDb(
         table_name="recipes",
-        uri="tmp/lancedb",  # You can change this path to store data elsewhere
+        uri="tmp/lancedb",
     )
 
     # Create knowledge base
@@ -89,11 +63,15 @@ if __name__ == "__main__":
         urls=["https://agno-public.s3.amazonaws.com/recipes/ThaiRecipes.pdf"],
         vector_db=vector_db,
     )
-    agent = Agent(knowledge=knowledge_base, show_tool_calls=True, debug_mode=True)
+    agent = Agent(
+        knowledge=knowledge_base,
+        show_tool_calls=True,
+        debug_mode=True,
+    )
 
     if __name__ == "__main__":
-        # Load knowledge base asynchronously
-        asyncio.run(knowledge_base.aload(recreate=False))  # Comment out after first run
+        # Load the knowledge base asynchronously (run once)
+        asyncio.run(knowledge_base.aload(recreate=False))
 
         # Create and use the agent asynchronously
         asyncio.run(agent.aprint_response("How to make Tom Kha Gai", markdown=True))
@@ -111,5 +89,5 @@ if __name__ == "__main__":
 
 ## Developer Resources
 
-- View [Cookbook (Sync)](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/lance_db/lance_db.py)
-- View [Cookbook (Async)](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/lance_db/async_lance_db.py)
+- View [Cookbook (Sync)](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/lance_db/lance_db.py)
+- View [Cookbook (Async)](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/lance_db/async_lance_db.py)

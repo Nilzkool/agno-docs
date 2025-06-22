@@ -1,33 +1,33 @@
 <ResponseField name="name" type="str" default="Ollama">
+  Name of the model provider.
 </ResponseField>
-<ResponseField name="model" type="str" default="openhermes">
-  ID of the model to use.
+<ResponseField name="id" type="str" default="llama3.1">
+  ID of the Ollama model to use.
 </ResponseField>
 <ResponseField name="host" type="str">
+  Host URL of the Ollama server (e.g., "http://localhost:11434").
 </ResponseField>
 <ResponseField name="timeout" type="Any">
+  Timeout for API requests.
 </ResponseField>
-<ResponseField name="format" type="str">
- The format to return a response in. Currently the only accepted value is json
+<ResponseField name="format" type="Any">
+  Response format, such as JSON schemas for structured outputs.
 </ResponseField>
 <ResponseField name="options" type="Any">
-  Additional model parameters such as temperature
+  Additional model parameters (e.g., temperature).
 </ResponseField>
 <ResponseField name="keep_alive" type="Union[float, str]">
-   Controls how long the model will stay loaded into memory following the request.
+  Controls how long the model stays loaded after the request.
 </ResponseField>
-<ResponseField name="client_kwargs" type="Dict[str, Any]" default="None">
-  Additional `{key: value}` dict sent when initalizing the `Ollama()` client.
+<ResponseField name="request_params" type="Dict[str, Any]">
+  Extra key–value parameters to include on each chat request.
 </ResponseField>
-<ResponseField name="ollama_client" type="ollama.Client()" default="None">
-  Provide your own `ollama.Client()`
+<ResponseField name="client_params" type="Dict[str, Any]" default="None">
+  Extra key–value arguments when initializing the Ollama client.
 </ResponseField>
-<ResponseField name="function_call_limit" type="int" default="10">
-  Maximum number of function calls allowed across all iterations.
+<ResponseField name="client" type="ollama.Client" default="None">
+  Provide an existing synchronous OllamaClient instance.
 </ResponseField>
-<ResponseField name="deactivate_tools_after_use" type="bool" default="False">
-  Deactivate tool calls by turning off JSON mode after 1 tool call
-</ResponseField>
-<ResponseField name="add_user_message_after_tool_call" type="bool" default="True">
-  After a tool call is run, add the user message as a reminder to the LLM
+<ResponseField name="async_client" type="ollama.AsyncClient" default="None">
+  Provide an existing asynchronous OllamaClient instance.
 </ResponseField>

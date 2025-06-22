@@ -1,41 +1,43 @@
-| Name                            | Type                              | Default          | Description                                                                                                             |
-| ------------------------------- | --------------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `id`                            | `str`                             | `"gpt-4o"`       | The id of the OpenAI model to use.                                                                                      |
-| `name`                          | `str`                             | `"OpenAIChat"`   | The name of this chat model instance.                                                                                   |
-| `provider`                      | `str`                             | `"OpenAI " + id` | The provider of the model.                                                                                              |
-| `store`                         | `Optional[bool]`                  | `None`           | Whether or not to store the output of this chat completion request for use in the model distillation or evals products. |
-| `metadata`                      | `Optional[Dict[str, Any]]`        | `None`           | Additional metadata to include with the request.                                                                        |
-| `frequency_penalty`             | `Optional[float]`                 | `None`           | Penalizes new tokens based on their frequency in the text so far.                                                       |
-| `logit_bias`                    | `Optional[Any]`                   | `None`           | Modifies the likelihood of specified tokens appearing in the completion.                                                |
-| `logprobs`                      | `Optional[bool]`                  | `None`           | Include the log probabilities on the logprobs most likely tokens.                                                       |
-| `max_tokens`                    | `Optional[int]`                   | `None`           | The maximum number of tokens to generate in the chat completion.                                                        |
-| `max_completion_tokens`         | `Optional[int]`                   | `None`           | The maximum number of tokens to generate in completions.                                                                |
-| `modalities`                    | `Optional[List[str]]`             | `None`           | List of modalities supported by the model.                                                                              |
-| `audio`                         | `Optional[Dict[str, Any]]`        | `None`           | Audio-specific parameters for the model.                                                                                |
-| `presence_penalty`              | `Optional[float]`                 | `None`           | Penalizes new tokens based on whether they appear in the text so far.                                                   |
-| `response_format`               | `Optional[Any]`                   | `None`           | An object specifying the format that the model must output.                                                             |
-| `seed`                          | `Optional[int]`                   | `None`           | A seed for deterministic sampling.                                                                                      |
-| `stop`                          | `Optional[Union[str, List[str]]]` | `None`           | Up to 4 sequences where the API will stop generating further tokens.                                                    |
-| `temperature`                   | `Optional[float]`                 | `None`           | Controls randomness in the model's output.                                                                              |
-| `top_logprobs`                  | `Optional[int]`                   | `None`           | How many log probability results to return per token.                                                                   |
-| `user`                          | `Optional[str]`                   | `None`           | A unique identifier representing your end-user.                                                                         |
-| `top_p`                         | `Optional[float]`                 | `None`           | Controls diversity via nucleus sampling.                                                                                |
-| `extra_headers`                 | `Optional[Any]`                   | `None`           | Additional headers to send with the request.                                                                            |
-| `extra_query`                   | `Optional[Any]`                   | `None`           | Additional query parameters to send with the request.                                                                   |
-| `request_params`                | `Optional[Dict[str, Any]]`        | `None`           | Additional parameters to include in the request.                                                                        |
-| `api_key`                       | `Optional[str]`                   | `None`           | The API key for authenticating with OpenAI.                                                                             |
-| `organization`                  | `Optional[str]`                   | `None`           | The organization to use for API requests.                                                                               |
-| `base_url`                      | `Optional[Union[str, httpx.URL]]` | `None`           | The base URL for API requests.                                                                                          |
-| `timeout`                       | `Optional[float]`                 | `None`           | The timeout for API requests.                                                                                           |
-| `max_retries`                   | `Optional[int]`                   | `None`           | The maximum number of retries for failed requests.                                                                      |
-| `default_headers`               | `Optional[Any]`                   | `None`           | Default headers to include in all requests.                                                                             |
-| `default_query`                 | `Optional[Any]`                   | `None`           | Default query parameters to include in all requests.                                                                    |
-| `http_client`                   | `Optional[httpx.Client]`          | `None`           | An optional pre-configured HTTP client.                                                                                 |
-| `client_params`                 | `Optional[Dict[str, Any]]`        | `None`           | Additional parameters for client configuration.                                                                         |
-| `client`                        | `Optional[OpenAIClient]`          | `None`           | The OpenAI client instance.                                                                                             |
-| `async_client`                  | `Optional[AsyncOpenAIClient]`     | `None`           | The asynchronous OpenAI client instance.                                                                                |
-| `structured_outputs`            | `bool`                            | `False`          | Whether to use the structured outputs from the Model.                                                                   |
-| `supports_structured_outputs`   | `bool`                            | `True`           | Whether the Model supports structured outputs.                                                                          |
-| `add_images_to_message_content` | `bool`                            | `True`           | Whether to add images to the message content.                                                                           |
-| `override_system_role`          | `bool`                            | `True`           | Whether to override the system role.                                                                                    |
-| `system_message_role`           | `str`                             | `"developer"`    | The role to map the system message to.                                                                                  |
+export const meta = {
+  title: 'OpenAIChat Model Parameters',
+};
+
+| Name                            | Type                                | Default     | Description                                                                                                        |
+| ------------------------------- | ----------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------ |
+| `id`                            | `string`                            | `"gpt-4o"`| The identifier of the OpenAI model to use (e.g., `gpt-4o`).                                                        |
+| `name`                          | `string`                            | `"OpenAIChat"` | The name of this chat model instance.                                                                       |
+| `provider`                      | `string`                            | `"OpenAI"`| The provider name for this model.                                                                                 |
+| `supports_native_structured_outputs` | `boolean`                   | `true`      | Whether the model supports native Pydantic structured outputs.                                                    |
+| `store`                         | `boolean?`                          | `undefined` | If true, store the output for use in model evaluation or distillation.                                            |
+| `reasoning_effort`              | `string?`                           | `undefined` | Internal OpenAI header to specify reasoning effort level.                                                         |
+| `metadata`                      | `Record<string, any>?`              | `undefined` | Additional metadata to include with the request.                                                                  |
+| `frequency_penalty`             | `number?`                           | `undefined` | Penalizes new tokens based on their frequency in the text so far.                                                 |
+| `logit_bias`                    | `any?`                              | `undefined` | Adjusts the likelihood of specified tokens appearing in the completion.                                           |
+| `logprobs`                      | `boolean?`                          | `undefined` | Include log probabilities for the most likely tokens.                                                             |
+| `top_logprobs`                  | `number?`                           | `undefined` | Number of top log probability tokens to return.                                                                   |
+| `max_tokens`                    | `number?`                           | `undefined` | Maximum number of tokens to generate in the completion.                                                           |
+| `max_completion_tokens`         | `number?`                           | `undefined` | Alias for maximum completion tokens (same as `max_tokens`).                                                      |
+| `modalities`                    | `string[]?`                         | `undefined` | List of supported input/output modalities (e.g., `["text","audio"]`).                                         |
+| `audio`                         | `Record<string, any>?`              | `undefined` | Audio-specific parameters such as `voice` or `format`.                                                            |
+| `presence_penalty`              | `number?`                           | `undefined` | Penalizes new tokens based on whether they appear in the text so far.                                             |
+| `response_format`               | `any?`                              | `undefined` | Schema or Pydantic model specifying output structure.                                                             |
+| `seed`                          | `number?`                           | `undefined` | Seed for deterministic sampling.                                                                                  |
+| `stop`                          | `string \| string[]?`              | `undefined` | Up to 4 sequences where the API will stop generating further tokens.                                              |
+| `temperature`                   | `number?`                           | `undefined` | Sampling temperature to control randomness.                                                                       |
+| `user`                          | `string?`                           | `undefined` | A unique identifier for the end user.                                                                             |
+| `top_p`                         | `number?`                           | `undefined` | Nucleus sampling parameter controlling diversity.                                                                 |
+| `extra_headers`                 | `Record<string, any>?`              | `undefined` | Additional HTTP headers to include with the request.                                                              |
+| `extra_query`                   | `Record<string, any>?`              | `undefined` | Additional query parameters for the request.                                                                      |
+| `request_params`                | `Record<string, any>?`              | `undefined` | Extra parameters to send directly to the API call.                                                                |
+| `api_key`                       | `string?`                           | `undefined` | OpenAI API key for authentication (falls back to `OPENAI_API_KEY` env var).                                        |
+| `organization`                  | `string?`                           | `undefined` | OpenAI organization ID for API requests (optional).                                                               |
+| `base_url`                      | `string \| URL?`                   | `undefined` | Custom base URL for the OpenAI API endpoint.                                                                      |
+| `timeout`                       | `number?`                           | `undefined` | Request timeout in seconds.                                                                                       |
+| `max_retries`                   | `number?`                           | `undefined` | Maximum number of retries for failed HTTP requests.                                                               |
+| `default_headers`               | `Record<string, any>?`              | `undefined` | Default HTTP headers for the client.                                                                              |
+| `default_query`                 | `Record<string, any>?`              | `undefined` | Default HTTP query parameters for the client.                                                                     |
+| `http_client`                   | `httpx.Client?`                     | `undefined` | Pre-configured `httpx` client instance.                                                                           |
+| `client_params`                 | `Record<string, any>?`              | `undefined` | Additional parameters for initializing the OpenAI client.                                                         |
+| `client`                        | `OpenAIClient?`                     | `undefined` | Internal synchronous OpenAI client instance.                                                                      |
+| `async_client`                  | `AsyncOpenAIClient?`                | `undefined` | Internal asynchronous OpenAI client instance.                                                                     |
+| `structured_outputs`            | `boolean`                           | `false`     | If true, enforce Pydantic model output when `response_format` is a Pydantic class.                                |

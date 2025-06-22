@@ -2,19 +2,22 @@
 title: Reddit Post Generator
 ---
 
-**Reddit Post Generator** is a team of agents that can research topics on the web and make posts for a subreddit on Reddit.
+**Reddit Post Generator** is a coordinated team of agents that research topics on the web and craft posts for a subreddit using a two-step workflow.
 
 Create a file `reddit_post_generator_team.py` with the following code:
 
 ```python reddit_post_generator_team.py
 from agno.agent import Agent
+from agno.models.openai import OpenAIChat
+from agno.team.team import Team
 from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.tools.reddit import RedditTools
 
+# Agent that performs focused web research
 web_searcher = Agent(
     name="Web Searcher",
     role="Searches the web for information on a topic",
-    description="An intelligent agent that performs comprehensive web searches to gather current and accurate information",
+    model=OpenAIChat(id="gpt-4o"),
     tools=[DuckDuckGoTools()],
     instructions=[
         "1. Perform focused web searches using relevant keywords",
@@ -26,41 +29,43 @@ web_searcher = Agent(
     ],
 )
 
+# Agent that crafts and publishes the Reddit post
 reddit_agent = Agent(
     name="Reddit Agent",
-    role="Uploads post on Reddit",
-    description="Specialized agent for crafting and publishing engaging Reddit posts",
+    role="Crafts and publishes engaging Reddit posts",
+    model=OpenAIChat(id="gpt-4o"),
     tools=[RedditTools()],
     instructions=[
-        "1. Get information regarding the subreddit",
-        "2. Create attention-grabbing yet accurate titles",
+        "1. Research subreddit rules and style guidelines",
+        "2. Draft attention-grabbing yet accurate titles",
         "3. Format posts using proper Reddit markdown",
-        "4. Avoid including links ",
-        "5. Follow subreddit-specific rules and guidelines",
-        "6. Structure content for maximum readability",
-        "7. Add appropriate tags and flairs if required",
+        "4. Avoid disallowed content and external links",
+        "5. Structure content for maximum readability",
+        "6. Add appropriate tags or flairs",
     ],
     show_tool_calls=True,
 )
 
-post_team = Agent(
-    team=[web_searcher, reddit_agent],
+# Coordinate both agents to produce the final post
+post_team = Team(
+    members=[web_searcher, reddit_agent],
+    mode="coordinate",
+    model=OpenAIChat(id="gpt-4o"),
     instructions=[
         "Work together to create engaging and informative Reddit posts",
-        "Start by researching the topic thoroughly using web searches",
-        "Craft a well-structured post with accurate information and sources",
-        "Follow Reddit guidelines and best practices for posting",
+        "First, gather information using the Web Searcher",
+        "Then, have the Reddit Agent craft the post according to subreddit guidelines",
     ],
     show_tool_calls=True,
     markdown=True,
 )
 
 post_team.print_response(
-    "Create a post on web technologies and frameworks to focus in 2025 on the subreddit r/webdev ",
+    "Create a post on web technologies and frameworks to focus in 2025 for the subreddit r/webdev",
     stream=True,
 )
-
 ```
+
 ## Usage
 
 <Steps>
@@ -68,24 +73,23 @@ post_team.print_response(
 
   <Step title="Install libraries">
     ```bash
-    pip install openai praw duckduckgo-search
+    pip install openai praw duckduckgo-search agno
     ```
   </Step>
 
   <Step title="Set environment variables">
     ```bash
-    export OPENAI_API_KEY=****
-    export REDDIT_CLIENT_ID=****
-    export REDDIT_CLIENT_SECRET=****
-    export REDDIT_USERNAME=****
-    export REDDIT_PASSWORD=****
+    export OPENAI_API_KEY=your_openai_key_here
+    export REDDIT_CLIENT_ID=your_client_id
+    export REDDIT_CLIENT_SECRET=your_client_secret
+    export REDDIT_USERNAME=your_username
+    export REDDIT_PASSWORD=your_password
     ```
   </Step>
 
-  <Step title="Run the agent">
+  <Step title="Run the team">
     ```bash
     python reddit_post_generator_team.py
     ```
   </Step>
-
 </Steps>

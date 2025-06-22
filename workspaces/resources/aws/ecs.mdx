@@ -1,4 +1,53 @@
 ---
 title: ECS
-description: This guide is in the works
+description: Deploy containerized workloads on AWS ECS
 ---
+
+# AWS ECS Resources
+
+AWS Elastic Container Service (ECS) lets you run Docker containers on AWS. We provide three pydantic resources:
+
+- **EcsCluster**: defines an ECS cluster
+- **EcsTaskDefinition**: defines your container image, CPU, memory, and environment
+- **EcsService**: deploys and maintains your tasks in the cluster
+
+## Quickstart Example
+
+Copy the following to `resources.py` and run `ag start resources.py` to deploy an NGINX service:
+
+<CodeGroup>
+
+```python resources.py
+from agno.aws.resource.ecs import EcsCluster, EcsTaskDefinition, EcsService
+
+# 1. Create an ECS cluster
+cluster = EcsCluster(name="my-cluster")
+
+# 2. Define a task (nginx container)
+task_def = EcsTaskDefinition(
+    name="nginx-task",
+    family="nginx-family",
+    image="nginx:latest",
+    cpu="256",
+    memory="512",
+)
+
+# 3. Deploy a service with desired count of 2
+ginx_service = EcsService(
+    name="nginx-service",
+    cluster=cluster,
+    task_definition=task_def,
+    desired_count=2,
+)
+
+# 4. List resources to apply
+resources = [cluster, task_def, nginx_service]
+```
+
+</CodeGroup>
+
+Once complete, tear down the cluster and service:
+
+```bash
+ag stop resources.py
+```

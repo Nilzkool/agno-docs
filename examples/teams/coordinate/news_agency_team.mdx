@@ -67,14 +67,13 @@ editor = Team(
         "Remember: you are the final gatekeeper before the article is published, so make sure the article is perfect.",
     ],
     add_datetime_to_instructions=True,
-    send_team_context_to_members=True,
+    enable_agentic_context=True,
     markdown=True,
     debug_mode=True,
     show_members_responses=True,
 )
 editor.print_response("Write an article about latest developments in AI.")
 ```
-
 
 ## Usage
 
@@ -101,4 +100,3 @@ editor.print_response("Write an article about latest developments in AI.")
     </Step>
 
 </Steps>
-

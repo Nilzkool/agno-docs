@@ -19,7 +19,7 @@ export TODOIST_API_TOKEN=***
 
 The following agent will create a new task in Todoist.
 
-```python cookbook/tools/todoist.py
+```python cookbook/tools/todoist_tools.py
 """
 Example showing how to use the Todoist Tools with Agno
 
@@ -35,8 +35,9 @@ Usage:
 """
 
 from agno.agent import Agent
-from agno.models.openai import OpenAIChat
+from agno.models.google import Gemini
 from agno.tools.todoist import TodoistTools
+
 
 todoist_agent = Agent(
     name="Todoist Agent",
@@ -49,7 +50,7 @@ todoist_agent = Agent(
         "When given a task to get, get the todoist task.",
     ],
     agent_id="todoist-agent",
-    model=OpenAIChat(id="gpt-4o"),
+    model=Gemini("gemini-2.0-flash-exp"),
     tools=[TodoistTools()],
     markdown=True,
     debug_mode=True,
@@ -60,18 +61,15 @@ todoist_agent = Agent(
 print("\n=== Create a task ===")
 todoist_agent.print_response("Create a todoist task to buy groceries tomorrow at 10am")
 
-
 # Example 2: Delete a task
 print("\n=== Delete a task ===")
 todoist_agent.print_response(
     "Delete the todoist task to buy groceries tomorrow at 10am"
 )
 
-
 # Example 3: Get all tasks
 print("\n=== Get all tasks ===")
 todoist_agent.print_response("Get all the todoist tasks")
-```
 
 ## Toolkit Params
 
@@ -91,8 +89,7 @@ todoist_agent.print_response("Get all the todoist tasks")
 | `get_active_tasks` | Retrieves all active (non-completed) tasks. |
 | `get_projects` | Retrieves all projects in Todoist. |
 
-
 ## Developer Resources
 
 - View [Tools](https://github.com/agno-agi/agno/blob/main/libs/agno/agno/tools/todoist.py)
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/todoist_tool.py)
+- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/todoist_tools.py)

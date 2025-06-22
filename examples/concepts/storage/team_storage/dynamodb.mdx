@@ -3,17 +3,14 @@ title: DynamoDB Team Storage
 sidebarTitle: DynamoDB
 ---
 
-Agno supports using DynamoDB as a storage backend for Teams using the `DynamoDbStorage` class.
+Agno supports using DynamoDB as a storage backend for Teams via the `DynamoDbStorage` class.
 
 ## Usage
 
-You need to provide `aws_access_key_id` and `aws_secret_access_key` parameters to the `DynamoDbStorage` class.
+Configure your AWS credentials in the environment or via the AWS CLI (no need to pass them explicitly):
 
-```python dynamodb_storage_for_team.py
-"""
-Run: `pip install openai duckduckgo-search newspaper4k lxml_html_clean agno` to install the dependencies
-"""
-
+```python
+# cookbook/storage/dynamodb_storage/dynamodb_storage_for_team.py
 from typing import List
 
 from agno.agent import Agent
@@ -24,35 +21,33 @@ from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.tools.hackernews import HackerNewsTools
 from pydantic import BaseModel
 
-
 class Article(BaseModel):
     title: str
     summary: str
     reference_links: List[str]
 
-
+# Individual agents
 hn_researcher = Agent(
     name="HackerNews Researcher",
     model=OpenAIChat("gpt-4o"),
-    role="Gets top stories from hackernews.",
     tools=[HackerNewsTools()],
 )
-
 web_searcher = Agent(
     name="Web Searcher",
     model=OpenAIChat("gpt-4o"),
-    role="Searches the web for information on a topic",
     tools=[DuckDuckGoTools()],
     add_datetime_to_instructions=True,
 )
 
-
+# Team with DynamoDB storage
 hn_team = Team(
     name="HackerNews Team",
     mode="coordinate",
-    model=OpenAIChat("gpt-4o"),
     members=[hn_researcher, web_searcher],
-    storage=DynamoDbStorage(table_name="team_sessions", region_name="us-east-1"),
+    storage=DynamoDbStorage(
+        table_name="team_sessions",  # DynamoDB table name
+        region_name="us-east-1"      # AWS region
+    ),
     instructions=[
         "First, search hackernews for what the user is asking about.",
         "Then, ask the web searcher to search for each story to get more information.",

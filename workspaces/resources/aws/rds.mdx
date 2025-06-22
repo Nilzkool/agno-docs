@@ -1,4 +1,89 @@
 ---
 title: RDS
-description: This guide is in the works
+description: Reference guide for AWS RDS resources with Agno
 ---
+
+## Overview
+
+Agno provides Pydantic-based resources to manage AWS RDS components in your workspace. You can create subnet groups, standalone instances, or clusters with a few lines of Python code.
+
+---
+
+## DB Subnet Group
+
+Define your database subnets to span multiple AZs:
+
+```python
+from agno.aws.resource.rds.db_subnet_group import DbSubnetGroup
+
+subnet_group = DbSubnetGroup(
+    name="my-db-sg",
+    description="Subnet group for my database",
+    subnet_ids=["subnet-0123456789abcdef0", "subnet-0fedcba9876543210"],
+    tags=[{"Key": "env", "Value": "dev"}],
+)
+```
+
+---
+
+## DB Instance
+
+Create a single RDS instance, optionally read credentials from Secrets Manager:
+
+```python
+from pathlib import Path
+from agno.aws.resource.secret.manager import SecretsManager
+from agno.aws.resource.rds.db_subnet_group import DbSubnetGroup
+from agno.aws.resource.rds.db_instance import DbInstance
+
+# Secret manager to hold credentials
+secret = SecretsManager(
+    name="my-db-secret",
+    secret_files=[Path("db_secrets.yml")],
+)
+
+# Subnet group defined above
+subnet_group = DbSubnetGroup(name="my-db-sg")
+
+# Instantiate the DB
+db = DbInstance(
+    name="mydb",
+    engine="postgres",
+    engine_version="13.4",
+    db_instance_class="db.t4g.medium",
+    db_subnet_group=subnet_group,
+    aws_secret=secret,
+    allocated_storage=20,
+    auto_minor_version_upgrade=True,
+    publicly_accessible=True,
+)
+```
+
+---
+
+## DB Cluster
+
+Create an Aurora or Multi-AZ cluster with any number of instances:
+
+```python
+from agno.aws.resource.rds.db_cluster import DbCluster
+from agno.aws.resource.rds.db_instance import DbInstance
+
+# Define instances
+instances = [
+    DbInstance(name="cluster-node-1", engine="aurora-postgresql", db_instance_class="db.r6g.large"),
+    DbInstance(name="cluster-node-2", engine="aurora-postgresql", db_instance_class="db.r6g.large"),
+]
+
+# Cluster definition
+cluster = DbCluster(
+    name="my-cluster",
+    engine="aurora-postgresql",
+    engine_version="13.6",
+    db_instances=instances,
+    db_subnet_group=subnet_group,
+    backup_retention_period=7,
+)
+```
+
+Use `ag ws up` or `ag start resources.py` to deploy these resources to AWS.

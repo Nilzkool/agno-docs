@@ -1,4 +1,44 @@
 ---
 title: Container
-description: This guide is in the works
+description: Reference for the DockerContainer resource
 ---
+
+The `DockerContainer` resource lets you define and manage containers entirely from Python using Agno.
+
+```python
+from agno.docker.resource.container import DockerContainer
+
+# Define a simple whoami container
+whoami = DockerContainer(
+    name="whoami",
+    image="traefik/whoami",
+    ports={"80/tcp": 80},  # container_port/protocol: host_port
+    pull=True,              # pull the latest image before running
+)
+
+# Start the container in your script or via Agno CLI
+if __name__ == "__main__":
+    whoami.create(docker_client=whoami.get_docker_client())
+```
+
+Alternatively, define it in `resources.py` and use the CLI:
+
+```python resources.py
+from agno.docker.resource.container import DockerContainer
+
+whoami = DockerContainer(
+    name="whoami",
+    image="traefik/whoami",
+    ports={"80/tcp": 8080},
+)
+```
+
+```bash
+# Start with Agno
+ag start resources.py
+
+# Stop with Agno
+ag stop resources.py
+```
+
+You can control entrypoint, environment variables, volumes, healthchecks, and more via the provided parameters. For higher-level applications, see [Apps](/workspaces/apps/introduction).

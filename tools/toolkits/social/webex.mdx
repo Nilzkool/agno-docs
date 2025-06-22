@@ -36,7 +36,7 @@ export WEBEX_ACCESS_TOKEN=your_access_token_here
 
 The following agent will list all spaces and send a message using Webex:
 
-```python cookbook/tools/webex_tool.py
+```python cookbook/tools/webex_tools.py
 from agno.agent import Agent
 from agno.tools.webex import WebexTools
 
@@ -55,7 +55,7 @@ agent.print_response(
 
 | Parameter      | Type   | Default | Description                                                                                |
 | -------------- | ------ | ------- | ------------------------------------------------------------------------------------------ |
-| `access_token` | `str`  | `None`  | Webex access token for authentication. If not provided, uses WEBEX_ACCESS_TOKEN environment variable. |
+| `access_token` | `str`  | `None`  | Webex access token for authentication. If not provided, uses WEBEX_ACCESS_TOKEN env var.   |
 | `send_message` | `bool` | `True`  | Enable sending messages to Webex spaces.                                                   |
 | `list_rooms`   | `bool` | `True`  | Enable listing Webex spaces/rooms.                                                         |
 
@@ -63,11 +63,10 @@ agent.print_response(
 
 | Function       | Description                                                                                                |
 | -------------- | ---------------------------------------------------------------------------------------------------------- |
-| `send_message` | Sends a message to a Webex room. Parameters: `room_id` (str) for the target room, `text` (str) for the message. |
-| `list_rooms`   | Lists all available Webex rooms/spaces with their details including ID, title, type, and visibility settings.   |
-
+| `send_message` | Sends a message to a Webex room. Parameters: `room_id` (str) and `text` (str). Returns JSON response.     |
+| `list_rooms`   | Lists all available Webex rooms/spaces with their details.                                                |
 
 ## Developer Resources
 
 - View [Tools](https://github.com/agno-agi/agno/blob/main/libs/agno/agno/tools/webex.py)
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/webex_tools.py) 
+- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/webex_tools.py)

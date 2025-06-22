@@ -14,39 +14,48 @@ export DISCORD_BOT_TOKEN=***
 
 ## Example
 
-```python cookbook/tools/discord.py
+```python cookbook/tools/discord_tools.py
 from agno.agent import Agent
 from agno.tools.discord import DiscordTools
 
-agent = Agent(
-    tools=[DiscordTools()],
+# Get Discord token from environment
+# (handled in your code or via environment variable)
+
+discord_tools = DiscordTools(
+    bot_token="YOUR_DISCORD_BOT_TOKEN",
+    enable_messaging=True,
+    enable_history=True,
+    enable_channel_management=True,
+    enable_message_management=True,
+)
+
+discord_agent = Agent(
+    name="Discord Agent",
+    tools=[discord_tools],
     show_tool_calls=True,
     markdown=True,
 )
 
-agent.print_response("Send 'Hello World!' to channel 1234567890", markdown=True)
+# Replace with your Discord IDs
+channel_id = "YOUR_CHANNEL_ID"
+server_id = "YOUR_SERVER_ID"
+
+discord_agent.print_response(
+    f"Send a message 'Hello from Agno!' to channel {channel_id}", stream=True
+)
 ```
+
 ## Toolkit Params
 
 | Parameter                   | Type    | Default | Description                                                                           |
 | --------------------------- | ------- | ------- | ------------------------------------------------------------------------------------- |
-| `bot_token`                 | `str`   | -  | Discord bot token for authentication.                                                 |
+| `bot_token`                 | `str`   | -       | Discord bot token for authentication.                                                 |
 | `enable_messaging`          | `bool`  | `True`  | Whether to enable sending messages to channels.                                       |
 | `enable_history`            | `bool`  | `True`  | Whether to enable retrieving message history from channels.                           |
 | `enable_channel_management` | `bool`  | `True`  | Whether to enable fetching channel info and listing channels.                         |
 | `enable_message_management` | `bool`  | `True`  | Whether to enable deleting messages from channels.                                    |
 
-## Toolkit Functions
-
-| Function                                          | Description                                                                                                   |
-| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `send_message`     | Send a message to a specified channel. Returns a success or error message.                                    |
-| `get_channel_info`               | Retrieve information about a specified channel. Returns the channel info as a JSON string.                    |
-| `list_channels`                    | List all channels in a specified server (guild). Returns the list of channels as JSON.                        |
-| `get_channel_messages`| Retrieve message history from a specified channel. Returns messages as a JSON string.                         |
-| `delete_message`| Delete a specific message by ID from a specified channel. Returns a success or error message.                 |
-
 ## Developer Resources
 
 - View [Tools](https://github.com/agno-agi/agno/blob/main/libs/agno/agno/tools/discord.py)
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/discord.py)
+- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/discord_tools.py)

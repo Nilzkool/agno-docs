@@ -22,14 +22,14 @@ docker run -d \
 
 ## Example
 
-```python agent_with_knowledge.py
+```python clickhouse_agent.py
 from agno.agent import Agent
 from agno.knowledge.pdf_url import PDFUrlKnowledgeBase
-from agno.storage.sqlite import SqliteStorage
+from agno.storage.agent.sqlite import SqliteAgentStorage
 from agno.vectordb.clickhouse import Clickhouse
 
 agent = Agent(
-    storage=SqliteStorage(table_name="recipe_agent"),
+    storage=SqliteAgentStorage(table_name="recipe_agent"),
     knowledge=PDFUrlKnowledgeBase(
         urls=["https://agno-public.s3.amazonaws.com/recipes/ThaiRecipes.pdf"],
         vector_db=Clickhouse(
@@ -40,16 +40,15 @@ agent = Agent(
             password="ai",
         ),
     ),
-    # Show tool calls in the response
     show_tool_calls=True,
-    # Enable the agent to search the knowledge base
     search_knowledge=True,
-    # Enable the agent to read the chat history
     read_chat_history=True,
 )
-# Comment out after first run
+
+# Load the knowledge base (run once)
 agent.knowledge.load(recreate=False)  # type: ignore
 
+# Queries
 agent.print_response("How do I make pad thai?", markdown=True)
 agent.print_response("What was my last question?", stream=True)
 ```
@@ -62,7 +61,6 @@ agent.print_response("What was my last question?", stream=True)
     
     ```python async_clickhouse.py
     import asyncio
-
     from agno.agent import Agent
     from agno.knowledge.pdf_url import PDFUrlKnowledgeBase
     from agno.storage.agent.sqlite import SqliteAgentStorage
@@ -80,16 +78,13 @@ agent.print_response("What was my last question?", stream=True)
                 password="ai",
             ),
         ),
-        # Show tool calls in the response
         show_tool_calls=True,
-        # Enable the agent to search the knowledge base
         search_knowledge=True,
-        # Enable the agent to read the chat history
         read_chat_history=True,
     )
 
     if __name__ == "__main__":
-        # Comment out after first run
+        # Load the knowledge base asynchronously (run once)
         asyncio.run(agent.knowledge.aload(recreate=False))
 
         # Create and use the agent
@@ -104,5 +99,5 @@ agent.print_response("What was my last question?", stream=True)
 
 ## Developer Resources
 
-- View [Cookbook (Sync)](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/clickhouse_db/clickhouse.py)
-- View [Cookbook (Async)](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/clickhouse_db/async_clickhouse.py)
+- View [Cookbook (Sync)](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/clickhouse_db/clickhouse.py)
+- View [Cookbook (Async)](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/clickhouse_db/async_clickhouse.py)

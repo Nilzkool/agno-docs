@@ -23,7 +23,7 @@ from agno.vectordb.pgvector import PgVector
 
 knowledge_base = YouTubeKnowledgeBase(
     urls=["https://www.youtube.com/watch?v=CDC3GOuJyZ0"],
-    # Table name: ai.website_documents
+    # Table name: ai.youtube_documents
     vector_db=PgVector(
         table_name="youtube_documents",
         db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
@@ -31,7 +31,7 @@ knowledge_base = YouTubeKnowledgeBase(
 )
 ```
 
-Then use the `knowledge_base` with an `Agent`:
+Then use the `knowledge_base` with an Agent:
 
 ```python agent.py
 from agno.agent import Agent
@@ -57,5 +57,4 @@ agent.print_response("Ask me about something from the knowledge base")
 
 ## Developer Resources
 
-- View [Sync loading Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/youtube_kb.py)
-- View [Async loading Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/youtube_kb_async.py)
+- View [Async loading Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/youtube_kb_async.py)

@@ -21,7 +21,8 @@ from agno.agent import Agent
 from agno.tools.api import CustomApiTools
 
 agent = Agent(
-    tools=[CustomApiTools(base_url="https://dog.ceo/api")],
+    tools=[CustomApiTools(base_url="https://dog.ceo/api", make_request=True)],
+    show_tool_calls=True,
     markdown=True,
 )
 
@@ -42,6 +43,7 @@ agent.print_response(
 | `verify_ssl`  | `bool`              | `True`  | Whether to verify SSL certificates                         |
 | `timeout`     | `int`               | `30`    | Request timeout in seconds                                 |
 | `make_request`| `bool`              | `True`  | Whether to register the make_request function              |
+| `json_data`   | `Dict[str, Any]`    | `None`  | JSON body to send with the request                         |
 
 ## Toolkit Functions
 
@@ -51,6 +53,5 @@ agent.print_response(
 
 ## Developer Resources
 
-- View [Tools](https://github.com/agno-agi/agno/blob/main/libs/agno/agno/tools/api.py)
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/custom_api_tools.py)
-```
+- View [Tools](https://github.com/Nilzkool/agno/blob/main/libs/agno/agno/tools/api.py)
+- View [Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/tools/custom_api_tools.py)

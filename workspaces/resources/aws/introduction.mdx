@@ -32,6 +32,7 @@ Copy the following code to a file `resources.py` and run `ag start resources.py`
 
 ```python resources.py
 import json
+from pathlib import Path
 from agno.aws.resource.secret import SecretsManager
 
 # -*- Secret called my-secret
@@ -50,9 +51,9 @@ Read the secret in another file called `read_my_secret.py`
 <CodeGroup>
 
 ```python read_my_secret.py
-from resources import my_secret
+from resources import prd_secret
 
-print(my_secret.get_secret_value("mysecretkey"))
+print(prd_secret.get_secret_value("mysecretkey"))
 ```
 
 </CodeGroup>
@@ -60,3 +61,44 @@ print(my_secret.get_secret_value("mysecretkey"))
 Run this file using `python read_my_secret.py`.
 
 Delete the secret using `ag stop resources.py`
+
+### ECS (Elastic Container Service)
+
+Copy the following code to a file `resources.py` and run `ag start resources.py` to deploy a simple NGINX service on AWS ECS.
+
+<CodeGroup>
+
+```python resources.py
+from agno.aws.resource.ecs import EcsCluster, EcsTaskDefinition, EcsService
+
+# Create an ECS cluster
+cluster = EcsCluster(name="my-cluster")
+
+# Define a task (nginx container)
+task_def = EcsTaskDefinition(
+    name="nginx-task",
+    family="nginx-family",
+    image="nginx:latest",
+    cpu="256",
+    memory="512",
+)
+
+# Deploy the service with 2 tasks
+service = EcsService(
+    name="nginx-service",
+    cluster=cluster,
+    task_definition=task_def,
+    desired_count=2,
+)
+
+# List resources to apply
+resources = [cluster, task_def, service]
+```
+
+</CodeGroup>
+
+Delete the ECS service, task definition, and cluster using:
+
+```
+ag stop resources.py
+```

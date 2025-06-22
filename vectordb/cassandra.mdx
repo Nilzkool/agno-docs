@@ -11,29 +11,28 @@ Install cassandra packages
 pip install cassandra-driver
 ```
 
-Run cassandra
+Run Cassandra
 
 ```shell
 docker run -d \
---name cassandra-db\
--p 9042:9042 \
-cassandra:latest
+  --name cassandra-db \
+  -p 9042:9042 \
+  cassandra:latest
 ```
 
 ## Example
 
 ```python agent_with_knowledge.py
+import os
+from cassandra.cluster import Cluster  # type: ignore
 from agno.agent import Agent
+from agno.embedder.mistral import MistralEmbedder
 from agno.knowledge.pdf_url import PDFUrlKnowledgeBase
+from agno.models.mistral import MistralChat
 from agno.vectordb.cassandra import Cassandra
 
-from agno.embedder.mistral import MistralEmbedder
-from agno.models.mistral import MistralChat
-
 # (Optional) Set up your Cassandra DB
-
 cluster = Cluster()
-
 session = cluster.connect()
 session.execute(
     """
@@ -44,20 +43,27 @@ session.execute(
 
 knowledge_base = PDFUrlKnowledgeBase(
     urls=["https://agno-public.s3.amazonaws.com/recipes/ThaiRecipes.pdf"],
-    vector_db=Cassandra(table_name="recipes", keyspace="testkeyspace", session=session, embedder=MistralEmbedder()),
+    vector_db=Cassandra(
+        table_name="recipes",
+        keyspace="testkeyspace",
+        session=session,
+        embedder=MistralEmbedder(),
+    ),
 )
 
-
-# knowledge_base.load(recreate=False)  # Comment out after first run
+# Load the knowledge base (run once)
+knowledge_base.load(recreate=True)
 
 agent = Agent(
-    model=MistralChat(provider="mistral-large-latest", api_key=os.getenv("MISTRAL_API_KEY")),
+    model=MistralChat(),
     knowledge=knowledge_base,
     show_tool_calls=True,
 )
 
 agent.print_response(
-    "What are the health benefits of Khao Niew Dam Piek Maphrao Awn?", markdown=True, show_full_reasoning=True
+    "What are the health benefits of Khao Niew Dam Piek Maphrao Awn?",
+    markdown=True,
+    show_full_reasoning=True,
 )
 ```
 
@@ -69,22 +75,15 @@ agent.print_response(
     
     ```python async_cassandra.py
     import asyncio
-
+    from cassandra.cluster import Cluster  # type: ignore
     from agno.agent import Agent
     from agno.embedder.mistral import MistralEmbedder
     from agno.knowledge.pdf_url import PDFUrlKnowledgeBase
     from agno.models.mistral import MistralChat
     from agno.vectordb.cassandra import Cassandra
 
-    try:
-        from cassandra.cluster import Cluster  # type: ignore
-    except (ImportError, ModuleNotFoundError):
-        raise ImportError(
-            "Could not import cassandra-driver python package.Please install it with pip install cassandra-driver."
-        )
-
+    # (Optional) Set up your Cassandra DB
     cluster = Cluster()
-
     session = cluster.connect()
     session.execute(
         """
@@ -110,10 +109,10 @@ agent.print_response(
     )
 
     if __name__ == "__main__":
-        # Comment out after first run
-        asyncio.run(knowledge_base.aload(recreate=False))
+        # Load the knowledge base asynchronously (run once)
+        asyncio.run(knowledge_base.aload(recreate=True))
 
-        # Create and use the agent
+        # Create and use the agent asynchronously
         asyncio.run(
             agent.aprint_response(
                 "What are the health benefits of Khao Niew Dam Piek Maphrao Awn?",
@@ -130,5 +129,5 @@ agent.print_response(
 
 ## Developer Resources
 
-- View [Cookbook (Sync)](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/cassandra_db/cassandra_db.py)
-- View [Cookbook (Async)](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/cassandra_db/async_cassandra_db.py)
+- View [Cookbook (Sync)](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/cassandra_db/cassandra_db.py)
+- View [Cookbook (Async)](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/vector_dbs/cassandra_db/async_cassandra_db.py)

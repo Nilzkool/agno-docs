@@ -22,7 +22,7 @@ Agent: *Recalls previous memories about John*
 
 ## Code
 
-```python user_memories.py
+```python 17_user_memories_and_summaries.py
 import json
 from textwrap import dedent
 from typing import Optional
@@ -75,7 +75,7 @@ def create_agent(user: str = "user"):
         - Remember important details about users and reference them naturally
         - Maintain a warm, positive tone while being precise and helpful
         - When appropriate, refer back to previous conversations and memories
-        - Always be truthful about what you remember or don't remember"""),
+        - Always be truthful about what you remember or don't remember""")
     )
 
     if session_id is None:
@@ -101,7 +101,6 @@ def print_agent_memory(agent):
         message_dict = m.to_dict()
         messages.append(message_dict)
 
-
     # Print chat history
     console.print(
         Panel(
@@ -122,10 +121,12 @@ def print_agent_memory(agent):
             Panel(
                 JSON(
                     json.dumps(
-                    [
-                        user_memory.to_dict()
-                        for user_memory in agent.memory.get_user_memories(user_id=user_id)
-                    ],
+                        [
+                            user_memory.to_dict()
+                            for user_memory in agent.memory.get_user_memories(
+                                user_id=user_id
+                            )
+                        ],
                         indent=4,
                     ),
                 ),
@@ -142,7 +143,9 @@ def print_agent_memory(agent):
                     json.dumps(
                         [
                             summary.to_dict()
-                            for summary in agent.memory.get_session_summaries(user_id=user_id)
+                            for summary in agent.memory.get_session_summaries(
+                                user_id=user_id
+                            )
                         ],
                         indent=4,
                     ),
@@ -176,7 +179,6 @@ def main(user: str = "user"):
 
 if __name__ == "__main__":
     typer.run(main)
-
 ```
 
 ## Usage
@@ -192,7 +194,7 @@ if __name__ == "__main__":
 
   <Step title="Run the agent">
     ```bash
-    python user_memories.py
+    python cookbook/getting_started/17_user_memories_and_summaries.py
     ```
   </Step>
 

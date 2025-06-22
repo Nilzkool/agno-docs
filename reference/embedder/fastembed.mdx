@@ -2,6 +2,11 @@
 title: FastEmbed
 ---
 
-FastEmbed Embedder is a class that allows you to embed documents using FastEmbed's efficient embedding models, with BAAI/bge-small-en-v1.5 as the default model.
+FastEmbed Embedder is a class that allows you to embed documents using FastEmbed's efficient embedding models, with `BAAI/bge-small-en-v1.5` as the default model. More models are available: https://qdrant.github.io/fastembed/examples/Supported_Models/
 
-<Snippet file="embedder-fastembed-reference.mdx" /> 
+The embedder provides two primary methods:
+
+- `get_embedding(text: str) -> List[float]`: Returns the embedding vector for the given text.
+- `get_embedding_and_usage(text: str) -> Tuple[List[float], Optional[Dict]]`: Returns the embedding vector and usage information (currently `None` as usage is not provided by FastEmbed).
+
+<Snippet file="embedder-fastembed-reference.mdx" />
