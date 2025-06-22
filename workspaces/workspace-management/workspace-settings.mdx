@@ -54,18 +54,13 @@ Checkout the `dev_image` in `workspace/dev_resources.py` and `prd_image` in `wor
 
 ## Build Images
 
-Setting `build_images=True` will build images locally when running `ag ws up dev:docker` or `ag ws up prd:docker`.
+Setting `build_images=True` will build images locally when running `ag ws up dev:docker --pull` or `ag ws up prd:docker --pull`.
 
 Checkout the `dev_image` in `workspace/dev_resources.py` and `prd_image` in `workspace/prd_resources.py` to see how its used.
 
-Read more about:
-
-- [Building your development image](/workspaces/workspace-management/development-app#build-your-development-image)
-- [Building your production image](/workspaces/workspace-management/production-app#build-your-production-image)
-
 ## Push Images
 
-Setting `push_images=True` will push images after building when running `ag ws up dev:docker` or `ag ws up prd:docker`.
+Setting `push_images=True` will push images after building when running `ag ws up dev:docker --pull` or `ag ws up prd:docker --pull`.
 
 Checkout the `dev_image` in `workspace/dev_resources.py` and `prd_image` in `workspace/prd_resources.py` to see how its used.
 

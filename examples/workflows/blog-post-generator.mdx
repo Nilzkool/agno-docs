@@ -71,7 +71,7 @@ class ScrapedArticle(BaseModel):
 class BlogPostGenerator(Workflow):
     """Advanced workflow for generating professional blog posts with proper research and citations."""
 
-    description: str = dedent("""\
+    description: str = dedent("""
     An intelligent blog post generator that creates engaging, well-researched content.
     This workflow orchestrates multiple AI agents to research, analyze, and craft
     compelling blog posts that combine journalistic rigor with engaging storytelling.
@@ -83,7 +83,7 @@ class BlogPostGenerator(Workflow):
     searcher: Agent = Agent(
         model=OpenAIChat(id="gpt-4o-mini"),
         tools=[DuckDuckGoTools()],
-        description=dedent("""\
+        description=dedent("""
         You are BlogResearch-X, an elite research assistant specializing in discovering
         high-quality sources for compelling blog content. Your expertise includes:
 
@@ -93,7 +93,7 @@ class BlogPostGenerator(Workflow):
         - Discovering unique angles and insights
         - Ensuring comprehensive topic coverage\
         """),
-        instructions=dedent("""\
+        instructions=dedent("""
         1. Search Strategy 🔍
            - Find 10-15 relevant sources and select the 5-7 best ones
            - Prioritize recent, authoritative content
@@ -114,7 +114,7 @@ class BlogPostGenerator(Workflow):
     article_scraper: Agent = Agent(
         model=OpenAIChat(id="gpt-4o-mini"),
         tools=[Newspaper4kTools()],
-        description=dedent("""\
+        description=dedent("""
         You are ContentBot-X, a specialist in extracting and processing digital content
         for blog creation. Your expertise includes:
 
@@ -124,7 +124,7 @@ class BlogPostGenerator(Workflow):
         - Quote and statistic preservation
         - Maintaining source attribution\
         """),
-        instructions=dedent("""\
+        instructions=dedent("""
         1. Content Extraction 📑
            - Extract content from the article
            - Preserve important quotes and statistics
@@ -145,7 +145,7 @@ class BlogPostGenerator(Workflow):
     # Content Writer Agent: Crafts engaging blog posts from research
     writer: Agent = Agent(
         model=OpenAIChat(id="gpt-4o"),
-        description=dedent("""\
+        description=dedent("""
         You are BlogMaster-X, an elite content creator combining journalistic excellence
         with digital marketing expertise. Your strengths include:
 
@@ -156,7 +156,7 @@ class BlogPostGenerator(Workflow):
         - Optimizing for SEO while maintaining quality
         - Creating shareable conclusions\
         """),
-        instructions=dedent("""\
+        instructions=dedent("""
         1. Content Strategy 📝
            - Craft attention-grabbing headlines
            - Write compelling introductions
@@ -177,7 +177,7 @@ class BlogPostGenerator(Workflow):
            - Optimize for SEO
            - Add engaging subheadings\
         """),
-        expected_output=dedent("""\
+        expected_output=dedent("""
         # {Viral-Worthy Headline}
 
         ## Introduction
@@ -288,7 +288,7 @@ class BlogPostGenerator(Workflow):
             else scraped_articles
         )
 
-    def add_scraped_articles_to_cache(
+    def add_scraped_articles_to_cache( 
         self, topic: str, scraped_articles: Dict[str, ScrapedArticle]
     ):
         logger.info(f"Saving scraped articles for topic: {topic}")
@@ -440,7 +440,7 @@ if __name__ == "__main__":
 
   <Step title="Install libraries">
     ```bash
-    openai duckduckgo-search newspaper4k lxml_html_clean sqlalchemy agno
+    pip install openai duckduckgo-search newspaper4k lxml_html_clean sqlalchemy agno
     ```
   </Step>
 

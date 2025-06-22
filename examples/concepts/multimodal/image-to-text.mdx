@@ -4,7 +4,7 @@ title: Image to Text Agent
 
 ## Code
 
-```python
+```python cookbook/agent_concepts/multimodal/image_to_text.py
 from pathlib import Path
 
 from agno.agent import Agent
@@ -13,21 +13,13 @@ from agno.models.openai import OpenAIChat
 
 agent = Agent(
     model=OpenAIChat(id="gpt-4o"),
-    agent_id="image-to-text",
-    name="Image to Text Agent",
     markdown=True,
-    debug_mode=True,
-    show_tool_calls=True,
-    instructions=[
-        "You are an AI agent that can generate text descriptions based on an image.",
-        "You have to return a text response describing the image.",
-    ],
 )
+
 image_path = Path(__file__).parent.joinpath("sample.jpg")
 agent.print_response(
     "Write a 3 sentence fiction story about the image",
     images=[Image(filepath=image_path)],
-    stream=True,
 )
 ```
 
@@ -51,11 +43,11 @@ agent.print_response(
   <Step title="Run Agent">
     <CodeGroup>
     ```bash Mac
-    python cookbook/agent_concepts/multimodal/image_to_text_agent.py
+    python cookbook/agent_concepts/multimodal/image_to_text.py
     ```
 
     ```bash Windows
-    python cookbook/agent_concepts/multimodal/image_to_text_agent.py
+    python cookbook/agent_concepts/multimodal/image_to_text.py
     ```
     </CodeGroup>
   </Step>

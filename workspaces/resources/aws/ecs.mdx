@@ -2,3 +2,195 @@
 title: ECS
 description: This guide is in the works
 ---
+
+Elastic Container Service (ECS) is a fully managed container orchestration service that helps you deploy, manage, and scale containerized applications.
+
+Agno provides `EcsCluster`, `EcsService`, and `EcsContainer` resources to define your ECS infrastructure as Python objects.
+
+## EcsCluster
+
+The `EcsCluster` class defines an ECS cluster where your services and tasks run.
+
+Key parameters:
+
+- `name` (str, required): The name of the cluster.
+- `ecs_cluster_name` (str, optional): The name for the cluster. Defaults to `name`.
+- `capacity_providers` (List[str], optional): Short names of capacity providers to associate with the cluster (e.g., `FARGATE`, `EC2`).
+- `service_connect_namespace` (str, optional): Default Service Connect namespace for new services in the cluster.
+- `tags` (List[Dict[str, str]], optional): Tags to apply to the cluster.
+- `settings` (List[Dict[str, Any]], optional): Settings to use when creating a cluster.
+- `configuration` (Dict[str, Any], optional): Execute command configuration for the cluster.
+- `default_capacity_provider_strategy` (List[Dict[str, Any]], optional): Default capacity provider strategy for the cluster.
+
+Example:
+
+```python
+from agno.aws.resource.ecs.cluster import EcsCluster
+
+my_ecs_cluster = EcsCluster(
+    name="my-app-cluster",
+    ecs_cluster_name="production-cluster",
+    capacity_providers=["FARGATE"],
+    service_connect_namespace="my-app-namespace",
+)
+```
+
+## EcsContainer
+
+`EcsContainer` defines a container definition within an ECS task definition.
+
+Key parameters:
+
+- `name` (str, required): The name of the container.
+- `image` (str, required): The image to use for the container.
+- `cpu` (int, optional): CPU units reserved for the container.
+- `memory` (int, optional): Memory (in MiB) to present to the container.
+- `port_mappings` (List[Dict[str, Any]], optional): List of port mappings for the container.
+- `essential` (bool, optional): If true, all other containers in the task are stopped if this container fails. Defaults to true.
+- `command` (List[str], optional): The command passed to the container.
+- `environment` (List[Dict[str, Any]], optional): Environment variables for the container.
+- `env_from_secrets` (Union[SecretsManager, List[SecretsManager]], optional): Read environment variables from AWS Secrets Manager.
+- `log_configuration` (Dict[str, Any], optional): Log configuration for the container.
+- `linux_parameters` (Dict[str, Any], optional): Linux-specific modifications applied to the container.
+
+Example:
+
+```python
+from agno.aws.resource.ecs.container import EcsContainer
+
+my_app_container = EcsContainer(
+    name="my-application",
+    image="my-repo/my-app:latest",
+    cpu=256,
+    memory=512,
+    port_mappings=[
+        {
+            "containerPort": 8080,
+            "hostPort": 8080,
+            "protocol": "tcp"
+        }
+    ],
+    environment=[
+        {"name": "ENV", "value": "production"}
+    ],
+    log_configuration={
+        "logDriver": "awslogs",
+        "options": {
+            "awslogs-group": "my-app-logs",
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "my-app"
+        }
+    }
+)
+```
+
+## EcsService
+
+`EcsService` defines and manages an ECS service, which maintains a specified number of instances of a task definition.
+
+Key parameters:
+
+- `name` (str, required): The name of the service.
+- `ecs_service_name` (str, optional): The name for the service. Defaults to `name`.
+- `cluster` (Union[EcsCluster, str], optional): The ECS cluster for the service.
+- `task_definition` (Union[EcsTaskDefinition, str], optional): The task definition for the service.
+- `desired_count` (int, optional): The number of task instantiations to keep running.
+- `launch_type` (str, optional): The infrastructure to run your service on (e.g., `FARGATE`, `EC2`).
+- `network_configuration` (Dict[str, Any], optional): Network configuration (required for `awsvpc` network mode).
+- `subnets` (List[Union[str, Subnet]], optional): Subnets for the service's ENI.
+- `security_groups` (List[Union[str, SecurityGroup]], optional): Security groups for the service's ENI.
+- `assign_public_ip` (bool, optional): Whether to assign a public IP to tasks using `awsvpc` network mode.
+- `load_balancers` (List[Dict[str, Any]], optional): Load balancer configuration for the service.
+- `target_group` (TargetGroup, optional): Target group to attach to the service (used with `target_container_name` and `target_container_port`).
+- `target_container_name` (str, optional): Name of the container to target in the target group.
+- `target_container_port` (int, optional): Port of the container to target in the target group.
+- `service_connect_configuration` (Dict[str, Any], optional): Configuration for service discovery and connection.
+- `service_registries` (List[Dict[str, Any]], optional): Service discovery registries.
+- `force_delete` (bool, optional): Force delete the service without waiting for tasks to stop.
+- `force_new_deployment` (bool, optional): Force a new deployment of the service on update.
+- `enable_execute_command` (bool, optional): Enable `execute-command` for tasks.
+- `wait_for_create` (bool, optional): Wait for the service to be stable after creation.
+
+Example:
+
+```python
+import os
+from agno.aws.resource.ecs.cluster import EcsCluster
+from agno.aws.resource.ecs.container import EcsContainer
+from agno.aws.resource.ecs.service import EcsService
+from agno.aws.resource.ecs.task_definition import EcsTaskDefinition
+from agno.aws.resource.ec2.security_group import SecurityGroup, InboundRule
+from agno.aws.resource.ec2.subnet import Subnet
+
+# Assuming you have subnets and security groups defined or obtained
+# For simplicity, let's mock them or use environment variables
+my_subnet = Subnet(name="subnet-0123456789abcdef0") # Replace with actual subnet ID
+my_security_group = SecurityGroup(
+    name="my-app-sg",
+    description="Security group for my app",
+    inbound_rules=[
+        InboundRule(port=8080, cidr_ip="0.0.0.0/0", description="Allow HTTP from anywhere")
+    ]
+)
+
+my_ecs_cluster = EcsCluster(
+    name="my-app-cluster",
+    capacity_providers=["FARGATE"],
+    service_connect_namespace="my-app-namespace",
+)
+
+my_app_container = EcsContainer(
+    name="my-application",
+    image="my-repo/my-app:latest", # Replace with your image
+    cpu=256,
+    memory=512,
+    port_mappings=[{"containerPort": 8080}],
+    log_configuration={
+        "logDriver": "awslogs",
+        "options": {
+            "awslogs-group": "my-app-logs",
+            "awslogs-region": os.getenv("AWS_REGION", "us-east-1"),
+            "awslogs-stream-prefix": "my-app"
+        }
+    }
+)
+
+my_task_definition = EcsTaskDefinition(
+    name="my-app-td",
+    family="my-app-family",
+    network_mode="awsvpc",
+    cpu="256",
+    memory="512",
+    containers=[my_app_container],
+    requires_compatibilities=["FARGATE"],
+)
+
+my_ecs_service = EcsService(
+    name="my-app-service",
+    cluster=my_ecs_cluster,
+    task_definition=my_task_definition,
+    desired_count=1,
+    launch_type="FARGATE",
+    subnets=[my_subnet], # Use actual Subnet object or ID string
+    security_groups=[my_security_group], # Use actual SecurityGroup object or ID string
+    assign_public_ip=True,
+    # Configure Service Connect for inter-service communication
+    service_connect_configuration={
+        "enabled": True,
+        "services": [
+            {
+                "portName": my_app_container.name,
+                "clientAliases": [
+                    {
+                        "port": 8080,
+                        "dnsName": "my-app"
+                    }
+                ]
+            }
+        ],
+    },
+    force_new_deployment=True, # Force a new deployment on updates
+    enable_execute_command=True, # Enable ECS Exec
+    wait_for_create=True, # Wait for the service to be stable
+)
+```

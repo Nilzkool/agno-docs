@@ -12,6 +12,25 @@ Your development application runs locally on docker and its resources are define
 
 The `WorkspaceSettings` object in the `workspace/settings.py` file defines common settings used by your workspace apps and resources.
 
+### Container Configuration
+
+When defining Docker apps, you can now configure container behavior such as restart policies and mounting `agno` configuration files. These settings are available in `agno.docker.app.base.DockerApp`.
+
+For example:
+
+```python
+from agno.docker.app.base import DockerApp
+
+dev_app = DockerApp(
+    ...
+    # Mount ~/.config/ag directory from host machine to the container
+    mount_agno_config=True,
+    # Restart the container when it exits
+    container_restart_policy={"Name": "on-failure", "MaximumRetryCount": 5},
+    ...
+)
+```
+
 ## Build your development image
 
 Your application uses the `agno` images by default. To use your own image:
@@ -65,7 +84,7 @@ ag ws up -e dev -i docker -t image -f
 
 ## Restart all containers
 
-Restart all docker containers using:
+Restart all docker containers using the `ag ws restart` command:
 
 <CodeGroup>
 
@@ -83,7 +102,7 @@ ag ws restart -e dev -c docker -t container
 
 ## Recreate development resources
 
-To recreate all dev resources, use the `--force` flag:
+To recreate all dev resources, use the `--force` flag with `ag ws up`:
 
 <CodeGroup>
 

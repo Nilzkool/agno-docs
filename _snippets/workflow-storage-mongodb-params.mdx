@@ -1,6 +1,7 @@
-| Parameter            | Type                    | Default | Description                                                |
-| ------------------- | ----------------------- | ------- | ---------------------------------------------------------- |
-| `collection_name`   | `str`                   | -       | The name of the collection to store Workflow sessions.      |
-| `db_url`            | `Optional[str]`         | `None`  | The MongoDB connection URL.                                |
+| Parameter            | Type                    | Default  | Description                                                |
+| ------------------- | ----------------------- | -------- | ---------------------------------------------------------- |
+| `collection_name`   | `str`                   | -        | The name of the collection to store Workflow sessions.      |
+| `db_url`            | `Optional[str]`         | `None`   | The MongoDB connection URL.                                |
 | `db_name`           | `str`                   | `"agno"` | The name of the database.                                 |
-| `client`            | `Optional[MongoClient]` | `None`  | Optional existing MongoDB client to use.                   |
+| `client`            | `Optional[MongoClient]` | `None`   | Optional existing MongoDB client to use.                   |
+| `mode`              | `Literal["agent", "team", "workflow"]` | `"agent"` | The mode of the storage. Defaults to "agent".       |

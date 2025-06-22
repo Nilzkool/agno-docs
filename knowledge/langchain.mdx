@@ -1,7 +1,5 @@
----
-title: LangChain Knowledge Base
-sidebarTitle: LangChain
----
+---title: LangChain Knowledge Base
+sidebarTitle: LangChain---
 
 The **LangchainKnowledgeBase** allows us to use a LangChain retriever or vector store as a knowledge base.
 
@@ -15,16 +13,16 @@ pip install langchain
 from agno.agent import Agent
 from agno.knowledge.langchain import LangChainKnowledgeBase
 
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.document_loaders import TextLoader
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.document_loaders import TextLoader
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.vectorstores import Chroma
+from langchain_chroma import Chroma
+from pathlib import Path
 
-chroma_db_dir = "./chroma_db"
-
+chroma_db_dir = Path("./tmp/chroma_db")
 
 def load_vector_store():
-    state_of_the_union = ws_settings.ws_root.joinpath("data/demo/state_of_the_union.txt")
+    state_of_the_union = Path("data/demo/state_of_the_union.txt")
     # -*- Load the document
     raw_documents = TextLoader(str(state_of_the_union)).load()
     # -*- Split it into chunks
@@ -42,8 +40,8 @@ retriever = db.as_retriever()
 # -*- Create a knowledge base from the vector store
 knowledge_base = LangChainKnowledgeBase(retriever=retriever)
 
-agent = Agent(knowledge_base=knowledge_base, add_references_to_prompt=True)
-conv.print_response("What did the president say about technology?")
+agent = Agent(knowledge=knowledge_base)
+agent.print_response("What did the president say about technology?")
 ```
 
 ## Params

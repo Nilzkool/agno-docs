@@ -2,7 +2,7 @@
 title: CI/CD
 ---
 
-Agno templates come pre-configured with [Github Actions](https://docs.github.com/en/actions) for CI/CD. We can
+Agno templates come pre-configured with [Github Actions](https://docs.github.com/en/actions) for CI/CD. We can:
 
 1. [Test and Validate on every PR](#test-and-validate-on-every-pr)
 2. [Build Docker Images with Github Releases](#build-docker-images-with-github-releases)
@@ -10,38 +10,43 @@ Agno templates come pre-configured with [Github Actions](https://docs.github.com
 
 ## Test and Validate on every PR
 
-Whenever a PR is opened against the `main` branch, a validate script runs that ensures
+Whenever a PR is opened against the `main` branch, a validation script runs that ensures:
 
-1. The changes are formatted using ruff
-2. All unit-tests pass
+1. The changes are formatted using ruff.
+2. All unit tests for the core `agno` library pass.
+   <Note>
+   Unit tests for `agno-docker` and `agno-aws` are currently commented out in the main `test.yml` workflow to optimize run times. They are typically covered by integration tests or specific validation workflows.
+   </Note>
 3. The changes don't have any typing or linting errors.
 
-Checkout the `.github/workflows/validate.yml` file for more information.
+Integration tests for various models (including AWS, Google, Anthropic, etc.) are run in a separate workflow triggered on release branches (`*release*` or `release/*`) via `.github/workflows/test_on_release.yml`.
+
+Checkout the `.github/workflows/test.yml` file for more information on the unit tests, and `.github/workflows/test_on_release.yml` for integration tests.
 
 <img src="/images/validate-cicd.png" alt="validate-cicd" />
 
 ## Build Docker Images with Github Releases
 
-If you're using [Dockerhub](https://hub.docker.com/) for images, you can buld and push the images throug a Github Release. This action is defined in the `.github/workflows/docker-images.yml` file.
+If you're using [Dockerhub](https://hub.docker.com/) for images, you can build and push the images through a Github Release. This action is defined in the `.github/workflows/docker-images.yml` file.
 
-1. Create a [Docker Access Token](https://hub.docker.com/settings/security) for Github Actions
+1. Create a [Docker Access Token](https://hub.docker.com/settings/security) for Github Actions.
 
 <img src="/images/docker-access-token.png" alt="docker-access-token" />
 
-2. Create secret variables `DOCKERHUB_REPO`, `DOCKERHUB_TOKEN` and `DOCKERHUB_USERNAME` in your github repo. These variables are used by the action in `.github/workflows/docker-images.yml`
+2. Create secret variables `DOCKERHUB_REPO`, `DOCKERHUB_TOKEN`, and `DOCKERHUB_USERNAME` in your GitHub repo. These variables are used by the action in `.github/workflows/docker-images.yml`.
 
 <img
   src="/images/github-actions-docker-secrets.png"
   alt="github-actions-docker-secrets"
 />
 
-3. Run workflow using a Github Release
+3. Run workflow using a Github Release.
 
 This workflow is configured to run when a release is created. Create a new release using:
 
 <Note>
 
-Confirm the image name in the `.github/workflows/docker-images.yml` file before running
+Confirm the image name in the `.github/workflows/docker-images.yml` file before running.
 
 </Note>
 
@@ -64,25 +69,25 @@ gh release create v0.1.0 --title "v0.1.0" -n ""
 
 <Note>
 
-You can also run the workflow using `gh workflow run`
+You can also run the workflow using `gh workflow run`.
 
 </Note>
 
 ## Build ECR Images with Github Releases
 
-If you're using ECR for images, you can buld and push the images through a Github Release. This action is defined in the `.github/workflows/ecr-images.yml` file and uses the new OpenID Connect (OIDC) approach to request the access token, without using IAM access keys.
+If you're using ECR for images, you can build and push the images through a Github Release. This action is defined in the `.github/workflows/ecr-images.yml` file and uses the new OpenID Connect (OIDC) approach to request the access token, without using IAM access keys.
 
-We will follow this [guide](https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/) to create an IAM role which will be used by the github action.
+We will follow this [guide](https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/) to create an IAM role which will be used by the GitHub action.
 
 1. Open the IAM console.
 2. In the left navigation menu, choose Identity providers.
 3. In the Identity providers pane, choose Add provider.
 4. For Provider type, choose OpenID Connect.
 5. For Provider URL, enter the URL of the GitHub OIDC IdP: https://token.actions.githubusercontent.com
-6. Get thumbprint to verify the server certificate
+6. Get thumbprint to verify the server certificate.
 7. For Audience, enter sts.amazonaws.com.
 
-Verify the information matches the screenshot below and Add provider
+Verify the information matches the screenshot below and Add provider.
 
 <img src="/images/github-oidc-provider.png" alt="github-oidc-provider" />
 
@@ -140,7 +145,7 @@ env:
   AWS_REGION: us-east-1
 ```
 
-16. Update the `docker-images` workflow to **NOT** run on a release
+16. Update the `docker-images` workflow to **NOT** run on a release.
 
 ```yaml .github/workflows/docker-images.yml
 name: Build Docker Images
@@ -148,7 +153,7 @@ name: Build Docker Images
 on: workflow_dispatch
 ```
 
-17. Run workflow using a Github Release
+17. Run workflow using a Github Release.
 
 <CodeGroup>
 
@@ -169,6 +174,6 @@ gh release create v0.2.0 --title "v0.2.0" -n ""
 
 <Note>
 
-You can also run the workflow using `gh workflow run`
+You can also run the workflow using `gh workflow run`.
 
 </Note>

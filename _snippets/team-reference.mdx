@@ -18,7 +18,7 @@
 | `additional_context` | `Optional[str]` | `None` | Additional context added to the end of the system message |
 | `success_criteria` | `Optional[str]` | `None` | Define the success criteria for the team |
 | `markdown` | `bool` | `False` | If markdown=true, add instructions to format the output using markdown |
-| `add_datetime_to_instructions` | `bool` | `False` | If True, add the current datetime to the instructions to give the agent a sense of time |
+| `add_datetime_to_instructions` | `bool` | `False` | If True, add the current datetime to the instructions to give the team a sense of time |
 | `add_member_tools_to_system_message` | `bool` | `True` | If True, add the member tools to the system message |
 | `knowledge` | `Optional[AgentKnowledge]` | `None` | Add a knowledge base to the team |
 | `retriever` | `Optional[Callable[..., Optional[List[Dict]]]]` | `None` | Function to get references to add to the user_message |
@@ -27,23 +27,35 @@
 | `add_context` | `bool` | `False` | If True, add the context to the user prompt |
 | `enable_agentic_context` | `bool` | `False` | If True, enable the team agent to update the team context and automatically send the team context to the members |
 | `share_member_interactions` | `bool` | `False` | If True, send all previous member interactions to members |
-| `read_team_history` | `bool` | `False` | If True, read the team history |
-| `search_knowledge` | `bool` | `True` | Add a tool that allows the Model to search the knowledge base |
 | `get_member_information_tool` | `bool` | `True` | Add a tool that allows the Model to get information about the members of the team |
-| `show_tool_calls` | `bool` | `False` | Show tool calls in team response |
+| `search_knowledge` | `bool` | `True` | Add a tool that allows the Model to search the knowledge base |
+| `read_team_history` | `bool` | `False` | If True, read the team history |
+| `tools` | `Optional[List[Union[Toolkit, Callable, Function, Dict]]]` | `None` | A list of tools provided to the Model |
+| `show_tool_calls` | `bool` | `True` | Show tool calls in team response |
+| `tool_call_limit` | `Optional[int]` | `None` | Maximum number of tool calls allowed |
+| `tool_choice` | `Optional[Union[str, Dict[str, Any]]]` | `None` | Controls which (if any) tool is called by the team model |
 | `response_model` | `Optional[Type[BaseModel]]` | `None` | Response model for the team response |
 | `use_json_mode` | `bool` | `False` | If `response_model` is set, sets the response "mode" of the model, i.e. if the model should explicitly respond with a JSON object instead of a Pydantic model |
 | `parse_response` | `bool` | `True` | If True, parse the response |
-| `memory` | `Optional[Memory]` | `None` | Memory for the team |
+| `memory` | `Optional[Union[TeamMemory, Memory]]` | `None` | Memory for the team |
+| `enable_agentic_memory` | `bool` | `False` | Enable the agent to manage memories of the user |
+| `enable_user_memories` | `bool` | `False` | If True, the agent creates/updates user memories at the end of runs |
+| `add_memory_references` | `Optional[bool]` | `None` | If True, the agent adds a reference to the user memories in the response |
+| `enable_session_summaries` | `bool` | `False` | If True, the agent creates/updates session summaries at the end of runs |
+| `add_session_summary_references` | `Optional[bool]` | `None` | If True, the agent adds a reference to the session summaries in the response |
 | `enable_team_history` | `bool` | `False` | If True, enable the team history |
-| `num_of_interactions_from_history` | `int` | `3` | Number of interactions from history |
+| `num_history_runs` | `int` | `3` | Number of historical runs to include in the messages |
+| `num_of_interactions_from_history` | `Optional[int]` | `None` | Deprecated in favor of `num_history_runs`: Number of interactions from history |
 | `storage` | `Optional[Storage]` | `None` | Storage for the team |
 | `extra_data` | `Optional[Dict[str, Any]]` | `None` | Extra data stored with this team |
+| `reasoning` | `bool` | `False` | Enable reasoning by working through the problem step by step |
+| `reasoning_model` | `Optional[Model]` | `None` | Model for reasoning |
+| `reasoning_min_steps` | `int` | `1` | Minimum number of reasoning steps |
+| `reasoning_max_steps` | `int` | `10` | Maximum number of reasoning steps |
 | `debug_mode` | `bool` | `False` | Enable debug logs |
 | `show_members_responses` | `bool` | `False` | Enable member logs - Sets the debug_mode for team and members |
 | `monitoring` | `bool` | `False` | Log team information to agno.com for monitoring |
 | `telemetry` | `bool` | `True` | Log minimal telemetry for analytics |
-
 
 ## Functions
 
@@ -55,6 +67,3 @@
 | `arun` | Run the agent asynchronously |
 | `get_session_summary` | Get the session summary for the given session ID and user ID (if not provided, the current session is used) |
 | `get_user_memories` | Get the user memories for the given user ID (if not provided, the current user is used) |
-
-
-

@@ -2,7 +2,7 @@
 title: Environment variables
 ---
 
-Environment variables can be added to resources using the `env_vars` parameter or the `env_file` parameter pointing to a `yaml` file. Examples
+Environment variables can be added to resources using the `env_vars` parameter or the `env_file` parameter pointing to a `yaml` file. Here are some examples of how environment variables are configured in a typical workspace:
 
 ```python dev_resources.py
 dev_fastapi = FastApi(
@@ -45,6 +45,36 @@ prd_fastapi = FastApi(
         # "MIGRATE_DB": ws_settings.prd_db_enabled,
     },
     ...
+)
+```
+
+### AWS Environment Variables in Docker Applications
+
+Docker applications can now recognize and utilize AWS environment variables for local development. This is managed through the `set_aws_env_vars` function in `agno.docker.app.base.DockerApp`.
+
+Common AWS environment variables that can be set for your Docker apps include:
+
+- `AWS_REGION`
+- `AWS_DEFAULT_REGION`
+- `AWS_PROFILE`
+
+### Managing Database Credentials with AWS Secrets Manager
+
+For enhanced security, DB cluster master user passwords can now be managed directly with AWS Secrets Manager. This is configured via the `manage_master_user_password` and `master_user_secret_kms_key_id` parameters in the `agno.aws.resource.rds.db_cluster.DbCluster` resource.
+
+Example for an RDS DB Cluster:
+
+```python
+from agno.aws.resource.rds.db_cluster import DbCluster
+
+dev_db = DbCluster(
+    name="my-dev-db",
+    engine="aurora-postgresql",
+    engine_version="15.5",
+    # ... other configurations
+    manage_master_user_password=True,
+    # Optional: specify a KMS key to encrypt the secret
+    master_user_secret_kms_key_id="arn:aws:kms:us-east-1:123456789012:key/your-kms-key-id",
 )
 ```
 

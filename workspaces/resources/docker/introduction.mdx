@@ -2,7 +2,7 @@
 title: Docker
 ---
 
-[Docker](https://docs.docker.com/get-started/overview/) is a game-changing technology that enables us to run applications locally. We package our [Apps](/workspaces/apps/introduction) into **Containers** that include everything needed to run the application
+[Docker](https://docs.docker.com/get-started/overview/) is a game-changing technology that enables us to run applications locally. We package our [Apps](/workspaces/apps/introduction) into **Containers** that include everything needed to run the application.
 
 ## Docker Resources
 
@@ -34,7 +34,8 @@ from agno.docker.resource.container import DockerContainer
 whoami = DockerContainer(
     name='whoami',
     image='traefik/whoami',
-    ports={'80': 80},
+    ports={'80/tcp': 80}, # Map container port 80 to host port 80
+    pull=True, # Ensure the latest image is pulled
 )
 ```
 

@@ -1,10 +1,9 @@
-### Parameters
-
-| Parameter | Type | Description | Default |
-|-----------|------|-------------|---------|
-| `table_name` | `str` | Name of the PostgreSQL table | Required |
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| `table_name` | `str` | Required | Name of the PostgreSQL table |
 | `schema` | `Optional[str]` | Database schema name | `"ai"` |
 | `db_url` | `Optional[str]` | PostgreSQL connection URL | `None` |
 | `db_engine` | `Optional[Engine]` | Pre-configured SQLAlchemy engine | `None` |
 | `schema_version` | `int` | Schema version number | `1` |
 | `auto_upgrade_schema` | `bool` | Auto-upgrade schema | `False` |
+| `mode` | `Optional[Literal["agent", "team", "workflow"]]` | The mode of the storage (agent, team, or workflow) | `"agent"` |

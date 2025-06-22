@@ -23,13 +23,9 @@ Please perform these tasks:
 """)
 ```
 
-## Toolkit Params
+## Toolkit Parameters
 
-| Parameter                 | Type                      | Default | Description                                                    |
-| ------------------------- | ------------------------- | ------- | -------------------------------------------------------------- |
-| `dataframes`              | `Dict[str, pd.DataFrame]` | `{}`    | A dictionary to store Pandas DataFrames, keyed by their names. |
-| `create_pandas_dataframe` | `function`                | -       | Registers a function to create a Pandas DataFrame.             |
-| `run_dataframe_operation` | `function`                | -       | Registers a function to run operations on a Pandas DataFrame.  |
+`PandasTools` initializes with `**kwargs`. It exposes the following functions as tools:
 
 ## Toolkit Functions
 
@@ -41,4 +37,4 @@ Please perform these tasks:
 ## Developer Resources
 
 - View [Tools](https://github.com/agno-agi/agno/blob/main/libs/agno/agno/tools/pandas.py)
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/pandas_tools.py)
+- View [Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/tools/pandas_tools.py)

@@ -1,6 +1,4 @@
----
-title: User Memories
----
+---title: User Memories---
 
 When we speak about Memory, the commonly agreed upon understanding of Memory is the ability to store insights and facts about the user the Agent is interacting with. In short, build a persona of the user, learn about their preferences and use that to personalize the Agent's response.
 
@@ -30,7 +28,7 @@ db_file = "tmp/agent.db"
 # Initialize memory.v2
 memory = Memory(
     # Use any model for creating memories
-    model=OpenAIChat(id="gpt-4.1"),
+    model=OpenAIChat(id="gpt-4o"),
     db=SqliteMemoryDb(table_name="user_memories", db_file=db_file),
 )
 # Initialize storage
@@ -38,7 +36,7 @@ storage = SqliteStorage(table_name="agent_sessions", db_file=db_file)
 
 # Initialize Agent
 memory_agent = Agent(
-    model=OpenAIChat(id="gpt-4.1"),
+    model=OpenAIChat(id="gpt-4o"),
     # Store memories in a database
     memory=memory,
     # Give the Agent the ability to update memories
@@ -242,7 +240,6 @@ from agno.models.message import Message
 
 memory_db = SqliteMemoryDb(table_name="memory", db_file="tmp/memory.db")
 memory = Memory(model=Gemini(id="gemini-2.0-flash-exp"), db=memory_db)
-
 
 jane_doe_id = "jane_doe@example.com"
 # Send a history of messages and add memories

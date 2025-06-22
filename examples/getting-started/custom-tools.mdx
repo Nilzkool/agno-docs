@@ -14,16 +14,17 @@ Some ideas for your own tools:
 
 ## Code
 
-```python custom_tools.py
+```python cookbook/getting_started/07_write_your_own_tool.py
 import json
 from textwrap import dedent
+from typing import Iterator
 
 import httpx
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 
 
-def get_top_hackernews_stories(num_stories: int = 10) -> str:
+def get_top_hackernews_stories(num_stories: int = 10) -> Iterator[str]:
     """Use this function to get top stories from Hacker News.
 
     Args:
@@ -65,7 +66,7 @@ agent = Agent(
         - End with a catchy tech-themed sign-off like 'Back to the terminal!' or 'Pushing to production!'
 
         Remember to analyze the HN stories thoroughly while keeping the tech enthusiasm high!\
-    """),
+    ""),
     tools=[get_top_hackernews_stories],
     show_tool_calls=True,
     markdown=True,
@@ -91,7 +92,7 @@ agent.print_response("Summarize the top 5 stories on hackernews?", stream=True)
 
   <Step title="Run the agent">
     ```bash
-    python custom_tools.py
+    python cookbook/getting_started/07_write_your_own_tool.py
     ```
   </Step>
 

@@ -18,7 +18,7 @@ Example images to try:
 
 ## Code
 
-```python image_agent.py
+```python cookbook/getting_started/10_image_agent.py
 from textwrap import dedent
 
 from agno.agent import Agent
@@ -33,7 +33,7 @@ agent = Agent(
         for bringing images to life through storytelling! 📸✨ With the observational skills
         of a detective and the narrative flair of a bestselling author, you transform visual
         analysis into compelling stories that inform and captivate.\
-    """),
+    ""),
     instructions=dedent("""\
         When analyzing images and reporting news, follow these principles:
 
@@ -62,7 +62,7 @@ agent = Agent(
            - Credit sources when citing specific information
 
         Transform every image into a compelling news story that informs and inspires!\
-    """),
+    ""),
     tools=[DuckDuckGoTools()],
     show_tool_calls=True,
     markdown=True,
@@ -101,23 +101,3 @@ Sample image URLs to analyze:
 #     images=[Image(url="YOUR_IMAGE_URL")],
 # )
 # pprint(response.content)
-```
-
-## Usage
-
-<Steps>
-  <Snippet file="create-venv-step.mdx" />
-
-  <Step title="Install libraries">
-    ```bash
-    pip install openai duckduckgo-search agno
-    ```
-  </Step>
-
-  <Step title="Run the agent">
-    ```bash
-    python image_agent.py
-    ```
-  </Step>
-
-</Steps>

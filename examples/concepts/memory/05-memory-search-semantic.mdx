@@ -7,6 +7,7 @@ title: Agentic Memory Search
 ```python cookbook/agent_concepts/memory/05_memory_search_agentic.py
 from agno.memory.v2.memory import Memory, UserMemory
 from agno.models.google.gemini import Gemini
+from rich.pretty import pprint
 
 memory = Memory(model=Gemini(id="gemini-2.0-flash-exp"))
 

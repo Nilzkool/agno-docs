@@ -11,7 +11,7 @@ Key features:
 
 ## Code
 
-```python agent_session.py
+```python cookbook/getting_started/16_agent_session.py
 import json
 from typing import Optional
 
@@ -76,7 +76,7 @@ def print_messages(agent):
                 json.dumps(
                     [
                         m.model_dump(include={"role", "content"})
-                        for m in agent.memory.messages
+                        for m in agent.get_messages_for_session()
                     ]
                 ),
                 indent=4,
@@ -118,7 +118,7 @@ if __name__ == "__main__":
 
   <Step title="Run the agent">
     ```bash
-    python agent_session.py
+    python cookbook/getting_started/16_agent_session.py
     ```
   </Step>
 

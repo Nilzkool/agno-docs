@@ -2,7 +2,7 @@
 title: Introduction
 ---
 
-Apps are tools like `FastAPI`, `PgVector`, `Streamlit`, `Jupyter`, `Django` that we define as python classes and run using `ag start` or `ag ws up`.
+Apps are tools like `FastAPI`, `PgVector`, `Streamlit`, `Jupyter`, `Django` that we define as python classes and run using `ag ws up`.
 
 When running Apps using agno, think of them as infrastructure as code but at a higher level of abstraction. Instead of defining containers, volumes etc. we define the application we want to run. We run **Applications as Code** instead of Infrastructure as Code.
 
@@ -12,7 +12,7 @@ The same `App` can run on docker, AWS (ECS) or Kubernetes (EKS). The App creates
 
 Lets run a Jupyter notebook and PgVector on docker.
 
-Copy the following contents to a file `resources.py` and run `ag start resources.py`
+Copy the following contents to a file `resources.py` and run `ag ws up`
 
 ```python resources.py
 from agno.docker.app.jupyter import Jupyter
@@ -48,7 +48,7 @@ Finally, defining **Applications as python objects** means we can import them in
 ```python
 from resources import vector_db
 
-db_url=vector_db.get_db_connection_local()
+db_url=vector_db.get_db_connection_string()
 ```
 
 Checkout some example apps you can run on docker:

@@ -18,7 +18,7 @@ from agno.docker.resource.container import DockerContainer
 whoami = DockerContainer(
     name='whoami',
     image='traefik/whoami',
-    ports={'80': 8080},
+    ports={'80/tcp': 80}, # Map container port 80 to host port 80
 )
 ```
 
@@ -28,7 +28,7 @@ from agno.docker.resource.image import DockerImage
 dev_image = DockerImage(
     name="repo/image",
     tag="latest",
-    push_image=True,,
+    # push_image=True,
 )
 ```
 
@@ -54,12 +54,15 @@ my_secret = SecretsManager(
 ```python RDS Database
 from pathlib import Path
 from agno.aws.resource.secret import SecretsManager
+from agno.aws.resource.rds.db_subnet_group import DbSubnetGroup
+from agno.aws.resource.rds.db_instance import DbInstance
 
 # -*- Database Secret
 db_secret = SecretsManager(
     name="my-db-secret",
-    # Read secret variables from db_secrets.yml
-    secret_files=[Path('db_secrets.yml')],
+    # Read secret variables from db_secrets.yml or provide directly
+    # secret_files=[Path('db_secrets.yml')],
+    secret_string='{"MASTER_USERNAME": "admin", "MASTER_USER_PASSWORD": "password", "DB_NAME": "llm"}'
 )
 
 # -*- Database Subnet Group
@@ -78,6 +81,10 @@ db = DbInstance(
     availability_zone="us-east-1a",
     publicly_accessible=True,
     aws_secret=db_secret,
+    # New: Manage master user password with AWS Secrets Manager
+    manage_master_user_password=True,
+    # Specify KMS key for encryption of the generated secret (optional)
+    # master_user_secret_kms_key_id="arn:aws:kms:us-east-1:123456789012:key/your-kms-key-id",
 )
 ```
 

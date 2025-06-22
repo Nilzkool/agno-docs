@@ -9,12 +9,16 @@ Agno supports using DynamoDB as a storage backend for Agents using the `DynamoDb
 
 You need to provide `aws_access_key_id` and `aws_secret_access_key` parameters to the `DynamoDbStorage` class.
 
-```python dynamodb_storage_for_agent.py
+```python
+import os
+from agno.agent import Agent
+from agno.models.openai import OpenAIChat
 from agno.storage.dynamodb import DynamoDbStorage
+from agno.tools.duckduckgo import DuckDuckGoTools
 
-# AWS Credentials
-AWS_ACCESS_KEY_ID = getenv("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = getenv("AWS_SECRET_ACCESS_KEY")
+# AWS Credentials (replace with your actual credentials or set as environment variables)
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 
 storage = DynamoDbStorage(
     # store sessions in the ai.sessions table
@@ -28,7 +32,15 @@ storage = DynamoDbStorage(
 )
 
 # Add storage to the Agent
-agent = Agent(storage=storage)
+agent = Agent(
+    model=OpenAIChat(id="gpt-4o"),
+    storage=storage,
+    tools=[DuckDuckGoTools()],
+    add_history_to_messages=True,
+)
+
+agent.print_response("How many people live in Canada?")
+agent.print_response("What is their national anthem called?")
 ```
 
 ## Params

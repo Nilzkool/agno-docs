@@ -40,13 +40,15 @@ agent.print_response("How to make Thai curry?", markdown=True)
   <Step title="Set your API keys">
     ```bash
     export ANTHROPIC_API_KEY=xxx
-    export OPENAI_API_KEY=xxx
+    export AZURE_OPENAI_API_KEY=xxx
+    export AZURE_OPENAI_ENDPOINT=xxx
+    export AZURE_DEPLOYMENT=xxx
     ```
   </Step>
 
   <Step title="Install libraries">
     ```bash
-    pip install -U anthropic sqlalchemy pgvector pypdf openai agno
+    pip install -U anthropic sqlalchemy pgvector pypdf azure-openai agno
     ```
   </Step>
 

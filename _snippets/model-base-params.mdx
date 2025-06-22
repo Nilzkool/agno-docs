@@ -13,8 +13,6 @@
 | `_function_call_stack`        | `Optional[List[FunctionCall]]`         | `None`     | Function call stack.                                           |
 | `system_prompt`               | `Optional[str]`                        | `None`     | System prompt from the model added to the Agent.               |
 | `instructions`                | `Optional[List[str]]`                  | `None`     | Instructions from the model added to the Agent.                |
-| `session_id`                  | `Optional[str]`                        | `None`     | Session ID of the calling Agent or Workflow.                   |
-| `structured_outputs`          | `Optional[bool]`                       | `None`     | Whether to use the structured outputs with this Model.         |
-| `supports_structured_outputs` | `bool`                                 | `False`    | Whether the model supports structured outputs.                 |
-| `override_system_role`        | `bool`                                 | `False`    | Whether to override the system role.                           |
+| `structured_outputs`          | `bool`                                 | `False`    | Whether to use the structured outputs with this Model.         |
+| `supports_native_structured_outputs` | `bool`                                 | `False`    | Whether the model supports native structured outputs.          |
 | `system_message_role`         | `str`                                  | `"system"` | The role to map the system message to.                         |

@@ -2,3 +2,121 @@
 title: Container
 description: This guide is in the works
 ---
+
+The `DockerContainer` class in Agno allows you to define and manage Docker containers as Python objects. This provides a programmatic way to specify container configurations, making your infrastructure definitions more readable, maintainable, and testable.
+
+## Key Parameters
+
+- `name` (str, required): The name of the container. This is how you'll refer to it (e.g., in `docker ps`).
+- `image` (str, required): The Docker image to run (e.g., `ubuntu:latest`, `my-repo/my-app:v1.0`).
+- `command` (str or List[str], optional): The command to execute inside the container.
+- `entrypoint` (str or List[str], optional): The entrypoint for the container, overriding the image's default entrypoint.
+- `ports` (Dict[str, Any], optional): A dictionary mapping container ports to host ports. For example, `{"8080/tcp": 80}` exposes container port 8080 to host port 80.
+- `volumes` (Dict[str, Dict[str, str]], optional): A dictionary to configure volumes mounted inside the container. Keys are host paths or volume names, values are dictionaries with `bind` (container path) and `mode` (e.g., `rw` for read/write, `ro` for read-only).
+- `environment` (Union[Dict[str, Any], List], optional): Environment variables to set inside the container.
+- `detach` (bool, optional): If `True`, runs the container in the background. Defaults to `True`.
+- `auto_remove` (bool, optional): If `True`, enables auto-removal of the container when its process exits. Defaults to `True`.
+- `remove` (bool, optional): If `True`, removes the container when it has finished running. Defaults to `True`.
+  <Note>
+  When running an application using `DockerApp` with `debug_mode=True`, `auto_remove` and `remove` are automatically set to `False` to prevent containers from being removed immediately, allowing for easier inspection.
+  </Note>
+- `pull` (bool, optional): If `True`, pulls the latest image before creating or updating the container. This ensures you're always running the most recent version of your image. Defaults to `False`.
+- `restart_policy` (Dict[str, Any], optional): Defines how the container should restart. E.g., `{"Name": "on-failure", "MaximumRetryCount": 5}`.
+- `healthcheck` (Dict[str, Any], optional): Specifies a test to perform to check the container's health.
+- `working_dir` (str, optional): The working directory inside the container.
+- `user` (str or int, optional): Username or UID to run commands as inside the container.
+
+## Basic Example
+
+Let's define a container running the [whoami](https://github.com/traefik/whoami) image, which is a simple HTTP server that prints information about the request. 
+
+Save this to `resources.py`:
+
+```python resources.py
+from agno.docker.resource.container import DockerContainer
+
+whoami = DockerContainer(
+    name='my-whoami-app',
+    image='traefik/whoami:latest',
+    ports={'80/tcp': 8080}, # Map container port 80 to host port 8080
+    detach=True,
+    auto_remove=True,
+    pull=True, # Always pull the latest image
+)
+```
+
+To create and run this container, execute:
+
+```bash
+ag start resources.py
+```
+
+Test it by opening [http://localhost:8080](http://localhost:8080) in your browser or using `curl`:
+
+```bash
+curl -X GET http://localhost:8080
+```
+
+To stop and remove the container:
+
+```bash
+ag stop resources.py
+```
+
+## Advanced Example: Mounting Volumes and Environment Variables
+
+This example demonstrates how to run a simple Python application in a container, mounting a local directory as a volume and passing environment variables.
+
+First, create a simple Python script named `app.py` in your project directory:
+
+```python app.py
+# app.py
+import os
+import time
+
+if __name__ == "__main__":
+    print("Starting simple Python app...")
+    message = os.getenv("APP_MESSAGE", "Hello from container!")
+    for i in range(5):
+        print(f"[{time.strftime('%H:%M:%S')}] {message} (Iteration {i+1})")
+        time.sleep(1)
+    print("App finished.")
+```
+
+Now, define your `DockerContainer` in `resources.py`:
+
+```python resources.py
+from agno.docker.resource.container import DockerContainer
+from pathlib import Path
+
+# Define a volume to mount the current directory into the container
+# We'll map the current directory (.) on the host to /app inside the container
+project_root = str(Path(".").resolve())
+
+my_python_app = DockerContainer(
+    name='my-python-app',
+    image='python:3.9-slim-buster', # A Python image
+    command=["python", "/app/app.py"], # Command to run the script
+    volumes={
+        project_root: {"bind": "/app", "mode": "rw"} # Mount current project dir
+    },
+    environment=[
+        {"name": "APP_MESSAGE", "value": "Agno says hi!"}
+    ],
+    detach=False, # Run in foreground to see logs directly
+    auto_remove=True,
+    pull=True,
+)
+```
+
+When you run `ag start resources.py`, Docker will:
+
+1. Pull the `python:3.9-slim-buster` image.
+2. Create and run a container named `my-python-app`.
+3. Mount your current project directory (containing `app.py`) into `/app` inside the container.
+4. Set the `APP_MESSAGE` environment variable.
+5. Execute `python /app/app.py`.
+
+You will see the output of `app.py` directly in your terminal, as `detach` is `False`.
+
+This demonstrates how `DockerContainer` allows for flexible and powerful container configurations.

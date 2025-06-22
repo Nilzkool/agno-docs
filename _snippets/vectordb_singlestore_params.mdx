@@ -6,3 +6,4 @@
 | `db_engine`  | `Optional[Engine]` | `None`             | SQLAlchemy engine instance.                         |
 | `embedder`   | `Embedder`         | `OpenAIEmbedder()` | The embedder to use for creating vector embeddings. |
 | `distance`   | `Distance`         | `Distance.cosine`  | The distance metric to use for similarity search.   |
+| `reranker`   | `Optional[Reranker]` | `None`           | Reranker for post-processing results                |

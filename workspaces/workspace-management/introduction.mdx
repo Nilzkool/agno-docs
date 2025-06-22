@@ -76,7 +76,7 @@ ag ws down -e dev -i docker
 
 ## Patch workspace resources
 
-Run `ag ws patch` to patch i.e. update workspace resources
+Run `ag ws patch` to patch i.e. update workspace resources. This command updates resources in place without deleting and recreating them when possible.
 
 <CodeGroup>
 
@@ -99,12 +99,6 @@ ag ws patch -e dev -i docker
 </CodeGroup>
 
 <br />
-
-<Note>
-
-The `patch` command in under development for some resources. Use `restart` if needed
-
-</Note>
 
 ## Restart workspace
 

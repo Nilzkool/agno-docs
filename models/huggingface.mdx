@@ -1,6 +1,4 @@
----
-title: HuggingFace
----
+---title: HuggingFace---
 
 Hugging Face provides a wide range of state-of-the-art language models tailored to diverse NLP tasks,
 including text generation, summarization, translation, and question answering.
@@ -37,8 +35,9 @@ from agno.models.huggingface import HuggingFace
 
 agent = Agent(
     model=HuggingFace(
-        id="meta-llama/Meta-Llama-3-8B-Instruct",
+        id="mistralai/Mistral-7B-Instruct-v0.2",
         max_tokens=4096,
+        temperature=0
     ),
     markdown=True
 )

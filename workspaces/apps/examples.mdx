@@ -27,6 +27,9 @@ vector_db = PgVectorDb(
 jupyter = Jupyter(
     mount_workspace=True,
     env_vars={"OPENAI_API_KEY": getenv("OPENAI_API_KEY")},
+    mount_agno_config=True,
+    container_tty=True,
+    container_stdin_open=True,
 )
 
 # -*- DockerResources
@@ -40,11 +43,11 @@ Start resources using:
 <CodeGroup>
 
 ```bash Mac
-ag start resources.py
+ag ws up
 ```
 
 ```bash Windows
-ag start resources.py
+ag ws up
 ```
 
 </CodeGroup>
@@ -59,11 +62,11 @@ ag start resources.py
 <CodeGroup>
 
 ```bash Mac
-ag stop resources.py
+ag ws down
 ```
 
 ```bash Windows
-ag stop resources.py
+ag ws down
 ```
 
 </CodeGroup>

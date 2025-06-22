@@ -26,9 +26,9 @@ agent = Agent(
     markdown=True,
     show_tool_calls=True,
     additional_context=dedent("""\
-    You have access to the following tables:
-    - movies: contains information about movies from IMDB.
-    """),
+You have access to the following tables:
+- movies: contains information about movies from IMDB.
+"""),
 )
 asyncio.run(
     agent.aprint_response("What is the average rating of movies?", stream=False)

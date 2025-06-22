@@ -161,7 +161,7 @@ ag ws patch -e prd -i aws -n service
 
 ## Manually migrate prodution database
 
-Another approach is to SSH into the production container to run the migration manually. Your ECS tasks are already enabled with SSH access. Run the alembic command to migrate the production database:
+Your ECS tasks are already enabled with SSH access. This is controlled by the `ecs_exec_access=True` setting in the `AwsApp` configuration, which ensures the necessary permissions and service-level configurations for `aws ecs execute-command`. To manually migrate the production database, SSH into the production container and run the alembic command:
 
 ```bash
 ECS_CLUSTER=ai-app-prd-cluster

@@ -15,25 +15,47 @@ Install [docker desktop](https://docs.docker.com/desktop/install/mac-install/) a
 docker run --name my-redis -p 6379:6379 -d redis
 ```
 
-```python redis_storage_for_agent.py
+```python cookbook/storage/redis_storage/redis_storage_for_agent.py
+"""
+Test script for RedisStorage implementation.
+Run `pip install redis duckduckgo-search openai` to install dependencies.
+
+We can start Redis locally using docker:
+1. Start Redis container
+docker run --name my-redis -p 6379:6379 -d redis
+
+2. Verify container is running
+docker ps
+"""
+
 from agno.agent import Agent
 from agno.storage.redis import RedisStorage
 from agno.tools.duckduckgo import DuckDuckGoTools
 
 # Initialize Redis storage with default local connection
-storage = RedisStorage(
-    # Prefix for Redis keys to namespace the sessions
-    prefix="agno_test",
-    # Redis host address
-    host="localhost",
-    # Redis port number
-    port=6379,
-)
+storage = RedisStorage(prefix="agno_test", host="localhost", port=6379)
 
 # Create agent with Redis storage
 agent = Agent(
     storage=storage,
+    tools=[DuckDuckGoTools()],
+    add_history_to_messages=True,
 )
+
+agent.print_response("How many people live in Canada?")
+
+agent.print_response("What is their national anthem called?")
+
+# Verify storage contents
+print("\nVerifying storage contents...")
+all_sessions = storage.get_all_sessions()
+print(f"Total sessions in Redis: {len(all_sessions)}")
+
+if all_sessions:
+    print("\nSession details:")
+    session = all_sessions[0]
+    print(f"Session ID: {session.session_id}")
+    print(f"Messages count: {len(session.memory['messages'])}")
 ```
 
 ## Params

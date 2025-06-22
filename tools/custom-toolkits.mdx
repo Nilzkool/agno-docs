@@ -50,3 +50,21 @@ class ShellTools(Toolkit):
 
 agent = Agent(tools=[ShellTools()], show_tool_calls=True, markdown=True)
 agent.print_response("List all the files in my home directory.")
+```
+
+## Toolkit Parameters
+
+When initializing a custom Toolkit, you can configure its behavior using the following parameters:
+
+| Parameter      | Type                     | Default | Description                                                               |
+| -------------- | ------------------------ | ------- | ------------------------------------------------------------------------- |
+| `name`         | `str`                    | `"toolkit"` | A descriptive name for the toolkit.                                       |
+| `tools`        | `List[Callable]`         | `[]`    | A list of callable functions to be automatically registered with the toolkit. |
+| `instructions` | `Optional[str]`          | `None`  | Additional instructions for the toolkit, influencing how the model uses its tools. |
+| `add_instructions` | `bool`                 | `False` | Whether to automatically include default instructions for the toolkit.    |
+| `include_tools` | `Optional[list[str]]`   | `None`  | A list of tool names to explicitly include from the `tools` list. If specified, only these tools will be registered. |
+| `exclude_tools` | `Optional[list[str]]`   | `None`  | A list of tool names to explicitly exclude from the `tools` list. If specified, these tools will not be registered. |
+| `cache_results` | `bool`                  | `False` | Enables caching of tool function results to disk to avoid recomputation. |
+| `cache_ttl`    | `int`                    | `3600`  | Time-to-live (in seconds) for cached results. Cached results expire after this duration. |
+| `cache_dir`    | `Optional[str]`          | `None`  | Directory path to store cache files. Defaults to system temporary directory if `None`. |
+| `auto_register` | `bool`                  | `True`  | If `True`, all callable methods defined in the `tools` list will be automatically registered when the toolkit is initialized. |

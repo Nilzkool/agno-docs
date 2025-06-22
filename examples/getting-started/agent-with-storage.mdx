@@ -14,7 +14,7 @@ Example prompts to try:
 
 ## Code
 
-```python agent_with_storage.py
+```python cookbook/getting_started/04_agent_with_storage.py
 from textwrap import dedent
 from typing import List, Optional
 
@@ -37,6 +37,9 @@ agent_knowledge = PDFUrlKnowledgeBase(
         embedder=OpenAIEmbedder(id="text-embedding-3-small"),
     ),
 )
+# Comment out after the knowledge base is loaded
+# if agent_knowledge is not None:
+#     agent_knowledge.load()
 
 agent_storage = SqliteStorage(table_name="recipe_agent", db_file="tmp/agents.db")
 
@@ -154,7 +157,7 @@ if __name__ == "__main__":
 
   <Step title="Run the agent">
     ```bash
-    python agent_with_storage.py
+    python cookbook/getting_started/04_agent_with_storage.py
     ```
   </Step>
 

@@ -8,7 +8,6 @@ If after a tool call we need to "retry" the model with a different set of instru
 - `StopAgentRun`: Use this exception when you want to stop the agent run.
 - `AgentRunException`: A generic exception that can be used to retry the tool call.
 
-
 This example shows how to use the `RetryAgentRun` exception to retry the agent with additional instructions.
 
 ```python retry_in_tool_call.py
@@ -16,7 +15,6 @@ from agno.agent import Agent
 from agno.exceptions import RetryAgentRun
 from agno.models.openai import OpenAIChat
 from agno.utils.log import logger
-
 
 def add_item(agent: Agent, item: str) -> str:
     """Add an item to the shopping list."""
@@ -46,3 +44,37 @@ print(f"Final session state: {agent.session_state}")
 <Tip>
 Make sure to set `AGNO_DEBUG=True` to see the debug logs.
 </Tip>
+
+## Example: Stopping the Agent with `StopAgentRun`
+
+This example demonstrates how to use the `StopAgentRun` exception to immediately halt an agent's execution.
+
+```python stop_agent_run.py
+from agno.agent import Agent
+from agno.exceptions import StopAgentRun
+from agno.models.openai import OpenAIChat
+from agno.utils.log import logger
+
+def add_item(agent: Agent, item: str) -> str:
+    """Add an item to the shopping list."""
+    agent.session_state["shopping_list"].append(item)
+    len_shopping_list = len(agent.session_state["shopping_list"])
+    if len_shopping_list < 3:
+        raise StopAgentRun(
+            f"Shopping list is: {agent.session_state['shopping_list']}. We must stop the agent."
+        )
+
+    logger.info(f"The shopping list is now: {agent.session_state.get('shopping_list')}")
+    return f"The shopping list is now: {agent.session_state.get('shopping_list')}"
+
+
+agent = Agent(
+    model=OpenAIChat(id="gpt-4o-mini"),
+    # Initialize the session state with empty shopping list
+    session_state={"shopping_list": []},
+    tools=[add_item],
+    markdown=True,
+)
+agent.print_response("Add milk", stream=True)
+print(f"Final session state: {agent.session_state}")
+```

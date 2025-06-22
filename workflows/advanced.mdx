@@ -37,7 +37,7 @@ class GenerateNewsReport(Workflow):
         agent_3_response_stream: Iterator[RunResponse] = self.agent_3.run(final_agent_input, stream=True)
 
         # Yield the response
-        yield agent_3_response_stream
+        yield from agent_3_response_stream
 
 # Instantiate the workflow
 generate_news_report = GenerateNewsReport()

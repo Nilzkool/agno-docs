@@ -32,7 +32,7 @@ This mode is particularly useful when you have specialized agents with distinct 
     english_agent = Agent(
         name="English Agent",
         role="You can only answer in English",
-        model=OpenAIChat(id="gpt-4.5-preview"),
+        model=OpenAIChat(id="gpt-4o"),
         instructions=[
             "You must only respond in English",
         ],
@@ -57,7 +57,7 @@ This mode is particularly useful when you have specialized agents with distinct 
     spanish_agent = Agent(
         name="Spanish Agent",
         role="You can only answer in Spanish",
-        model=OpenAIChat(id="gpt-4.5-preview"),
+        model=OpenAIChat(id="gpt-4o"),
         instructions=[
             "You must only respond in Spanish",
         ],
@@ -83,7 +83,7 @@ This mode is particularly useful when you have specialized agents with distinct 
     multi_language_team = Team(
         name="Multi Language Team",
         mode="route",
-        model=OpenAIChat("gpt-4.5-preview"),
+        model=OpenAIChat("gpt-4o"),
         members=[
             english_agent,
             spanish_agent,

@@ -50,6 +50,7 @@ class GameGenerator(Workflow):
             "Create a game based on the user's prompt. "
             "The game should be HTML5, completely self-contained and must be runnable simply by opening on a browser",
             "Ensure the game has a alert that pops up if the user dies and then allows the user to restart or exit the game.",
+            "add full screen mode to the game",
             "Ensure instructions for the game are displayed on the HTML page."
             "Use user-friendly colours and make the game canvas large enough for the game to be playable on a larger screen.",
         ],
@@ -92,7 +93,7 @@ class GameGenerator(Workflow):
             "game_description": game_description,
             "game_code": game_code,
         }
-        qa_output = self.qa_agent.run(json.dumps(qa_input, indent=2))
+        qa_output = self.qa_agent.run({"role": "user", "content": json.dumps(qa_input)})
 
         if qa_output and qa_output.content and isinstance(qa_output.content, QAOutput):
             logger.info(qa_output.content)
@@ -161,7 +162,7 @@ if __name__ == "__main__":
 
   <Step title="Run the agent">
     ```bash
-    python game_generator.py.py
+    python game_generator.py
     ```
   </Step>
 

@@ -1,4 +1,4 @@
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `path` | `Path` | Required | Path to JSON file to read |
+| `path` | `Union[Path, IO[Any]]` | Required | Path to JSON file or a file-like object to read |
 | `chunk` | `bool` | `False` | Whether to chunk the documents (overrides base Reader default) |

@@ -8,12 +8,8 @@ title: Shell Tools
 from agno.agent import Agent
 from agno.tools.shell import ShellTools
 
-agent = Agent(
-    tools=[ShellTools()],
-    show_tool_calls=True,
-    markdown=True,
-)
-agent.print_response("List all files in the current directory")
+agent = Agent(tools=[ShellTools()], show_tool_calls=True)
+agent.print_response("Show me the contents of the current directory", markdown=True)
 ```
 
 ## Usage

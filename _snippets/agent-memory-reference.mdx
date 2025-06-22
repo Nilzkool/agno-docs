@@ -6,6 +6,8 @@
 | `memory_manager` | `Optional[MemoryManager]` | Manager for memory operations | `None` |
 | `summarizer` | `Optional[SessionSummarizer]` | Summarizer for generating session summaries | `None` |
 | `db` | `Optional[MemoryDb]` | Database for storing memories | `None` |
+| `delete_memories` | `bool` | Whether the memory manager should delete memories | `False` |
+| `clear_memories` | `bool` | Whether the memory manager should clear all memories | `False` |
 | `debug_mode` | `bool` | Whether to enable debug logging | `False` |
 
 ### Key Methods
@@ -21,7 +23,7 @@
 | `delete_user_memory` | Deletes a memory | `user_id: str, memory_id: str` | `None` |
 | `create_user_memories` | Creates memories from one or more messages | `message: Optional[str] = None, messages: Optional[List[Message]] = None, user_id: Optional[str] = None` | `str` |
 | `acreate_user_memories` | Creates memories from one or more messages (Async) | `message: Optional[str] = None, messages: Optional[List[Message]] = None, user_id: Optional[str] = None` | `str` |
-| `search_user_memories` | Searches user memories using specified retrieval method | `query: Optional[str] = None, limit: Optional[int] = None, retrieval_method: Optional[Literal["last_n", "first_n", "semantic"]] = None, user_id: Optional[str] = None` | `List[UserMemory]` |
+| `search_user_memories` | Searches user memories using specified retrieval method | `query: Optional[str] = None, limit: Optional[int] = None, retrieval_method: Optional[Literal["last_n", "first_n", "agentic"]] = None, user_id: Optional[str] = None` | `List[UserMemory]` |
 
 #### Session Summary Management
 

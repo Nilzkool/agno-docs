@@ -10,6 +10,7 @@ from agno.agent.agent import Agent
 from agno.memory.v2.db.sqlite import SqliteMemoryDb
 from agno.memory.v2.memory import Memory
 from agno.models.openai.chat import OpenAIChat
+from rich.pretty import pprint
 
 memory_db = SqliteMemoryDb(table_name="memory", db_file="tmp/memory.db")
 
@@ -47,9 +48,10 @@ for i, m in enumerate(memories):
 session_summary = memory.get_session_summary(
     user_id=john_doe_id, session_id=session_id_1
 )
-print(f"Session summary: {session_summary.summary}\n")
+pprint(session_summary)
 
 
+# Now lets do a new session with a different user
 session_id_2 = "1002"
 mark_gonzales_id = "mark@example.com"
 

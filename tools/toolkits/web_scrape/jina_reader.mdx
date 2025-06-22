@@ -16,12 +16,12 @@ pip install -U jina
 
 The following agent will use Jina API to summarize the content of https://github.com/AgnoAgi
 
-```python cookbook/tools/jinareader.py
+```python cookbook/tools/jinareader_tools.py
 from agno.agent import Agent
 from agno.tools.jina import JinaReaderTools
 
-agent = Agent(tools=[JinaReaderTools()])
-agent.print_response("Summarize: https://github.com/AgnoAgi")
+agent = Agent(tools=[JinaReaderTools()], debug_mode=True, show_tool_calls=True)
+agent.print_response("Summarize: https://github.com/agno-agi")
 ```
 
 ## Toolkit Params
@@ -35,12 +35,12 @@ agent.print_response("Summarize: https://github.com/AgnoAgi")
 
 ## Toolkit Functions
 
-| Function       | Description                                                                                                                                                                                            |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `read_url`     | Reads the content of a specified URL using Jina Reader API. Parameters include `url` for the URL to read. Returns the truncated content or an error message if the request fails.                      |
+| Function       | Description |
+|----------------|-------------|
+| `read_url`     | Reads the content of a specified URL using Jina Reader API. Parameters include `url` for the URL to read. Returns the truncated content or an error message if the request fails. |
 | `search_query` | Performs a web search using Jina Reader API based on a specified query. Parameters include `query` for the search term. Returns the truncated search results or an error message if the request fails. |
 
 ## Developer Resources
 
-- View [Tools](https://github.com/agno-agi/agno/blob/main/libs/agno/agno/tools/jina_reader.py)
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/jina_reader_tools.py)
+- View [Tools](https://github.com/agno-agi/agno/blob/main/libs/agno/agno/tools/jina.py)
+- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/jinareader_tools.py)

@@ -18,7 +18,7 @@ The following agent will run seach arXiv for "language models" and print the res
 
 ```python cookbook/tools/arxiv_tools.py
 from agno.agent import Agent
-from agno.tools.arxiv_toolkit import ArxivToolKit
+from agno.tools.arxiv import ArxivToolKit
 
 agent = Agent(tools=[ArxivToolKit()], show_tool_calls=True)
 agent.print_response("Search arxiv for 'language models'", markdown=True)
@@ -34,10 +34,10 @@ agent.print_response("Search arxiv for 'language models'", markdown=True)
 
 ## Toolkit Functions
 
-| Function                                 | Description                                                                                        |
-| ---------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `search_arxiv_and_update_knowledge_base` | This function searches arXiv for a topic, adds the results to the knowledge base and returns them. |
-| `search_arxiv`                           | Searches arXiv for a query.                                                                        |
+| Function                       | Description |
+|--------------------------------|-------------|
+| `search_arxiv_and_return_articles` | Use this function to search arXiv for a query and return the top articles. |
+| `read_arxiv_papers`            | Use this function to read a list of arxiv papers and return the content. |
 
 ## Developer Resources
 

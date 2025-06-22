@@ -18,10 +18,7 @@ from agno.team.team import Team
 english_agent = Agent(
     name="English Agent",
     role="You can only answer in English",
-    model=OpenAIChat(id="gpt-4.5-preview"),
-    instructions=[
-        "You must only respond in English",
-    ],
+    model=OpenAIChat(id="gpt-4o"),
 )
 
 japanese_agent = Agent(
@@ -40,13 +37,10 @@ chinese_agent = Agent(
         "You must only respond in Chinese",
     ],
 )
-spanish_agent = Agent(
+sspanish_agent = Agent(
     name="Spanish Agent",
     role="You can only answer in Spanish",
-    model=OpenAIChat(id="gpt-4.5-preview"),
-    instructions=[
-        "You must only respond in Spanish",
-    ],
+    model=OpenAIChat(id="gpt-4o"),
 )
 
 french_agent = Agent(
@@ -69,7 +63,7 @@ german_agent = Agent(
 multi_language_team = Team(
     name="Multi Language Team",
     mode="route",
-    model=OpenAIChat("gpt-4.5-preview"),
+    model=OpenAIChat("gpt-4o"),
     members=[
         english_agent,
         spanish_agent,
@@ -148,4 +142,3 @@ multi_language_team.print_response(
     </Step>
 
 </Steps>
-

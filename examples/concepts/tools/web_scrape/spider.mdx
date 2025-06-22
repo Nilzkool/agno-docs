@@ -8,12 +8,10 @@ title: Spider Tools
 from agno.agent import Agent
 from agno.tools.spider import SpiderTools
 
-agent = Agent(
-    tools=[SpiderTools()],
-    show_tool_calls=True,
-    markdown=True,
+agent = Agent(tools=[SpiderTools(optional_params={"proxy_enabled": True})])
+agent.print_response(
+    'Can you scrape the first search result from a search on "news in USA"?'
 )
-agent.print_response("Crawl https://example.com and extract all links")
 ```
 
 ## Usage
@@ -29,7 +27,7 @@ agent.print_response("Crawl https://example.com and extract all links")
 
   <Step title="Install libraries">
     ```bash
-    pip install -U scrapy openai agno
+    pip install -U spider-client openai agno
     ```
   </Step>
 

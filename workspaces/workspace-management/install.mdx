@@ -6,8 +6,8 @@ title: Install & Setup
 
 We highly recommend:
 
-- Installing `agno` using `pip` in a python virtual environment.
-- Creating an `ai` directory for your ai workspaces
+- Installing `agno` using `uv` in a python virtual environment.
+- Creating an `ai` directory for your AI workspaces.
 
 <Steps>
   <Step title="Create a virtual environment">
@@ -18,31 +18,31 @@ We highly recommend:
     ```bash Mac
     mkdir ai && cd ai
 
-    python3 -m venv aienv
-    source aienv/bin/activate
+    uv venv --python 3.12
+    source .venv/bin/activate
     ```
 
     ```bash Windows
     mkdir ai; cd ai
 
-    python3 -m venv aienv
-    aienv/scripts/activate
+    uv venv --python 3.12
+    .venv\Scripts\activate
     ```
 
     </CodeGroup>
 
   </Step>
   <Step title="Install Agno">
-    Install `agno` using pip
+    Install `agno` using `uv`
 
     <CodeGroup>
 
     ```bash Mac
-    pip install -U agno
+    uv pip install -U agno
     ```
 
     ```bash Windows
-    pip install -U agno
+    uv pip install -U agno
     ```
 
     </CodeGroup>
@@ -67,7 +67,7 @@ If you encounter errors, try updating pip using `python -m pip install --upgrade
 To upgrade `agno`, run this in your virtual environment
 
 ```bash
-pip install -U agno --no-cache-dir
+uv pip install -U agno
 ```
 
 ---

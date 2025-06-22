@@ -2,3 +2,173 @@
 title: RDS
 description: This guide is in the works
 ---
+
+Amazon Relational Database Service (RDS) makes it easy to set up, operate, and scale a relational database in the cloud. It provides cost-efficient and resizable capacity while automating time-consuming administration tasks.
+
+Agno provides `DbSubnetGroup`, `DbInstance`, and `DbCluster` resources to define your RDS infrastructure as Python objects.
+
+## DbSubnetGroup
+
+`DbSubnetGroup` is a collection of subnets (typically private) that you create in a VPC and then designate for your DB instances.
+
+Key parameters:
+
+- `name` (str, required): The name for the DB subnet group.
+- `description` (str, optional): The description for the DB subnet group.
+- `subnet_ids` (Union[List[str], AwsReference], optional): The EC2 Subnet IDs for the DB subnet group.
+- `vpc_stack` (CloudFormationStack, optional): CloudFormationStack to automatically retrieve subnet IDs from.
+- `tags` (List[Dict[str, str]], optional): Tags to assign to the DB subnet group.
+
+Example:
+
+```python
+from agno.aws.resource.rds.db_subnet_group import DbSubnetGroup
+
+my_db_subnet_group = DbSubnetGroup(name="my-app-db-subnet-group", description="Subnet group for my app DB")
+```
+
+## DbInstance
+
+`DbInstance` represents a standalone relational database instance. It can also be part of an Aurora DB cluster.
+
+Key parameters:
+
+- `name` (str, required): The name of the DB instance. Used as `db_instance_identifier` if not specified.
+- `engine` (str, required): The database engine to be used (e.g., `mysql`, `postgres`, `aurora-mysql`).
+- `engine_version` (str, optional): The version number of the database engine.
+- `db_instance_class` (str, optional): Compute and memory capacity (e.g., `db.t4g.medium`).
+- `db_name` (str, optional): The name of the database to create.
+- `master_username` (str, optional): The master user for the DB instance.
+- `master_user_password` (str, optional): The password for the master user.
+- `secrets_file` (Path, optional): Path to a YAML file to read `MASTER_USERNAME`, `MASTER_USER_PASSWORD`, and `DB_NAME` from.
+- `aws_secret` (SecretsManager, optional): AWS Secrets Manager resource to read credentials from.
+- `manage_master_user_password` (bool, optional): Specifies whether to manage the master user password with AWS Secrets Manager.
+- `master_user_secret_kms_key_id` (str, optional): The AWS KMS key ID to encrypt a secret when `manage_master_user_password` is true.
+- `allocated_storage` (int, optional): The amount of storage in GiB to allocate.
+- `db_subnet_group` (DbSubnetGroup, optional): The DB subnet group to associate with this DB instance.
+- `vpc_security_group_ids` (List[str], optional): List of VPC security group IDs.
+- `db_security_groups` (List[SecurityGroup], optional): SecurityGroup objects to associate.
+- `publicly_accessible` (bool, optional): Specifies whether the DB instance is publicly accessible.
+- `deletion_protection` (bool, optional): Prevents the DB instance from being deleted.
+- `skip_final_snapshot` (bool, optional): Skip creation of a final DB snapshot on deletion. Defaults to `True`.
+
+Example:
+
+```python
+import json
+from pathlib import Path
+from agno.aws.resource.secret.manager import SecretsManager
+from agno.aws.resource.rds.db_subnet_group import DbSubnetGroup
+from agno.aws.resource.rds.db_instance import DbInstance
+
+# -*- Database Secret
+db_secret_creds = SecretsManager(
+    name="my-db-credentials",
+    secret_string=json.dumps({
+        "MASTER_USERNAME": "admin",
+        "MASTER_USER_PASSWORD": "MyStrongPassword123",
+        "DB_NAME": "myappdb"
+    }),
+)
+
+# -*- Database Subnet Group
+db_subnet_group = DbSubnetGroup(name="my-app-db-subnet-group") # Ensure this references valid subnets
+
+# -*- Database Instance
+my_db_instance = DbInstance(
+    name="my-app-instance",
+    engine="postgres",
+    engine_version="16.1",
+    allocated_storage=20,
+    db_instance_class="db.t4g.medium",
+    db_subnet_group=db_subnet_group,
+    publicly_accessible=False,
+    deletion_protection=True,
+    aws_secret=db_secret_creds, # Use SecretsManager to provide credentials
+    # Or let AWS Secrets Manager generate and manage them
+    # manage_master_user_password=True,
+    # master_user_secret_kms_key_id="arn:aws:kms:us-east-1:123456789012:key/your-kms-key-id",
+    skip_final_snapshot=True,
+)
+```
+
+## DbCluster
+
+`DbCluster` represents an Amazon Aurora DB cluster, which is a collection of DB instances that use the same underlying storage volume.
+
+Key parameters:
+
+- `name` (str, required): The name of the cluster. Used as `db_cluster_identifier` if not specified.
+- `engine` (str, required): The database engine for the cluster (e.g., `aurora-mysql`, `aurora-postgresql`).
+- `engine_version` (str, optional): The version number of the database engine.
+- `database_name` (str, optional): The name of the database to create in the cluster.
+- `master_username` (str, optional): The master user for the DB cluster.
+- `master_user_password` (str, optional): The password for the master user.
+- `secrets_file` (Path, optional): Path to a YAML file to read `MASTER_USERNAME`, `MASTER_USER_PASSWORD`, and `DATABASE_NAME` from.
+- `aws_secret` (SecretsManager, optional): AWS Secrets Manager resource to read credentials from.
+- `manage_master_user_password` (bool, optional): Specifies whether to manage the master user password with AWS Secrets Manager.
+- `master_user_secret_kms_key_id` (str, optional): The AWS KMS key ID to encrypt a secret when `manage_master_user_password` is true.
+- `db_instances` (List[DbInstance], optional): List of `DbInstance` objects to add to this cluster.
+- `availability_zones` (List[str], optional): List of AZs where DB instances in the cluster can be created.
+- `db_subnet_group` (DbSubnetGroup, optional): The DB subnet group to associate with this DB cluster.
+- `vpc_security_group_ids` (List[str], optional): List of VPC security group IDs.
+- `db_security_groups` (List[SecurityGroup], optional): SecurityGroup objects to associate.
+- `engine_mode` (str, optional): The DB engine mode (e.g., `provisioned`, `serverless`).
+- `serverless_v2_scaling_configuration` (Dict[str, Any], optional): Scaling configuration for Aurora Serverless v2.
+- `deletion_protection` (bool, optional): Prevents the DB cluster from being deleted.
+- `skip_final_snapshot` (bool, optional): Skip creation of a final DB cluster snapshot on deletion. Defaults to `True`.
+
+Example:
+
+```python
+import json
+from pathlib import Path
+from agno.aws.resource.secret.manager import SecretsManager
+from agno.aws.resource.rds.db_subnet_group import DbSubnetGroup
+from agno.aws.resource.rds.db_cluster import DbCluster
+from agno.aws.resource.rds.db_instance import DbInstance
+
+# -*- Database Secret (re-using the one from DbInstance example or define new)
+db_secret_cluster_creds = SecretsManager(
+    name="my-aurora-creds",
+    secret_string=json.dumps({
+        "MASTER_USERNAME": "cluster_admin",
+        "MASTER_USER_PASSWORD": "ClusterPass123",
+        "DATABASE_NAME": "auroradb"
+    }),
+)
+
+# -*- Database Subnet Group
+db_subnet_group_cluster = DbSubnetGroup(name="my-aurora-db-subnet-group") # Ensure this references valid subnets
+
+# -*- Aurora DB Cluster
+my_db_cluster = DbCluster(
+    name="my-aurora-cluster",
+    engine="aurora-postgresql",
+    engine_version="15.5",
+    database_name="auroradb",
+    db_subnet_group=db_subnet_group_cluster,
+    deletion_protection=True,
+    aws_secret=db_secret_cluster_creds,
+    manage_master_user_password=True, # Manage credentials with Secrets Manager
+    master_user_secret_kms_key_id="arn:aws:kms:us-east-1:123456789012:key/your-kms-key-id", # Replace with actual KMS key
+    engine_mode="serverless", # Use serverless mode
+    serverless_v2_scaling_configuration={
+        "MinCapacity": 0.5,
+        "MaxCapacity": 4,
+    },
+    skip_final_snapshot=True,
+)
+
+# An instance within the cluster (optional, cluster can be serverless without explicit instances)
+my_cluster_instance = DbInstance(
+    name="my-aurora-instance-1",
+    db_cluster_identifier=my_db_cluster.get_db_cluster_identifier(), # Link to the cluster
+    engine="aurora-postgresql", # Must match cluster engine
+    db_instance_class="db.serverless_v2.medium", # Or db.t4g.medium etc. for provisioned
+    publicly_accessible=False,
+    auto_minor_version_upgrade=True,
+)
+
+my_db_cluster.db_instances = [my_cluster_instance]
+```

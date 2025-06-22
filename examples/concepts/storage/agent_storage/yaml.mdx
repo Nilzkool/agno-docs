@@ -7,13 +7,15 @@ Agno supports using local YAML files as a storage backend for Agents using the `
 
 ## Usage
 
-```python yaml_storage_for_agent.py
+```python
 from agno.agent import Agent
-from agno.tools.duckduckgo import DuckDuckGoTools
+from agno.models.openai import OpenAIChat
 from agno.storage.yaml import YamlStorage
+from agno.tools.duckduckgo import DuckDuckGoTools
 
 agent = Agent(
-    storage=YamlStorage(path="tmp/agent_sessions_yaml"),
+    model=OpenAIChat(id="gpt-4o"),
+    storage=YamlStorage(dir_path="tmp/agent_sessions_yaml"),
     tools=[DuckDuckGoTools()],
     add_history_to_messages=True,
 )

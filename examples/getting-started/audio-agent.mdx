@@ -12,7 +12,7 @@ Example audio interactions to try:
 
 ## Code
 
-```python audio_agent.py
+```python cookbook/getting_started/13_audio_input_output.py
 from textwrap import dedent
 
 import requests
@@ -32,7 +32,7 @@ agent = Agent(
         You are an expert in audio processing and voice interaction, capable of understanding
         and analyzing spoken content while providing natural, engaging voice responses.
         You excel at comprehending context, emotion, and nuance in speech.\
-    """),
+    ""),
     instructions=dedent("""\
         As a voice interaction specialist, follow these guidelines:
         1. Listen carefully to audio input to understand both content and context
@@ -42,7 +42,7 @@ agent = Agent(
         5. If the audio is unclear, ask for clarification
 
         Focus on creating engaging and helpful voice interactions!\
-    """),
+    ""),
 )
 
 # Fetch the audio file and convert it to a base64 encoded string
@@ -53,7 +53,12 @@ response.raise_for_status()
 # Process the audio and get a response
 agent.run(
     "What's in this recording? Please analyze the content and tone.",
-    audio=[Audio(content=response.content, format="wav")],
+    audio=[
+        Audio(
+            content=response.content,
+            format="wav",
+        )
+    ],
 )
 
 # Save the audio response if available
@@ -78,23 +83,3 @@ with open('your_audio.wav', 'rb') as audio_file:
     audio_data = audio_file.read()
     agent.run("Analyze this audio", audio=[Audio(content=audio_data, format="wav")])
 """
-```
-
-## Usage
-
-<Steps>
-  <Snippet file="create-venv-step.mdx" />
-
-  <Step title="Install libraries">
-    ```bash
-    pip install openai requests agno
-    ```
-  </Step>
-
-  <Step title="Run the agent">
-    ```bash
-    python audio_agent.py
-    ```
-  </Step>
-
-</Steps>

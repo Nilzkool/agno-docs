@@ -13,7 +13,7 @@ Example prompts to try:
 
 ## Code
 
-```python agent_state.py
+```python cookbook/getting_started/14_agent_state.py
 from textwrap import dedent
 
 from agno.agent import Agent
@@ -49,7 +49,7 @@ agent = Agent(
         - Final state and observations
 
         Starting state (count) is: {count}\
-    """),
+    ""),
     show_tool_calls=True,
     markdown=True,
 )
@@ -86,7 +86,7 @@ print(f"Final session state: {agent.session_state}")
 
   <Step title="Run the agent">
     ```bash
-    python agent_state.py
+    python cookbook/getting_started/14_agent_state.py
     ```
   </Step>
 

@@ -54,6 +54,7 @@ class CacheWorkflow(Workflow):
 
         # Cache the output after response is yielded
         self.session_state[message] = self.agent.run_response.content
+        self.write_to_storage()
 
 
 if __name__ == "__main__":
@@ -502,7 +503,7 @@ if __name__ == "__main__":
 Install libraries
 
 ```shell
-pip install agno openai duckduckgo-search sqlalchemy
+pip install agno openai duckduckgo-search newspaper4k lxml_html_clean sqlalchemy
 ```
 
 Run the workflow

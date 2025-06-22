@@ -1,16 +1,1 @@
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `model` | `str` | - | ID of the model to use. |
-| `name` | `str` | - | Name for this LLM. Note: This is not sent to the LLM API. |
-| `metrics` | `Dict[str, Any]` | - | Metrics collected for this LLM. Note: This is not sent to the LLM API. |
-| `response_format` | `Any` | - | Format of the response. |
-| `tools` | `List[Union[Tool, Dict]]` | - | A list of tools provided to the LLM. Tools are functions the model may generate JSON inputs for. If you provide a dict, it is not called by the model. Always add tools using the `add_tool()` method. |
-| `tool_choice` | `Union[str, Dict[str, Any]]` | - | Controls which (if any) function is called by the model. `"none"` means the model will not call a function and instead generates a message. `"auto"` means the model can pick between generating a message or calling a function. Specifying a particular function via `{"type": "function", "function": {"name": "my_function"}}` forces the model to call that function. `"none"` is the default when no functions are present. `"auto"` is the default if functions are present. |
-| `run_tools` | `bool` | `True` | If True, runs tools. |
-| `show_tool_calls` | `bool` | - | If True, shows tool calls in the response. |
-| `functions` | `Dict[str, Function]` | - | Functions extracted from the tools. Note: These are not sent to the LLM API and are only used for execution. |
-| `function_call_limit` | `int` | `20` | Maximum number of function calls allowed. |
-| `function_call_stack` | `List[FunctionCall]` | - | Stack of function calls. |
-| `system_prompt` | `str` | - | System prompt provided to the LLM. |
-| `instructions` | `str` | - | Instructions provided to the LLM. |
+| Parameter | Type | Default | Description ||-----------|------|---------|-------------|| `id` | `str` | Required | ID of the model to use. || `name` | `Optional[str]` | `None` | Name for this LLM. Note: This is not sent to the LLM API. || `provider` | `Optional[str]` | `None` | The provider for this Model. || `response_format` | `Optional[Any]` | `None` | Format of the response. || `structured_outputs` | `bool` | `False` | Whether to generate structured outputs from this Model. || `supports_native_structured_outputs` | `bool` | `False` | True if the Model supports structured outputs natively. || `supports_json_schema_outputs` | `bool` | `False` | True if the Model requires a json_schema for structured outputs. || `tool_choice` | `Optional[Union[str, Dict[str, Any]]]` | `None` | Controls which (if any) tool is called by the model. || `show_tool_calls` | `Optional[bool]` | `None` | If True, shows tool calls in the response. Disabled when response_model is used. || `tool_call_limit` | `Optional[int]` | `None` | Maximum number of tool calls allowed. || `tool_message_role` | `str` | `"tool"` | The role of the tool message. || `assistant_message_role` | `str` | `"assistant"` | The role of the assistant message. |

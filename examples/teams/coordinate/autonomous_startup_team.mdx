@@ -18,7 +18,7 @@ from agno.tools.yfinance import YFinanceTools
 from agno.vectordb.pgvector.pgvector import PgVector
 
 knowledge_base = PDFKnowledgeBase(
-    path="tmp/data",
+    path="cookbook/teams/coordinate/data",
     vector_db=PgVector(
         table_name="autonomous_startup_team",
         db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
@@ -217,6 +217,7 @@ autonomous_startup_team = Team(
     markdown=True,
     debug_mode=True,
     show_members_responses=True,
+    enable_team_history=True,
 )
 
 autonomous_startup_team.print_response(
@@ -266,4 +267,3 @@ autonomous_startup_team.print_response(
     </Step>
 
 </Steps>
-

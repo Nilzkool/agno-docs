@@ -19,7 +19,7 @@ db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 
 # Create CSV knowledge base
 csv_kb = CSVKnowledgeBase(
-    path=Path("data/csvs"),
+    path=Path("tmp/csvs"),
     vector_db=PgVector(
         table_name="csv_documents",
         db_url=db_url,
@@ -47,7 +47,7 @@ website_kb = WebsiteKnowledgeBase(
 
 # Create Local PDF knowledge base
 local_pdf_kb = PDFKnowledgeBase(
-    path="data/pdfs",
+    path="tmp/pdfs",
     vector_db=PgVector(
         table_name="pdf_documents",
         db_url=db_url,

@@ -51,6 +51,11 @@ agent = Agent(storage=storage)
 
 <Snippet file="storage-s2-params.mdx" />
 
+| Parameter         | Type     | Default | Description                                              |
+|-------------------|----------|---------|----------------------------------------------------------|
+| `mode`            | `Literal["agent", "team", "workflow"]` | `"agent"` | The mode of the storage, indicating whether it stores data for agents, teams, or workflows. |
+| `team_session_id` | `Optional[str]` | `None` | The session ID of the team, used for linking agent sessions to team sessions. |
+
 ## Developer Resources
 
 - View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/storage/singlestore_storage/singlestore_storage_for_agent.py)

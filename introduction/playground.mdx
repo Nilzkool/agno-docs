@@ -1,7 +1,5 @@
----
-title: Agent Playground
-description: "**Agno provides a beautiful Agent UI for interacting with your agents.**"
----
+---title: Agent Playground
+description: "**Agno provides a beautiful Agent UI for interacting with your agents.**"---
 
 <Frame caption="Agent Playground">
   <img
@@ -98,7 +96,10 @@ setx AGNO_API_KEY ag-***
 Install dependencies and run your playground application:
 
 ```shell
-pip install openai duckduckgo-search yfinance sqlalchemy 'fastapi[standard]' agno
+uv venv --python 3.12
+source .venv/bin/activate
+
+uv pip install openai duckduckgo-search yfinance sqlalchemy 'fastapi[standard]' agno
 
 python playground.py
 ```

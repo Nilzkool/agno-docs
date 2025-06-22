@@ -33,7 +33,7 @@ class MovieScript(BaseModel):
 
 
 json_mode_agent = Agent(
-    model=DeepInfra(id="meta-llama/Llama-2-70b-chat-hf"),
+    model=DeepInfra(id="microsoft/phi-4"),
     description="You help people write movie scripts.",
     response_model=MovieScript,
 )
@@ -73,4 +73,4 @@ json_mode_agent.print_response("New York")
     ```
     </CodeGroup>
   </Step>
-</Steps> 
+</Steps>

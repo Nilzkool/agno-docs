@@ -17,7 +17,7 @@ Example scenarios:
 
 ## Code
 
-```python human_in_the_loop.py
+```python cookbook/getting_started/19_human_in_the_loop.py
 import json
 from textwrap import dedent
 from typing import Iterator
@@ -100,7 +100,7 @@ agent = Agent(
         - Use emoji to make your responses more engaging
         - Keep your summaries concise but informative
         - End with a friendly tech-themed sign-off\
-    """),
+    ""),
     tools=[get_top_hackernews_stories],
     show_tool_calls=True,
     markdown=True,
@@ -113,23 +113,6 @@ agent = Agent(
 agent.print_response(
     "What are the top 2 hackernews stories?", stream=True, console=console
 )
-```
 
-## Usage
-
-<Steps>
-  <Snippet file="create-venv-step.mdx" />
-
-  <Step title="Install libraries">
-    ```bash
-    pip install openai agno
-    ```
-  </Step>
-
-  <Step title="Run the agent">
-    ```bash
-    python human_in_the_loop.py
-    ```
-  </Step>
-
-</Steps>
+# View all messages
+pprint(agent.run_response.messages)

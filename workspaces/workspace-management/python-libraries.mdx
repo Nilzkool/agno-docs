@@ -2,7 +2,7 @@
 title: Add Python Libraries
 ---
 
-Agno templates are setup to manage dependencies using a [pyproject.toml](https://packaging.python.org/en/latest/specifications/declaring-project-metadata/#declaring-project-metadata) file, **which is used to generate the `requirements.txt` file using [pip-tools](https://pip-tools.readthedocs.io/en/latest/).**
+Agno templates are setup to manage dependencies using a [pyproject.toml](https://packaging.python.org/en/latest/specifications/declaring-project-metadata/#declaring-project-metadata) file, **which is used to generate the `requirements.txt` file using [uv](https://github.com/astral-sh/uv) or [pip-tools](https://pip-tools.readthedocs.io/en/latest/).**
 
 Adding or Updating a python library is a 2 step process:
 
@@ -22,16 +22,16 @@ We highly recommend auto-generating the `requirements.txt` file using this proce
 
 ## Generate requirements
 
-After updating the `dependencies` in the `pyproject.toml` file, auto-generate the `requirements.txt` file using a helper script or running `pip-compile` directly
+After updating the `dependencies` in the `pyproject.toml` file, auto-generate the `requirements.txt` file using a helper script or running `uv pip compile` directly
 
 <CodeGroup>
 
 ```bash terminal
-./scripts/upgrade.sh
+./scripts/generate-requirements.sh
 ```
 
-```bash pip compile
-pip-compile \
+```bash uv pip compile
+uv pip compile \
     --no-annotate \
     --pip-args "--no-cache-dir" \
     -o requirements.txt pyproject.toml
@@ -44,11 +44,11 @@ If you'd like to upgrade all python libraries to their latest version, run:
 <CodeGroup>
 
 ```bash terminal
-./scripts/upgrade.sh all
+./scripts/generate-requirements.sh upgrade
 ```
 
-```bash pip compile
-pip-compile \
+```bash uv pip compile
+uv pip compile \
     --upgrade \
     --no-annotate \
     --pip-args "--no-cache-dir" \
@@ -66,11 +66,11 @@ After updating the `requirements.txt` file, rebuild your images.
 <CodeGroup>
 
 ```bash terminal
-ag ws up --env dev --infra docker --type image
+ag ws up --env dev --infra docker --type image --pull
 ```
 
 ```bash short options
-ag ws up -e dev -i docker -t image
+ag ws up -e dev -i docker -t image -p
 ```
 
 </CodeGroup>
@@ -79,18 +79,18 @@ ag ws up -e dev -i docker -t image
 
 <Note>
 
-Remember to [authenticate with ECR](/workspaces/workspace-management/production-app#ecr-images) if needed.
+Remember to [authenticate with ECR](workspaces/workspace-management/production-app#ecr-images) if needed.
 
 </Note>
 
 <CodeGroup>
 
 ```bash terminal
-ag ws up --env prd --infra docker --type image
+ag ws up --env prd --infra aws --type image --pull
 ```
 
 ```bash short options
-ag ws up -e prd -i docker -t image
+ag ws up -e prd -i aws -t image -p
 ```
 
 </CodeGroup>
@@ -104,11 +104,11 @@ After rebuilding images, recreate the resources.
 <CodeGroup>
 
 ```bash terminal
-ag ws restart --env dev --infra docker --type container
+ag ws restart --env dev --infra docker --type container --pull
 ```
 
 ```bash short options
-ag ws restart -e dev -c docker -t container
+ag ws restart -e dev -i docker -t container -p
 ```
 
 </CodeGroup>
@@ -118,11 +118,11 @@ ag ws restart -e dev -c docker -t container
 <CodeGroup>
 
 ```bash terminal
-ag ws patch --env prd --infra aws --name service
+ag ws patch --env prd --infra aws --name service --pull
 ```
 
 ```bash short options
-ag ws patch -e prd -i aws -n service
+ag ws patch -e prd -i aws -n service -p
 ```
 
 </CodeGroup>

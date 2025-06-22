@@ -26,6 +26,14 @@ agent.print_response("What is their national anthem called?")
 
 <Snippet file="storage-yaml-params.mdx" />
 
+| Parameter       | Type     | Default | Description                                                                                               |
+| --------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------- |
+| `mode`          | `Optional[Literal["agent", "team", "workflow"]]` | `"agent"` | The mode of the storage, indicating whether it stores data for agents, teams, or workflows.                |
+| `team_session_id` | `Optional[str]` | `None` | The session ID of the team, used for linking agent sessions to team sessions.                              |
+| `agent_data`    | `Optional[Dict[str, Any]]` | `None` | Dictionary for storing agent-specific session data.                                                       |
+| `team_data`     | `Optional[Dict[str, Any]]` | `None` | Dictionary for storing team-specific session data.                                                        |
+| `workflow_data` | `Optional[Dict[str, Any]]` | `None` | Dictionary for storing workflow-specific session data.                                                    |
+
 ## Developer Resources
 
 - View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/storage/yaml_storage/yaml_storage_for_agent.py)
