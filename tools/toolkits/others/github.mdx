@@ -6,7 +6,7 @@ title: Github
 
 ## Prerequisites
 
-The following examples requires the `PyGithub` library and a Github access token which can be obtained from [here](https://github.com/settings/tokens).
+The following example requires the `PyGithub` library and a Github access token which can be obtained from [here](https://github.com/settings/tokens).
 
 ```shell
 pip install -U PyGithub
@@ -18,7 +18,7 @@ export GITHUB_ACCESS_TOKEN=***
 
 ## Example
 
-The following agent will search Google for the latest news about "Mistral AI":
+The following agent will list open pull requests for the specified GitHub repository.
 
 ```python cookbook/tools/github_tools.py
 from agno.agent import Agent
@@ -40,7 +40,7 @@ agent.print_response("List open pull requests", markdown=True)
 
 | Parameter                  | Type   | Default | Description                                                                                                 |
 | -------------------------- | ------ | ------- | ----------------------------------------------------------------------------------------------------------- |
-| `access_token`             | `str`  | `None`  | Github access token for authentication. If not provided, will use GITHUB_ACCESS_TOKEN environment variable. |
+| `access_token`             | `str`  | `None`  | Github access token for authentication. If not provided, will use `GITHUB_ACCESS_TOKEN` env var.           |
 | `base_url`                 | `str`  | `None`  | Optional base URL for Github Enterprise installations.                                                      |
 | `search_repositories`      | `bool` | `True`  | Enable searching Github repositories.                                                                       |
 | `list_repositories`        | `bool` | `True`  | Enable listing repositories for a user/organization.                                                        |

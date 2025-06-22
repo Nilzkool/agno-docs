@@ -4,11 +4,9 @@ title: Team Workflow
 **TeamWorkflow** generates summarised reports on top reddit and hackernews posts. 
 This example demonstrates the usage of teams as nodes of a workflow.
 
-Create a file `team_worklfow.py` with the following code:
+Create a file `team_workflow.py` with the following code:
 
-
-
-```python team_worklfow.py
+```python team_workflow.py
 
 from textwrap import dedent
 from typing import Iterator
@@ -16,6 +14,7 @@ from typing import Iterator
 from agno.agent import Agent, RunResponse
 from agno.models.openai import OpenAIChat
 from agno.team.team import Team
+from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.tools.exa import ExaTools
 from agno.tools.hackernews import HackerNewsTools
 from agno.tools.newspaper4k import Newspaper4kTools
@@ -33,7 +32,7 @@ class TeamWorkflow(Workflow):
         name="Reddit Researcher",
         role="Research a topic on Reddit",
         model=OpenAIChat(id="gpt-4o"),
-        tools=[ExaTools()],
+        tools=[DuckDuckGoTools()],
         add_name_to_instructions=True,
         instructions=dedent("""
             You are a Reddit researcher.
@@ -109,13 +108,6 @@ class TeamWorkflow(Workflow):
 
         logger.info("Reading each story and writing a report.")
         yield from self.writer.run(discussion.content, stream=True)
-
-
-if __name__ == "__main__":
-    # Run workflow
-    report: Iterator[RunResponse] = TeamWorkflow(debug_mode=False).run()
-    # Print the report
-    pprint_run_response(report, markdown=True, show_time=True)
 ```
 
 ## Usage
@@ -125,13 +117,13 @@ if __name__ == "__main__":
 
   <Step title="Install libraries">
     ```bash
-    pip install openai newspaper4k exa_py agno
+    pip install openai newspaper4k agno
     ```
   </Step>
 
   <Step title="Run the workflow">
     ```bash
-    python team_worklfow.py
+    python team_workflow.py
     ```
   </Step>
 

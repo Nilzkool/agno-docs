@@ -1,4 +1,53 @@
 ---
 title: ECS
-description: This guide is in the works
+sidebarTitle: ECS
 ---
+
+Amazon ECS Resources enable us to manage ECS clusters, task definitions, and services entirely in Python. You can define, create, update, and delete your container infrastructure as pydantic objects.
+
+## Examples
+
+### Create an ECS Cluster, Task Definition, and Service
+
+Copy the following code into `resources.py` and run `ag start resources.py` to deploy an ECS cluster, register a Fargate task definition, and run a service.
+
+<CodeGroup>
+
+```python resources.py
+from agno.aws.resource.ecs import EcsCluster, EcsTaskDefinition, EcsService, EcsContainer
+
+# -*- Define an ECS cluster
+cluster = EcsCluster(name="my-cluster")
+
+# -*- Register a Task Definition with a single container
+task_def = EcsTaskDefinition(
+    name="my-task-definition",
+    family="my-task",
+    network_mode="awsvpc",
+    cpu="512",
+    memory="1024",
+    containers=[
+        EcsContainer(
+            name="web",
+            image="nginx:latest",
+            port_mappings=[{"containerPort": 80}],
+        )
+    ],
+    requires_compatibilities=["FARGATE"],
+)
+
+# -*- Run the ECS service
+service = EcsService(
+    name="my-service",
+    cluster=cluster,
+    task_definition=task_def,
+    desired_count=2,
+    launch_type="FARGATE",
+    subnets=["subnet-abc123"],
+    security_groups=["sg-abc123"],
+)
+```
+
+</CodeGroup>
+
+After deployment, clean up your resources with `ag stop resources.py`.

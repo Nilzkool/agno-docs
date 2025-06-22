@@ -60,3 +60,46 @@ print(my_secret.get_secret_value("mysecretkey"))
 Run this file using `python read_my_secret.py`.
 
 Delete the secret using `ag stop resources.py`
+
+### ECS Service
+
+Copy the following code to a file `resources.py` and run `ag start resources.py` to create an ECS cluster, task definition, and service.
+
+<CodeGroup>
+
+```python resources.py
+from agno.aws.resource.ecs import EcsCluster, EcsTaskDefinition, EcsService, EcsContainer
+
+# -*- ECS cluster
+cluster = EcsCluster(name="my-cluster")
+
+# -*- Task definition with a container
+task_def = EcsTaskDefinition(
+    name="my-task-definition",
+    family="my-task",
+    network_mode="awsvpc",
+    cpu="512",
+    memory="1024",
+    containers=[
+        EcsContainer(
+            name="my-container",
+            image="nginx:latest",
+            port_mappings=[{"containerPort": 80}],
+        )
+    ],
+    requires_compatibilities=["FARGATE"],
+)
+
+# -*- ECS service
+service = EcsService(
+    name="my-service",
+    cluster=cluster,
+    task_definition=task_def,
+    desired_count=1,
+    launch_type="FARGATE",
+    subnets=["subnet-123abc"],
+    security_groups=["sg-123abc"],
+)
+```
+
+</CodeGroup>

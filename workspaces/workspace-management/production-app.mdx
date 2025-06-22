@@ -59,8 +59,8 @@ Update the script with your ECR repo before running.
 ```python workspace/settings.py
 ws_settings = WorkspaceSettings(
     ...
-    # Subnet IDs in the aws_region
-    subnet_ids=["subnet-xyz", "subnet-xyz"],
+    # AWS Subnet IDs in the aws_region
+    aws_subnet_ids=["subnet-xyz", "subnet-xyz"],
     # -*- Image Settings
     # Repository for images
     image_repo="your-image-repo",

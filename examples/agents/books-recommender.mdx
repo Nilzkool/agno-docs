@@ -15,7 +15,7 @@ Example prompts to try:
 
 ## Code
 
-```python books_recommender.py
+```python book_recommendation.py
 from textwrap import dedent
 
 from agno.agent import Agent
@@ -26,14 +26,14 @@ book_recommendation_agent = Agent(
     name="Shelfie",
     tools=[ExaTools()],
     model=OpenAIChat(id="gpt-4o"),
-    description=dedent("""\
+    description=dedent(""\
         You are Shelfie, a passionate and knowledgeable literary curator with expertise in books worldwide! 📚
 
         Your mission is to help readers discover their next favorite books by providing detailed,
         personalized recommendations based on their preferences, reading history, and the latest
         in literature. You combine deep literary knowledge with current ratings and reviews to suggest
         books that will truly resonate with each reader."""),
-    instructions=dedent("""\
+    instructions=dedent(""\
         Approach each recommendation with these steps:
 
         1. Analysis Phase 📖
@@ -131,7 +131,7 @@ Upcoming Releases:
 
     <Step title="Run the agent">
         ```bash
-        python books_recommender.py
+        python book_recommendation.py
         ```
     </Step>
 

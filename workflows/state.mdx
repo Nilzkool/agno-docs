@@ -6,14 +6,16 @@ All workflows come with a `session_state` dictionary that you can use to cache i
 
 Provide your workflows with `storage` to enable persistence of session state in a database.
 
-For example, you can use the `SqliteWorkflowStorage` to cache results in a Sqlite database.
+For example, you can use the `SqliteStorage` to cache results in a Sqlite database.
 
 ```python
 # Create the workflow
+from agno.storage.sqlite import SqliteStorage
+
 generate_blog_post = BlogPostGenerator(
     # Fix the session_id for this demo
     session_id="my-session-id",
-    storage=SqliteWorkflowStorage(
+    storage=SqliteStorage(
         table_name="generate_blog_post_workflows",
         db_file="tmp/workflows.db",
     ),

@@ -3,7 +3,7 @@ title: CSV URL Knowledge Base
 sidebarTitle: CSV URLs
 ---
 
-The **CSVUrlKnowledgeBase** reads **CSVs from urls**, converts them into vector embeddings and loads them to a vector database.
+The **CSVUrlKnowledgeBase** reads **CSVs from URLs**, converts them into vector embeddings and loads them to a vector database.
 
 ## Usage
 
@@ -37,21 +37,23 @@ agent = Agent(
     knowledge=knowledge_base,
     search_knowledge=True,
 )
-agent.knowledge.load(recreate=False)
+knowledge_base.load(recreate=False)
 
-agent.print_response("Ask me about something from the knowledge base")
+agent.print_response(
+    "Ask me about something from the knowledge base",
+    markdown=True
+)
 ```
 
 ## Params
 
-| Parameter | Type           | Default          | Description                                                                                                    |
-| --------- | -------------- | ---------------- | -------------------------------------------------------------------------------------------------------------- |
-| `urls`    | `List[str]`    | -                | URLs for `PDF` files.                                                                                          |
-| `reader`  | `CSVUrlReader` | `CSVUrlReader()` | A `CSVUrlReader` that reads the CSV file from the URL and converts it into `Documents` for the vector database |
+| Parameter | Type           | Default          | Description                                   |
+| --------- | -------------- | ---------------- | --------------------------------------------- |
+| `urls`    | `List[str]`    | -                | URLs for CSV files.                           |
+| `reader`  | `CSVUrlReader` | `CSVUrlReader()` | A `CSVUrlReader` that reads a CSV from URL and converts it into `Document`s |
 
 `CSVUrlKnowledgeBase` is a subclass of the [AgentKnowledge](/reference/knowledge/base) class and has access to the same params.
 
 ## Developer Resources
 
-- View [Sync loading Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/csv_url_kb.py)
-- View [Async loading Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/csv_url_kb_async.py)
+- View [Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/csv_url_kb.py)

@@ -3,6 +3,12 @@ title: YouTube Reader
 sidebarTitle: YouTube
 ---
 
-YouTubeReader is a reader class that allows you to read transcript from YouTube videos.
+`YouTubeReader` is a reader class for fetching transcripts from YouTube videos.
+
+Features:
+
+- Read transcripts synchronously via `read(video_url: str)`.
+- Read transcripts asynchronously via `async_read(video_url: str)`.
+- Supports optional chunking by setting `reader.chunk = True` or passing `chunk=True` to the constructor.
 
 <Snippet file="youtube-reader-reference.mdx" />

@@ -146,6 +146,42 @@ ag ws setup -d
 
 </CodeGroup>
 
+## Print workspace config
+
+Run `ag ws config` to view the active workspace configuration
+
+<CodeGroup>
+
+```bash terminal
+ag ws config
+```
+
+```bash short options
+ag ws config -d
+```
+
+</CodeGroup>
+
+## Delete workspace record
+
+Remove workspace entries from Agno without deleting the physical files
+
+<CodeGroup>
+
+```bash Remove active workspace
+ag ws delete
+```
+
+```bash Remove all workspaces
+ag ws delete -a
+```
+
+```bash Delete by workspace name
+ag ws delete -ws myapp
+```
+
+</CodeGroup>
+
 ## Command Options
 
 <Note>Run `ag ws up --help` to view all options</Note>

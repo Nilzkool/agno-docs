@@ -9,12 +9,9 @@ from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from agno.tools.e2b import E2BTools
 
+# Initialize sandbox with a 10 minute timeout
 e2b_tools = E2BTools(
     timeout=600,  # 10 minutes timeout (in seconds)
-    filesystem=True,
-    internet_access=True,
-    sandbox_management=True,
-    command_execution=True,
 )
 
 agent = Agent(
@@ -28,7 +25,7 @@ agent = Agent(
         "You are an expert at writing and validating Python code using a secure E2B sandbox environment.",
         "Your primary purpose is to:",
         "1. Write clear, efficient Python code based on user requests",
-        "2. Execute and verify the code in the E2B sandbox",
+        "2. Execute and verify the code in the sandbox",
         "3. Share the complete code with the user, as this is the main use case",
         "4. Provide thorough explanations of how the code works",
     ],
@@ -43,17 +40,6 @@ agent.print_response(
 agent.print_response(
     "Write a Python script that creates a sample dataset of sales by region and visualize it with matplotlib"
 )
-
-# Example: Run a web server
-agent.print_response(
-    "Create a simple FastAPI web server that displays 'Hello from E2B Sandbox!' and run it to get a public URL"
-)
-
-# Example: Sandbox management
-agent.print_response("What's the current status of our sandbox and how much time is left before timeout?")
-
-# Example: File operations
-agent.print_response("Create a text file with the current date and time, then read it back")
 ```
 
 ## Usage
@@ -67,7 +53,7 @@ agent.print_response("Create a text file with the current date and time, then re
 
   <Step title="Install libraries">
     ```bash
-    pip install e2b_code_interpreter
+    pip install e2b_code_interpreter pandas matplotlib
     ```
   </Step>
 
@@ -98,4 +84,4 @@ agent.print_response("Create a text file with the current date and time, then re
     ```
     </CodeGroup>
   </Step>
-</Steps> 
+</Steps>

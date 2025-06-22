@@ -3,7 +3,7 @@ title: ArXiv Knowledge Base
 sidebarTitle: ArXiv
 ---
 
-The **ArxivKnowledgeBase** reads Arxiv articles, converts them into vector embeddings and loads them to a vector database.
+The **ArxivKnowledgeBase** reads ArXiv articles, converts them into vector embeddings and loads them to a vector database.
 
 ## Usage
 
@@ -21,17 +21,20 @@ pip install arxiv
 from agno.knowledge.arxiv import ArxivKnowledgeBase
 from agno.vectordb.pgvector import PgVector
 
+db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
+
 knowledge_base = ArxivKnowledgeBase(
     queries=["Generative AI", "Machine Learning"],
     # Table name: ai.arxiv_documents
     vector_db=PgVector(
         table_name="arxiv_documents",
-        db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
+        db_url=db_url,
     ),
 )
+knowledge_base.load(recreate=False)
 ```
 
-Then use the `knowledge_base` with an `Agent`:
+Then use the `knowledge_base` with an Agent:
 
 ```python agent.py
 from agno.agent import Agent
@@ -41,21 +44,22 @@ agent = Agent(
     knowledge=knowledge_base,
     search_knowledge=True,
 )
-agent.knowledge.load(recreate=False)
-
-agent.print_response("Ask me about something from the knowledge base")
+agent.print_response(
+    "Ask me about something from the knowledge base",
+    markdown=True
+)
 ```
 
 ## Params
 
-| Parameter | Type          | Default         | Description                                                                                        |
-| --------- | ------------- | --------------- | -------------------------------------------------------------------------------------------------- |
-| `queries` | `List[str]`   | `[]`            | Queries to search                                                                                  |
-| `reader`  | `ArxivReader` | `ArxivReader()` | A `ArxivReader` that reads the articles and converts them into `Documents` for the vector database |
+| Parameter   | Type          | Default         | Description                                                                                       |
+| ----------- | ------------- | --------------- | ------------------------------------------------------------------------------------------------- |
+| `queries`   | `List[str]`   | `[]`            | Queries to search                                                                                 |
+| `reader`    | `ArxivReader` | `ArxivReader()` | A `ArxivReader` that reads articles and converts them into `Document`s for the vector database  |
 
 `ArxivKnowledgeBase` is a subclass of the [AgentKnowledge](/reference/knowledge/base) class and has access to the same params.
 
 ## Developer Resources
 
-- View [Sync loading Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/arxiv_kb.py)
-- View [Async loading Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/arxiv_kb_async.py)
+- View [Sync loading Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/arxiv_kb.py)
+- View [Async loading Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/knowledge/arxiv_kb_async.py)

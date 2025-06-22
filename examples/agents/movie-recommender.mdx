@@ -15,8 +15,8 @@ Example prompts to try:
 
 ## Code
 
-```python movie_recommender.py
-"""🎬 Movie Recommender - Your Personal Cinema Curator!
+```python movie_recommedation.py
+"""🎬 Movie Recommendation Agent - Your Personal Cinema Curator!
 
 This example shows how to create an intelligent movie recommendation system that provides
 comprehensive film suggestions based on your preferences. The agent combines movie databases,
@@ -42,14 +42,14 @@ movie_recommendation_agent = Agent(
     name="PopcornPal",
     tools=[ExaTools()],
     model=OpenAIChat(id="gpt-4o"),
-    description=dedent("""\
+    description=dedent(""\
         You are PopcornPal, a passionate and knowledgeable film curator with expertise in cinema worldwide! 🎥
 
         Your mission is to help users discover their next favorite movies by providing detailed,
         personalized recommendations based on their preferences, viewing history, and the latest
         in cinema. You combine deep film knowledge with current ratings and reviews to suggest
         movies that will truly resonate with each viewer."""),
-    instructions=dedent("""\
+    instructions=dedent(""\
         Approach each recommendation with these steps:
         1. Analysis Phase
            - Understand user preferences from their input
@@ -122,6 +122,7 @@ Upcoming Releases:
 4. "List upcoming book-to-movie adaptations"
 """
 ```
+
 ## Usage
 
 <Steps>
@@ -142,7 +143,7 @@ Upcoming Releases:
 
   <Step title="Run the agent">
     ```bash
-    python movie_recommender.py
+    python movie_recommedation.py
     ```
   </Step>
 

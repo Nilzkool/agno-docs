@@ -2,48 +2,65 @@
 title: OpenBB
 ---
 
-**OpenBBTools** enable an Agent to provide information about stocks and companies.
+**OpenBBTools** enable an Agent to provide information about stocks and companies using the OpenBB library.
+
+## Prerequisites
+
+```bash
+pip install 'openbb'
+```
+
+Set your API token if required:
+
+```shell
+export OPENBB_PAT=your_pat_here
+```
+
+## Example
 
 ```python cookbook/tools/openbb_tools.py
 from agno.agent import Agent
 from agno.tools.openbb import OpenBBTools
 
-
-agent = Agent(tools=[OpenBBTools()], debug_mode=True, show_tool_calls=True)
-
-# Example usage showing stock analysis
-agent.print_response(
-    "Get me the current stock price and key information for Apple (AAPL)"
+agent = Agent(
+    tools=[OpenBBTools(
+        provider="yfinance",
+        stock_price=True,
+        search_symbols=True,
+        company_news=True,
+        company_profile=True,
+        price_targets=True,
+    )],
+    debug_mode=True,
+    show_tool_calls=True,
 )
 
-# Example showing market analysis
-agent.print_response(
-    "What are the top gainers in the market today?"
-)
-
-# Example showing economic indicators
-agent.print_response(
-    "Show me the latest GDP growth rate and inflation numbers for the US"
-)
+# Fetch current stock price and company info for Apple
+agent.print_response("Get me the current stock price and key information for Apple (AAPL)")
 ```
 
 ## Toolkit Params
 
-| Parameter         | Type   | Default | Description                                                                        |
-| ----------------- | ------ | ------- | ---------------------------------------------------------------------------------- |
-| `read_article`    | `bool` | `True`  | Enables the functionality to read the full content of an article.                  |
-| `include_summary` | `bool` | `False` | Specifies whether to include a summary of the article along with the full content. |
-| `article_length`  | `int`  | -       | The maximum length of the article or its summary to be processed or returned.      |
+| Parameter         | Type        | Default    | Description                                                                      |
+| ----------------- | ----------- | ---------- | -------------------------------------------------------------------------------- |
+| `obb`             | `Any`       | `openbb_app` | OpenBB application object (for testing/injection).                               |
+| `openbb_pat`      | `str`       | `None`     | Personal access token for OpenBB authentication.                                 |
+| `provider`        | `str`       | `yfinance` | Data provider (`benzinga`, `fmp`, `intrinio`, `polygon`, `tiingo`, `tmx`, `yfinance`). |
+| `stock_price`     | `bool`      | `True`     | Enable `get_stock_price` tool.                                                   |
+| `search_symbols`  | `bool`      | `False`    | Enable `search_company_symbol` tool.                                             |
+| `company_news`    | `bool`      | `False`    | Enable `get_company_news` tool.                                                  |
+| `company_profile` | `bool`      | `False`    | Enable `get_company_profile` tool.                                               |
+| `price_targets`   | `bool`      | `False`    | Enable `get_price_targets` tool.                                                 |
 
 ## Toolkit Functions
 
-| Function                | Description                                                                       |
-| ----------------------- | --------------------------------------------------------------------------------- |
-| `get_stock_price`       | This function gets the current stock price for a stock symbol or list of symbols. |
-| `search_company_symbol` | This function searches for the stock symbol of a company.                         |
-| `get_price_targets`     | This function gets the price targets for a stock symbol or list of symbols.       |
-| `get_company_news`      | This function gets the latest news for a stock symbol or list of symbols.         |
-| `get_company_profile`   | This function gets the company profile for a stock symbol or list of symbols.     |
+| Function                | Description                                                                   |
+| ----------------------- | ----------------------------------------------------------------------------- |
+| `get_stock_price`       | Get current stock price for a symbol or comma-separated list of symbols.    |
+| `search_company_symbol` | Search for ticker symbols of a company.                                       |
+| `get_price_targets`     | Fetch consensus price targets and recommendations.                            |
+| `get_company_news`      | Get latest news items for a stock symbol or list of symbols.                 |
+| `get_company_profile`   | Get company profile and overview for given symbol(s).                         |
 
 ## Developer Resources
 

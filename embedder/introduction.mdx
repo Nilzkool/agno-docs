@@ -9,8 +9,8 @@ from agno.agent import Agent, AgentKnowledge
 from agno.vectordb.pgvector import PgVector
 from agno.embedder.openai import OpenAIEmbedder
 
-# Create knowledge base
-knowledge_base=AgentKnowledge(
+# Create embedder-based knowledge base
+knowledge_base = AgentKnowledge(
     vector_db=PgVector(
         db_url=db_url,
         table_name=embeddings_table,
@@ -18,24 +18,11 @@ knowledge_base=AgentKnowledge(
     ),
     # 2 references are added to the prompt
     num_documents=2,
-),
+)
 
 # Add information to the knowledge base
 knowledge_base.load_text("The sky is blue")
 
 # Add the knowledge base to the Agent
-agent = Agent(knowledge_base=knowledge_base)
+agent = Agent(knowledge=knowledge_base)
 ```
-
-The following embedders are supported:
-
-- [OpenAI](/embedder/openai)
-- [Gemini](/embedder/gemini)
-- [Ollama](/embedder/ollama)
-- [Voyage AI](/embedder/voyageai)
-- [Azure OpenAI](/embedder/azure_openai)
-- [Mistral](/embedder/mistral)
-- [Fireworks](/embedder/fireworks)
-- [Together](/embedder/together)
-- [HuggingFace](/embedder/huggingface)
-- [Qdrant FastEmbed](/embedder/qdrant_fastembed)
