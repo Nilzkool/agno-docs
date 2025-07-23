@@ -7,7 +7,7 @@ title: LanceDB Integration
 ```python cookbook/agent_concepts/vector_dbs/lance_db.py
 from agno.agent import Agent
 from agno.knowledge.pdf_url import PDFUrlKnowledgeBase
-from agno.vectordb.lancedb import LanceDb
+from agno.vectordb.lancedb.lance_db import LanceDb
 
 vector_db = LanceDb(
     table_name="recipes",

@@ -6,14 +6,14 @@ title: SerpAPI Tools
 
 ```python cookbook/tools/serpapi_tools.py
 from agno.agent import Agent
-from agno.tools.serpapi import SerpAPITools
+from agno.tools.serpapi import SerpApiTools
 
 agent = Agent(
-    tools=[SerpAPITools()],
+    tools=[SerpApiTools()],
     show_tool_calls=True,
     markdown=True,
 )
-agent.print_response("What are the top search results for 'machine learning'?")
+agent.print_response("What are the top search results for 'machine learning'?" )
 ```
 
 ## Usage

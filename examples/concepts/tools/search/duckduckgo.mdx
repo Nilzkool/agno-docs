@@ -8,12 +8,14 @@ title: DuckDuckGo Search
 from agno.agent import Agent
 from agno.tools.duckduckgo import DuckDuckGoTools
 
+# General web search
 agent = Agent(tools=[DuckDuckGoTools()], show_tool_calls=True)
 agent.print_response("Whats happening in France?", markdown=True)
 
-# We will search DDG but limit the site to Politifact
+# Limit to a specific site
 agent = Agent(
-    tools=[DuckDuckGoTools(modifier="site:politifact.com")], show_tool_calls=True
+    tools=[DuckDuckGoTools(request_modifier="site:politifact.com")],
+    show_tool_calls=True,
 )
 agent.print_response(
     "Is Taylor Swift promoting energy-saving devices with Elon Musk?", markdown=False
@@ -25,15 +27,9 @@ agent.print_response(
 <Steps>
   <Snippet file="create-venv-step.mdx" />
 
-  <Step title="Set your API key">
-    ```bash
-    export OPENAI_API_KEY=xxx
-    ```
-  </Step>
-
   <Step title="Install libraries">
     ```bash
-    pip install -U duckduckgo-search openai agno
+    pip install -U duckduckgo-search agno
     ```
   </Step>
 

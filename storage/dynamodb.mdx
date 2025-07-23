@@ -7,34 +7,44 @@ Agno supports using DynamoDB as a storage backend for Agents, Teams and Workflow
 
 ## Usage
 
-You need to provide `aws_access_key_id` and `aws_secret_access_key` parameters to the `DynamoDbStorage` class.
+You need to provide your AWS credentials when initializing the `DynamoDbStorage`. You can also configure how the table is created and specify which session type to store.
 
 ```python dynamodb_storage_for_agent.py
+from os import getenv
 from agno.storage.dynamodb import DynamoDbStorage
+from agno.agent import Agent
 
 # AWS Credentials
 AWS_ACCESS_KEY_ID = getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = getenv("AWS_SECRET_ACCESS_KEY")
 
 storage = DynamoDbStorage(
-    # store sessions in the ai.sessions table
-    table_name="agent_sessions",
-    # region_name: DynamoDB region name
-    region_name="us-east-1",
-    # aws_access_key_id: AWS access key id
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-    # aws_secret_access_key: AWS secret access key
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    table_name="agent_sessions",           # DynamoDB table name
+    region_name="us-east-1",               # AWS region
+    aws_access_key_id=AWS_ACCESS_KEY_ID,    # AWS access key
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,  # AWS secret key
+    endpoint_url=None,                       # Optional: custom endpoint (e.g., local DynamoDB)
+    create_table_if_not_exists=True,         # Create table automatically if it doesn't exist
+    mode="agent",                          # 'agent', 'team', or 'workflow'
 )
 
 # Add storage to the Agent
 agent = Agent(storage=storage)
 ```
 
-## Params
+## Available Parameters
 
 <Snippet file="storage-dynamodb-params.mdx" />
 
+In addition to the above, you can set:
+
+- **endpoint_url** (Optional[str])
+  Custom DynamoDB endpoint (e.g., for local testing).
+- **create_table_if_not_exists** (bool, default `True`)
+  Automatically create the DynamoDB table if it does not exist.
+- **mode** (str, default `'agent'`)
+  Specify which type of sessions to store: `'agent'`, `'team'`, or `'workflow'`.
+
 ## Developer Resources
 
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/storage/dynamodb_storage/dynamodb_storage_for_agent.py)
+- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/storage/dynamodb_storage/dynamodb_storage_for_agent.py) for an end-to-end example.
