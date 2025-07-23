@@ -14,9 +14,9 @@ In production environments, we serve (or trigger) Agents via an API and need to 
 Storage also let's us inspect and evaluate Agent sessions, extract few-shot examples and build internal monitoring tools. It lets us **look at the data** which helps us build better Agents.
 </Tip>
 
-Adding storage to an Agent, Team or Workflow is as simple as providing a `Storage` driver and Agno handles the rest. You can use Sqlite, Postgres, Mongo or any other database you want.
+Adding storage to an Agent, Team or Workflow is as simple as providing a `Storage` driver and Agno handles the rest. You can use Sqlite, Postgres, JSON, YAML, Mongo or any other database you want.
 
-Here's a simple example that demostrates persistence across execution cycles:
+Here's a simple example that demonstrates persistence across execution cycles:
 
 ```python storage.py
 from agno.agent import Agent
@@ -38,7 +38,54 @@ agent.print_response("What was my last question?")
 pprint(agent.get_messages_for_session())
 ```
 
-The first time you run this, the answer to "What was my last question?" will not be available. But run it again and the Agent will able to answer properly. Because we have fixed the session id, the Agent will continue from the same session every time you run the script.
+The first time you run this, the answer to "What was my last question?" will not be available. But run it again and the Agent will be able to answer properly. Because we have fixed the session id, the Agent will continue from the same session every time you run the script.
+
+## File-based Storage (JSON & YAML)
+
+Agno also provides lightweight file-based drivers that serialize sessions to disk.
+
+### JSON Storage
+
+```python json_storage.py
+from agno.agent import Agent
+from agno.models.openai import OpenAIChat
+from agno.storage.json import JsonStorage
+from rich.pretty import pprint
+
+# Directory for JSON files
+storage = JsonStorage(dir_path="data/json_sessions")
+
+agent = Agent(
+    model=OpenAIChat(id="gpt-4o-mini"),
+    storage=storage,
+    add_history_to_messages=True,
+)
+
+# Run and persist
+agent.run("Hello world")
+pprint(storage.get_all_session_ids())
+```
+
+### YAML Storage
+
+```python yaml_storage.py
+from agno.agent import Agent
+from agno.models.openai import OpenAIChat
+from agno.storage.yaml import YamlStorage
+from rich.pretty import pprint
+
+# Directory for YAML files
+storage = YamlStorage(dir_path="data/yaml_sessions")
+
+agent = Agent(
+    model=OpenAIChat(id="gpt-4o-mini"),
+    storage=storage,
+    add_history_to_messages=True,
+)
+
+agent.run("What time is it?")
+pprint(storage.get_all_sessions())
+```
 
 ## Benefits of Storage
 
@@ -115,12 +162,6 @@ Storage is such a critical part of your Agentic infrastructure that it should ne
             show_tool_calls=True,
             # Enable the agent to read the chat history
             read_chat_history=True,
-            # We can also automatically add the chat history to the messages sent to the model
-            # But giving the model the chat history is not always useful, so we give it a tool instead
-            # to only use when needed.
-            # add_history_to_messages=True,
-            # Number of historical responses to add to the messages.
-            # num_history_responses=3,
         )
         if session_id is None:
             session_id = agent.session_id
@@ -128,14 +169,10 @@ Storage is such a critical part of your Agentic infrastructure that it should ne
         else:
             print(f"Continuing Session: {session_id}\n")
 
-        # Runs the agent as a cli app
         agent.cli_app(markdown=True)
 
-
     if __name__ == "__main__":
-        # Load the knowledge base: Comment after first run
         knowledge_base.load(upsert=True)
-
         typer.run(pdf_agent)
     ```
 
@@ -196,7 +233,6 @@ Automatic upgrades are done when the `auto_upgrade_schema` parameter is set to `
 You only need to set this once for an agent run and the schema would be upgraded.
 
 ```python
-db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 storage = PostgresStorage(table_name="agent_sessions", db_url=db_url, auto_upgrade_schema=True)
 ```
 
@@ -205,17 +241,16 @@ storage = PostgresStorage(table_name="agent_sessions", db_url=db_url, auto_upgra
 Manual schema upgrades can be done by calling the `upgrade_schema` method on the storage class.
 
 ```python
-db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 storage = PostgresStorage(table_name="agent_sessions", db_url=db_url)
 storage.upgrade_schema()
 ```
 
 ## Params
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `storage` | `Optional[AgentStorage]` | `None` | Storage mechanism for the agent. |
+| Parameter   | Type                         | Default | Description                                 |
+|-------------|------------------------------|---------|---------------------------------------------|
+| `storage`   | `Optional[AgentStorage]`     | `None`  | Storage mechanism for the agent.            |
 
- ## Developer Resources
+## Developer Resources
 
-- View [Cookbook](https://github.com/agno-agi/agno/tree/main/cookbook/storage)
+- View [Storage Drivers](https://github.com/Nilzkool/agno/tree/main/libs/agno/agno/storage)

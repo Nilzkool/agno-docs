@@ -7,7 +7,7 @@ The `GeminiEmbedder` class is used to embed text data into vectors using the Gem
 
 ## Usage
 
-```python cookbook/embedders/gemini_embedder.py
+```python
 from agno.agent import AgentKnowledge
 from agno.vectordb.pgvector import PgVector
 from agno.embedder.google import GeminiEmbedder
@@ -32,16 +32,16 @@ knowledge_base = AgentKnowledge(
 
 ## Params
 
-| Parameter        | Type                       | Default                     | Description                                                 |
-| ---------------- | -------------------------- | --------------------------- | ----------------------------------------------------------- |
-| `dimensions`     | `int`                      | `768`                       | The dimensionality of the generated embeddings              |
-| `model`          | `str`                      | `models/text-embedding-004` | The name of the Gemini model to use                         |
-| `task_type`      | `str`                      | -                           | The type of task for which embeddings are being generated   |
-| `title`          | `str`                      | -                           | Optional title for the embedding task                       |
-| `api_key`        | `str`                      | -                           | The API key used for authenticating requests.               |
-| `request_params` | `Optional[Dict[str, Any]]` | -                           | Optional dictionary of parameters for the embedding request |
-| `client_params`  | `Optional[Dict[str, Any]]` | -                           | Optional dictionary of parameters for the Gemini client     |
-| `gemini_client`  | `Optional[Client]`         | -                           | Optional pre-configured Gemini client instance              |
+| Parameter        | Type                       | Default                                   | Description                                                 |
+| ---------------- | -------------------------- | ----------------------------------------- | ----------------------------------------------------------- |
+| `id`             | `str`                      | `gemini-embedding-exp-03-07`              | The ID of the Gemini model to use                           |
+| `dimensions`     | `int`                      | `1536`                                    | The dimensionality of the generated embeddings              |
+| `task_type`      | `str`                      | `RETRIEVAL_QUERY`                         | The type of task for which embeddings are being generated   |
+| `title`          | `str`                      | -                                         | Optional title for the embedding task                       |
+| `api_key`        | `str`                      | -                                         | The API key used for authenticating requests.               |
+| `request_params` | `Optional[Dict[str, Any]]` | -                                         | Optional dictionary of parameters for the embedding request |
+| `client_params`  | `Optional[Dict[str, Any]]` | -                                         | Optional dictionary of parameters for the Gemini client     |
+| `gemini_client`  | `Optional[Client]`         | -                                         | Optional pre-configured Gemini client instance              |
 
 ## Developer Resources
 - View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/embedders/gemini_embedder.py)

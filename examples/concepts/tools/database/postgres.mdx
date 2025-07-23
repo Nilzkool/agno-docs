@@ -9,7 +9,20 @@ from agno.agent import Agent
 from agno.tools.postgres import PostgresTools
 
 agent = Agent(
-    tools=[PostgresTools(db_url="postgresql://user:pass@localhost:5432/db")],
+    tools=[
+        PostgresTools(
+            db_name="mydb",
+            user="user",
+            password="pass",
+            host="localhost",
+            port=5432,
+            run_queries=True,
+            inspect_queries=True,
+            summarize_tables=True,
+            export_tables=False,
+            table_schema="public",
+        )
+    ],
     show_tool_calls=True,
     markdown=True,
 )
@@ -27,15 +40,9 @@ agent.print_response("Show me all tables in the database")
     ```
   </Step>
 
-  <Step title="Set your database URL">
-    ```bash
-    export DATABASE_URL=postgresql://user:pass@localhost:5432/db
-    ```
-  </Step>
-
   <Step title="Install libraries">
     ```bash
-    pip install -U psycopg2-binary sqlalchemy openai agno
+    pip install -U psycopg2-binary openai agno
     ```
   </Step>
 

@@ -4,7 +4,7 @@ title: Basic Agent
 
 ## Code
 
-```python cookbook/models/anthropic/basic.py
+```python
 from agno.agent import Agent, RunResponse  # noqa
 from agno.models.anthropic import Claude
 
@@ -16,6 +16,28 @@ agent = Agent(model=Claude(id="claude-3-5-sonnet-20241022"), markdown=True)
 
 # Print the response in the terminal
 agent.print_response("Share a 2 sentence horror story")
+```
+
+## Multimodal Input
+
+You can also pass images or files directly to the agent. Make sure to import the appropriate classes:
+
+```python
+from agno.media import Image, File
+
+# Describe an image
+response = agent.run(
+    "Tell me about this image.",
+    images=[Image(url="https://upload.wikimedia.org/wikipedia/commons/0/0c/GoldenGateBridge-001.jpg")],
+)
+print(response.content)
+
+# Summarize a PDF file
+response = agent.run(
+    "Summarize the contents of the attached file.",
+    files=[File(url="https://agno-public.s3.amazonaws.com/recipes/ThaiRecipes.pdf")],
+)
+print(response.content)
 ```
 
 ## Usage

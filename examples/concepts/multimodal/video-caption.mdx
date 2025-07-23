@@ -9,13 +9,15 @@ from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from agno.tools.moviepy_video import MoviePyVideoTools
 from agno.tools.openai import OpenAITools
+from agno.media import Video
 
+# Initialize the video processing and OpenAI tools
 video_tools = MoviePyVideoTools(
     process_video=True, generate_captions=True, embed_captions=True
 )
-
 openai_tools = OpenAITools()
 
+# Create the agent with the tools and instructions
 video_caption_agent = Agent(
     name="Video Caption Generator Agent",
     model=OpenAIChat(
@@ -34,10 +36,17 @@ video_caption_agent = Agent(
     markdown=True,
 )
 
+# Specify the path to your input video
+video_path = "path/to/your/video.mp4"
+video = Video(filepath=video_path)
+
+# Run the agent to generate and embed captions
 video_caption_agent.print_response(
-    "Generate captions for {video with location} and embed them in the video"
+    "Generate captions for this video and embed them into the video",
+    videos=[video],
+    stream=True,
 )
-```
+```  
 
 ## Usage
 

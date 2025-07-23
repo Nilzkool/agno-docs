@@ -1,71 +1,86 @@
 ---
-title: Agent Teams [Deprecated]
+title: Agent Teams
 ---
 
-<Note>
-  Agent Teams was an initial implementation of our multi-agent architecture (2023-2025) that uses a transfer/handoff mechanism. After 2 years of experimentation, we've learned that this mechanism is not scalable and is not the best way to build multi-agent systems.
+Orchestrate multiple Agents using the `Team` class. Teams allow you to coordinate, route, or collaborate across member agents to solve complex tasks.
 
-  With our learning over 2 years, we released a new multi-agent reasoning architecture in 2025, please use the new [Teams](/teams) architecture instead.
-</Note>
+Import and create a Team:
 
-We can combine multiple Agents to form a team and tackle tasks as a cohesive unit. Here's a simple example that converts an agent into a team to write an article about the top stories on hackernews.
-
-```python hackernews_team.py
+```python
 from agno.agent import Agent
+from agno.team.team import Team
 from agno.models.openai import OpenAIChat
-from agno.tools.hackernews import HackerNewsTools
 from agno.tools.duckduckgo import DuckDuckGoTools
-from agno.tools.newspaper4k import Newspaper4kTools
+from agno.tools.hackernews import HackerNewsTools
 
-hn_researcher = Agent(
-    name="HackerNews Researcher",
+# Define member agents
+researcher = Agent(
+    name="Researcher",
     model=OpenAIChat("gpt-4o"),
-    role="Gets top stories from hackernews.",
-    tools=[HackerNewsTools()],
+    role="Research information",
+    tools=[DuckDuckGoTools(cache_results=True)],
 )
 
-web_searcher = Agent(
-    name="Web Searcher",
+writer = Agent(
+    name="Writer",
     model=OpenAIChat("gpt-4o"),
-    role="Searches the web for information on a topic",
-    tools=[DuckDuckGoTools()],
-    add_datetime_to_instructions=True,
+    role="Write content based on research",
 )
 
-article_reader = Agent(
-    name="Article Reader",
+# Create a coordinating team
+team = Team(
+    members=[researcher, writer],
+    mode="coordinate",            # route | coordinate | collaborate
     model=OpenAIChat("gpt-4o"),
-    role="Reads articles from URLs.",
-    tools=[Newspaper4kTools()],
-)
-
-hn_team = Agent(
-    name="Hackernews Team",
-    model=OpenAIChat("gpt-4o"),
-    team=[hn_researcher, web_searcher, article_reader],
+    name="Content Team",
     instructions=[
-        "First, search hackernews for what the user is asking about.",
-        "Then, ask the article reader to read the links for the stories to get more information.",
-        "Important: you must provide the article reader with the links to read.",
-        "Then, ask the web searcher to search for each story to get more information.",
-        "Finally, provide a thoughtful and engaging summary.",
+        "First, have the Researcher gather information on the topic.",
+        "Then, have the Writer create content based on the research.",
     ],
-    show_tool_calls=True,
-    markdown=True,
 )
-hn_team.print_response("Write an article about the top 2 stories on hackernews", stream=True)
+
+# Run the team
+response = team.run("Write a short article about climate change solutions")
+print(response.content)
 ```
 
-Run the script to see the output.
+## Modes of operation
 
-```bash
-pip install -U openai duckduckgo-search newspaper4k lxml_html_clean agno
+- **route**: Forward or hand off tasks to a specific member.
+- **coordinate**: Analyze and transfer tasks based on member roles.
+- **collaborate**: Run all members and synthesize a combined answer.
 
-python hackernews_team.py
+### Collaborate Example
+
+```python
+from pydantic import BaseModel
+
+class DebateResult(BaseModel):
+    topic: str
+    perspective_one: str
+    perspective_two: str
+    conclusion: str
+
+# Two perspective agents
+a1 = Agent(name="P1", model=OpenAIChat("gpt-4o"), role="First perspective provider")
+a2 = Agent(name="P2", model=OpenAIChat("gpt-4o"), role="Second perspective provider")
+
+team = Team(
+    members=[a1, a2],
+    mode="collaborate",
+    model=OpenAIChat("gpt-4o"),
+    name="Debate Team",
+    instructions=[
+        "Have both agents provide their perspectives on the topic.",
+        "Synthesize into a balanced conclusion.",
+    ],
+    response_model=DebateResult,
+)
+
+result = team.run("Is AGI possible in the next decade?")
+print(result.content)
 ```
 
-## How to build Agent Teams
+## Developer Resources
 
-1. Add a `name` and `role` parameter to the member Agents.
-2. Create a Team Leader that can delegate tasks to team-members.
-3. Use your Agent team just like you would use a regular Agent.
+- Explore full API in [Team source](https://github.com/Nilzkool/agno/blob/main/libs/agno/agno/team/team.py)

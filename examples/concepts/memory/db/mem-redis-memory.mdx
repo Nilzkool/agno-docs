@@ -12,8 +12,7 @@ This example shows how to use the Memory class with Redis storage.
 from agno.agent.agent import Agent
 from agno.memory.v2.db.redis import RedisMemoryDb
 from agno.memory.v2.memory import Memory
-from agno.models.openai import OpenAIChat
-from agno.storage.redis import RedisStorage
+from agno.models.openai.chat import OpenAIChat
 
 # Create Redis memory database
 memory_db = RedisMemoryDb(
@@ -32,11 +31,10 @@ memory.clear()
 session_id = "redis_memories"
 user_id = "redis_user"
 
-# Create agent with memory and Redis storage
+# Create agent with memory
 agent = Agent(
     model=OpenAIChat(id="gpt-4o-mini"),
     memory=memory,
-    storage=RedisStorage(prefix="agno_test", host="localhost", port=6379),
     enable_user_memories=True,
     enable_session_summaries=True,
 )

@@ -24,8 +24,8 @@ database_name = "agno_memory"
 
 # Create MongoDB memory database
 memory_db = MongoMemoryDb(
-    connection_string=mongo_url,
-    database_name=database_name,
+    db_url=mongo_url,
+    db_name=database_name,
     collection_name="memories"  # Collection name to use in the database
 )
 

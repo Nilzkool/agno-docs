@@ -2,7 +2,7 @@
 title: "HackerNews Team"
 ---
 
-This example shows how to create a HackerNews team that can aggregate, curate, and discuss trending topics from HackerNews.
+This example shows how to create a HackerNews team that can aggregate, curate, and discuss trending topics from Hacker News.
 
 ## Code
 
@@ -12,9 +12,8 @@ from typing import List
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from agno.team import Team
-from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.tools.hackernews import HackerNewsTools
-from agno.tools.newspaper4k import Newspaper4kTools
+from agno.tools.duckduckgo import DuckDuckGoTools
 from pydantic import BaseModel
 
 
@@ -27,34 +26,25 @@ class Article(BaseModel):
 hn_researcher = Agent(
     name="HackerNews Researcher",
     model=OpenAIChat("gpt-4o"),
-    role="Gets top stories from hackernews.",
+    role="Gets top stories from Hacker News",
     tools=[HackerNewsTools()],
 )
 
 web_searcher = Agent(
     name="Web Searcher",
     model=OpenAIChat("gpt-4o"),
-    role="Searches the web for information on a topic",
-    tools=[DuckDuckGoTools()],
+    role="Searches the web for additional information",
+    tools=[DuckDuckGoTools(cache_results=True)],
     add_datetime_to_instructions=True,
 )
-
-article_reader = Agent(
-    name="Article Reader",
-    role="Reads articles from URLs.",
-    tools=[Newspaper4kTools()],
-)
-
 
 hn_team = Team(
     name="HackerNews Team",
     mode="coordinate",
     model=OpenAIChat("gpt-4o"),
-    members=[hn_researcher, web_searcher, article_reader],
+    members=[hn_researcher, web_searcher],
     instructions=[
-        "First, search hackernews for what the user is asking about.",
-        "Then, ask the article reader to read the links for the stories to get more information.",
-        "Important: you must provide the article reader with the links to read.",
+        "First, search Hacker News for what the user is asking about.",
         "Then, ask the web searcher to search for each story to get more information.",
         "Finally, provide a thoughtful and engaging summary.",
     ],
@@ -65,9 +55,8 @@ hn_team = Team(
     show_members_responses=True,
 )
 
-hn_team.print_response("Write an article about the top 2 stories on hackernews")
+hn_team.print_response("Write an article about the top 2 stories on Hacker News")
 ```
-
 
 ## Usage
 
@@ -77,7 +66,7 @@ hn_team.print_response("Write an article about the top 2 stories on hackernews")
 
     <Step title="Install required libraries">
         ```bash
-        pip install openai duckduckgo-search newspaper4k lxml_html_clean
+        pip install openai duckduckgo-search
         ```
     </Step>
 
@@ -94,4 +83,3 @@ hn_team.print_response("Write an article about the top 2 stories on hackernews")
     </Step>
 
 </Steps>
-

@@ -24,8 +24,8 @@ postgres_url = "postgresql://postgres:postgres@localhost:5432/agno_memory"
 # Create PostgreSQL memory database
 memory_db = PostgresMemoryDb(
     table_name="agno_memory",  # Table name to use in the database
-    connection_string=postgres_url,
-    schema_name="public",      # Schema name for the table (optional)
+    db_url=postgres_url,
+    schema="public",      # Schema name for the table (optional)
 )
 
 # Create memory instance with PostgreSQL backend

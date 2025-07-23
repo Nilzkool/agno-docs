@@ -2,11 +2,11 @@
 title: Github
 ---
 
-**GithubTools** enables an Agent to access Github repositories and perform tasks such as listing open pull requests, issues and more.
+**GithubTools** enables an Agent to access GitHub repositories and perform tasks such as searching repositories, listing repositories, issues, pull requests, file operations, and more.
 
 ## Prerequisites
 
-The following examples requires the `PyGithub` library and a Github access token which can be obtained from [here](https://github.com/settings/tokens).
+The following examples require the `PyGithub` library and a GitHub access token which can be obtained from https://github.com/settings/tokens.
 
 ```shell
 pip install -U PyGithub
@@ -18,15 +18,15 @@ export GITHUB_ACCESS_TOKEN=***
 
 ## Example
 
-The following agent will search Google for the latest news about "Mistral AI":
+The following agent will use the GitHub tools to list open pull requests for a repository:
 
-```python cookbook/tools/github_tools.py
+```python
 from agno.agent import Agent
 from agno.tools.github import GithubTools
 
 agent = Agent(
     instructions=[
-        "Use your tools to answer questions about the repo: agno-agi/agno",
+        "Use your tools to answer questions about the repo: owner/repo",
         "Do not create any issues or pull requests unless explicitly asked to do so",
     ],
     tools=[GithubTools()],
@@ -40,29 +40,33 @@ agent.print_response("List open pull requests", markdown=True)
 
 | Parameter                  | Type   | Default | Description                                                                                                 |
 | -------------------------- | ------ | ------- | ----------------------------------------------------------------------------------------------------------- |
-| `access_token`             | `str`  | `None`  | Github access token for authentication. If not provided, will use GITHUB_ACCESS_TOKEN environment variable. |
-| `base_url`                 | `str`  | `None`  | Optional base URL for Github Enterprise installations.                                                      |
-| `search_repositories`      | `bool` | `True`  | Enable searching Github repositories.                                                                       |
+| `access_token`             | `str`  | `None`  | GitHub access token for authentication. If not provided, will use `GITHUB_ACCESS_TOKEN` environment variable. |
+| `base_url`                 | `str`  | `None`  | Optional base URL for GitHub Enterprise installations.                                                      |
+| `search_repositories`      | `bool` | `True`  | Enable searching GitHub repositories.                                                                       |
 | `list_repositories`        | `bool` | `True`  | Enable listing repositories for a user/organization.                                                        |
-| `get_repository`           | `bool` | `True`  | Enable getting repository details.                                                                          |
-| `list_pull_requests`       | `bool` | `True`  | Enable listing pull requests for a repository.                                                              |
-| `get_pull_request`         | `bool` | `True`  | Enable getting pull request details.                                                                        |
-| `get_pull_request_changes` | `bool` | `True`  | Enable getting pull request file changes.                                                                   |
-| `create_issue`             | `bool` | `True`  | Enable creating issues in repositories.                                                                     |
+| `get_repository`           | `bool` | `False` | Enable getting repository details.                                                                          |
+| `list_pull_requests`       | `bool` | `False` | Enable listing pull requests for a repository.                                                              |
+| `get_pull_request`         | `bool` | `False` | Enable getting pull request details.                                                                        |
+| `get_pull_request_changes` | `bool` | `False` | Enable getting pull request file changes.                                                                   |
+| `create_issue`             | `bool` | `False` | Enable creating issues in repositories.                                                                     |
+| `update_file`              | `bool` | `True`  | Enable updating files in a repository.                                                                      |
 
 ## Toolkit Functions
 
-| Function                   | Description                                          |
-| -------------------------- | ---------------------------------------------------- |
-| `search_repositories`      | Searches Github repositories based on a query.       |
-| `list_repositories`        | Lists repositories for a given user or organization. |
-| `get_repository`           | Gets details about a specific repository.            |
-| `list_pull_requests`       | Lists pull requests for a repository.                |
-| `get_pull_request`         | Gets details about a specific pull request.          |
-| `get_pull_request_changes` | Gets the file changes in a pull request.             |
-| `create_issue`             | Creates a new issue in a repository.                 |
+| Function                   | Description                                                      |
+| -------------------------- | ---------------------------------------------------------------- |
+| `search_repositories`      | Search GitHub repositories based on a query.                     |
+| `list_repositories`        | List repositories for the authenticated user.                    |
+| `get_repository`           | Get details about a specific repository.                          |
+| `list_pull_requests`       | List pull requests for a repository.                              |
+| `get_pull_request`         | Get details about a specific pull request.                        |
+| `get_pull_request_changes` | Get file changes in a pull request.                               |
+| `create_issue`             | Create a new issue in a repository.                               |
+| `update_file`              | Update an existing file in a repository.                          |
+
+Additional functions (require explicit enable) include creating/deleting repos, branches, files, comments, search_code, search_issues_and_prs, and more. See the implementation for full list.
 
 ## Developer Resources
 
-- View [Tools](https://github.com/agno-agi/agno/blob/main/libs/agno/agno/tools/github.py)
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/github_tools.py)
+- View [Tools implementation](https://github.com/Nilzkool/agno/blob/main/libs/agno/agno/tools/github.py)
+- View [Unit tests](https://github.com/Nilzkool/agno/blob/main/libs/agno/tests/unit/tools/test_github.py)

@@ -36,7 +36,6 @@ PORT = getenv("SINGLESTORE_PORT")
 DATABASE = getenv("SINGLESTORE_DATABASE")
 SSL_CERT = getenv("SINGLESTORE_SSL_CERT", None)
 
-
 # Download the certificate if SSL_CERT is not provided
 if not SSL_CERT:
     SSL_CERT = download_cert(
@@ -45,7 +44,6 @@ if not SSL_CERT:
     )
     if SSL_CERT:
         os.environ["SINGLESTORE_SSL_CERT"] = SSL_CERT
-
 
 # SingleStore DB URL
 db_url = (
@@ -57,12 +55,10 @@ if SSL_CERT:
 # Create a DB engine
 db_engine = create_engine(db_url)
 
-
 class Article(BaseModel):
     title: str
     summary: str
     reference_links: List[str]
-
 
 hn_researcher = Agent(
     name="HackerNews Researcher",
@@ -78,7 +74,6 @@ web_searcher = Agent(
     tools=[DuckDuckGoTools()],
     add_datetime_to_instructions=True,
 )
-
 
 hn_team = Team(
     name="HackerNews Team",
@@ -112,4 +107,4 @@ hn_team.print_response("Write an article about the top 2 stories on hackernews")
 
 ## Developer Resources
 
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/storage/singlestore_storage/singlestore_storage_for_team.py)
+- View [Source Code](https://github.com/Nilzkool/agno/blob/main/libs/agno/agno/storage/singlestore.py)

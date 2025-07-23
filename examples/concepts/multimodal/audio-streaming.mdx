@@ -10,6 +10,7 @@ import wave
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from typing import Iterator
+from agno.run.response import RunResponse
 
 # Audio Configuration
 SAMPLE_RATE = 24000  # Hz (24kHz)
@@ -22,7 +23,7 @@ agent = Agent(
         modalities=["text", "audio"],
         audio={
             "voice": "alloy",
-            "format": "pcm16",  # Required for streaming
+            "format": "wav",  # use WAV for streaming
         },
     ),
     debug_mode=True,
@@ -31,7 +32,7 @@ agent = Agent(
 
 # Question with streaming
 output_stream: Iterator[RunResponse] = agent.run(
-    "Is a golden retriever a good family dog?", 
+    "Is a golden retriever a good family dog?",
     stream=True
 )
 

@@ -5,10 +5,11 @@ title: OpenAI Embedder
 ## Code
 
 ```python
-from agno.agent import AgentKnowledge
+from agno.agent import Agent
 from agno.embedder.openai import OpenAIEmbedder
 from agno.vectordb.pgvector import PgVector
 
+# Get embeddings
 embeddings = OpenAIEmbedder().get_embedding(
     "The quick brown fox jumps over the lazy dog."
 )
@@ -18,13 +19,13 @@ print(f"Embeddings: {embeddings[:5]}")
 print(f"Dimensions: {len(embeddings)}")
 
 # Example usage:
-knowledge_base = AgentKnowledge(
-    vector_db=PgVector(
-        db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
-        table_name="openai_embeddings",
-        embedder=OpenAIEmbedder(),
-    ),
-    num_documents=2,
+knowledge_base = PgVector(
+    db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
+    table_name="openai_embeddings",
+    embedder=OpenAIEmbedder(),
+)
+agent = Agent(
+    knowledge=knowledge_base,
 )
 ```
 

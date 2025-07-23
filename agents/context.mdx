@@ -2,12 +2,15 @@
 title: Agent Context
 ---
 
-Agent Context is another amazing feature of Agno. `context` is a dictionary that contains a set of functions (or dependencies) that are resolved before the agent runs.
+Agent Context is another amazing feature of Agno. `context` is a dictionary that contains a set of functions (or dependencies) that are resolved before the agent runs. You can use context to inject dynamic data—memories, few-shot examples, retrieved documents, etc.
 
 <Note>
-Context is a way to inject dependencies into the description and instructions of the agent.
+Context is a way to inject dependencies into the description and instructions of the agent. Use these flags to control its behavior:
 
-You can use context to inject memories, dynamic few-shot examples, "retrieved" documents, etc.
+- `context`: A dict mapping names to functions or values. Functions are called (resolved) at run time.
+- `resolve_context` (default: `True`): If `True`, Agno will call each function in `context` and replace it with its result before building messages. Set to `False` to skip this step.
+- `add_state_in_messages`: If `True`, variables from `context` (and `session_state`/`extra_data`) are interpolated into the system message and instructions using Python-style formatting (`{var_name}`).
+- `add_context`: If `True`, the full `context` dict is appended to the **user** message inside `<context>` tags.
 </Note>
 
 ```python agent_context.py
@@ -48,19 +51,16 @@ def get_top_hackernews_stories(num_stories: int = 5) -> str:
 # Create a Context-Aware Agent that can access real-time HackerNews data
 agent = Agent(
     model=OpenAIChat(id="gpt-4o"),
-    # Each function in the context is evaluated when the agent is run,
-    # think of it as dependency injection for Agents
+    # Each function in the context is evaluated when the agent is run
     context={"top_hackernews_stories": get_top_hackernews_stories},
-    # Alternatively, you can manually add the context to the instructions
+    # add_state_in_messages will make the `top_hackernews_stories` variable
+    # available in the system message and instructions
+    add_state_in_messages=True,
     instructions=dedent("""\
         You are an insightful tech trend observer! 📰
 
         Here are the top stories on HackerNews:
-        {top_hackernews_stories}\
-    """),
-    # add_state_in_messages will make the `top_hackernews_stories` variable
-    # available in the instructions
-    add_state_in_messages=True,
+        {top_hackernews_stories}"""),
     markdown=True,
 )
 
@@ -73,7 +73,7 @@ agent.print_response(
 
 ## Adding the entire context to the user message
 
-Set `add_context=True` to add the entire context to the user message. This way you don't have to manually add the context to the instructions.
+Set `add_context=True` to include the full `context` dictionary in the **user** message under `<context>` tags. This means you don’t have to manually embed context variables in your instructions.
 
 ```python agent_context_instructions.py
 import json
@@ -93,36 +93,20 @@ def get_top_hackernews_stories(num_stories: int = 5) -> str:
         JSON string containing story details (title, url, score, etc.)
     """
     # Get top stories
-    stories = [
-        {
-            k: v
-            for k, v in httpx.get(
-                f"https://hacker-news.firebaseio.com/v0/item/{id}.json"
-            )
-            .json()
-            .items()
-            if k != "kids"  # Exclude discussion threads
-        }
-        for id in httpx.get(
-            "https://hacker-news.firebaseio.com/v0/topstories.json"
-        ).json()[:num_stories]
-    ]
+    stories = [ ... ]
     return json.dumps(stories, indent=4)
-
 
 # Create a Context-Aware Agent that can access real-time HackerNews data
 agent = Agent(
     model=OpenAIChat(id="gpt-4o"),
-    # Each function in the context is resolved when the agent is run,
-    # think of it as dependency injection for Agents
     context={"top_hackernews_stories": get_top_hackernews_stories},
-    # We can add the entire context dictionary to the instructions
+    # This will append <context>...</context> with all context values to the user message
     add_context=True,
     markdown=True,
 )
 
 # Example usage
-agent.print_response(
+tag = agent.print_response(
     "Summarize the top stories on HackerNews and identify any interesting trends.",
     stream=True,
 )

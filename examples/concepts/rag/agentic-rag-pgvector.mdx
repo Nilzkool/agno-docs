@@ -11,6 +11,7 @@ from agno.knowledge.pdf_url import PDFUrlKnowledgeBase
 from agno.models.openai import OpenAIChat
 from agno.vectordb.pgvector import PgVector, SearchType
 
+# Database URL for PgVector
 db_url = "postgresql+psycopg://ai:ai@localhost:5532/ai"
 # Create a knowledge base of PDFs from URLs
 knowledge_base = PDFUrlKnowledgeBase(
@@ -53,7 +54,7 @@ agent.print_response(
 
   <Step title="Install libraries">
     ```bash
-    pip install -U openai sqlalchemy 'psycopg[binary]' pgvector agno
+    pip install -U openai sqlalchemy 'psycopg[binary]' pgvector pypdf agno
     ```
   </Step>
 

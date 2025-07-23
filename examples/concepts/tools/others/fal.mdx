@@ -12,7 +12,7 @@ from agno.tools.fal import FalTools
 fal_agent = Agent(
     name="Fal Video Generator Agent",
     model=OpenAIChat(id="gpt-4o"),
-    tools=[FalTools("fal-ai/hunyuan-video")],
+    tools=[FalTools(model="fal-ai/hunyuan-video")],
     description="You are an AI agent that can generate videos using the Fal API.",
     instructions=[
         "When the user asks you to create a video, use the `generate_media` tool to create the video.",
@@ -41,7 +41,7 @@ fal_agent.print_response("Generate video of balloon in the ocean")
 
   <Step title="Install libraries">
     ```bash
-    pip install -U fal openai agno
+    pip install -U fal-client openai agno
     ```
   </Step>
 

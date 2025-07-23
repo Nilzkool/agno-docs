@@ -42,7 +42,9 @@ In the example above, the model will generate a response that matches the `User`
 
 ### JSON Mode
 
-Some model classes **do not support Structured Outputs**, or you may want to fall back to JSON mode even when the model supports both options. In such cases, you can enable **JSON mode** by setting `use_json_mode=True`.
+Some model classes **do not support Structured Outputs**, or you may want to fall back to JSON mode even when the model supports both options. In such cases, you can enable **JSON mode** by setting `use_json_mode=True`. Additionally, for backward compatibility you can disable structured outputs by passing `structured_outputs=False`, which has the same effect as `use_json_mode=True`.
+
+Agno agents will also automatically fall back to JSON mode when the selected model does not natively support Structured Outputs.
 
 JSON mode works by injecting a detailed description of the expected JSON structure into the system prompt. The model is then instructed to return a valid JSON object that follows this structure. Unlike Structured Outputs, the response is **not automatically validated** against the schema at the API level.
 
@@ -62,9 +64,8 @@ agent = Agent(
     model=OpenAIChat(id="gpt-4o"),
     description="You are a helpful assistant that can extract information from a user's profile.",
     response_model=User,
-    use_json_mode=True,
+    use_json_mode=True,  # or structured_outputs=False
 )
-
 ```
 
 ### When to use
@@ -73,6 +74,6 @@ Use **Structured Outputs** if the model supports it — it’s reliable, clean, 
 
 Use **JSON mode**:
 
-- When the model doesn't support structured outputs. Agno agents do this by default on your behalf.
+- When the model doesn't support Structured Outputs. Agno agents do this by default on your behalf.
 - When you need broader compatibility, but are okay validating manually.
 - When the model does not support tools with structured outputs.

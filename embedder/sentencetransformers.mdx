@@ -7,7 +7,7 @@ The `SentenceTransformerEmbedder` class is used to embed text data into vectors 
 
 ## Usage
 
-```python cookbook/embedders/sentence_transformer_embedder.py
+```python
 from agno.agent import AgentKnowledge
 from agno.vectordb.pgvector import PgVector
 from agno.embedder.sentence_transformer import SentenceTransformerEmbedder
@@ -32,11 +32,11 @@ knowledge_base = AgentKnowledge(
 
 ## Params
 
-| Parameter                     | Type               | Default             | Description                                                  |
-| ----------------------------- | ------------------ | ------------------- | ------------------------------------------------------------ |
-| `dimensions`                  | `int`              | -                   | The dimensionality of the generated embeddings               |
-| `model`                       | `str`              | `all-mpnet-base-v2` | The name of the SentenceTransformers model to use            |
-| `sentence_transformer_client` | `Optional[Client]` | -                   | Optional pre-configured SentenceTransformers client instance |
+| Parameter                     | Type               | Default                                     | Description                                                  |
+| ----------------------------- | ------------------ | ------------------------------------------- | ------------------------------------------------------------ |
+| `dimensions`                  | `int`              | `1536`                                      | The dimensionality of the generated embeddings               |
+| `model`                       | `str`              | `sentence-transformers/all-MiniLM-L6-v2`   | The name of the SentenceTransformers model to use            |
+| `sentence_transformer_client` | `Optional[Client]` | -                                           | Optional pre-configured SentenceTransformers client instance |
 
 ## Developer Resources
 - View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/agent_concepts/knowledge/embedders/sentence_transformer_embedder.py)

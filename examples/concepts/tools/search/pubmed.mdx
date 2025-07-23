@@ -6,10 +6,10 @@ title: PubMed Tools
 
 ```python cookbook/tools/pubmed_tools.py
 from agno.agent import Agent
-from agno.tools.pubmed import PubMedTools
+from agno.tools.pubmed import PubmedTools
 
 agent = Agent(
-    tools=[PubMedTools()],
+    tools=[PubmedTools()],
     show_tool_calls=True,
     markdown=True,
 )
