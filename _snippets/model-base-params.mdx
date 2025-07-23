@@ -1,20 +1,19 @@
-| Parameter                     | Type                                   | Default    | Description                                                    |
-| ----------------------------- | -------------------------------------- | ---------- | -------------------------------------------------------------- |
-| `id`                          | `str`                                  | -          | ID of the model to use. Alias: "model"                         |
-| `name`                        | `Optional[str]`                        | `None`     | Name for this Model. Not sent to the Model API.                |
-| `provider`                    | `Optional[str]`                        | `None`     | Provider for this Model. Not sent to the Model API.            |
-| `metrics`                     | `Dict[str, Any]`                       | `{}`       | Metrics collected for this Model. Not sent to the Model API.   |
-| `response_format`             | `Optional[Any]`                        | `None`     | Format of the response.                                        |
-| `tools`                       | `Optional[List[Union[Tool, Dict]]]`    | `None`     | A list of tools provided to the Model.                         |
-| `tool_choice`                 | `Optional[Union[str, Dict[str, Any]]]` | `None`     | Controls which (if any) function is called by the model.       |
-| `show_tool_calls`             | `Optional[bool]`                       | `None`     | If True, shows function calls in the response.                 |
-| `tool_call_limit`             | `Optional[int]`                        | `None`     | Maximum number of tool calls allowed.                          |
-| `_functions`                  | `Optional[Dict[str, Function]]`        | `None`     | Functions extracted from the tools. Not sent to the Model API. |
-| `_function_call_stack`        | `Optional[List[FunctionCall]]`         | `None`     | Function call stack.                                           |
-| `system_prompt`               | `Optional[str]`                        | `None`     | System prompt from the model added to the Agent.               |
-| `instructions`                | `Optional[List[str]]`                  | `None`     | Instructions from the model added to the Agent.                |
-| `session_id`                  | `Optional[str]`                        | `None`     | Session ID of the calling Agent or Workflow.                   |
-| `structured_outputs`          | `Optional[bool]`                       | `None`     | Whether to use the structured outputs with this Model.         |
-| `supports_structured_outputs` | `bool`                                 | `False`    | Whether the model supports structured outputs.                 |
-| `override_system_role`        | `bool`                                 | `False`    | Whether to override the system role.                           |
-| `system_message_role`         | `str`                                  | `"system"` | The role to map the system message to.                         |
+| Parameter                         | Type                                    | Default    | Description                                                      |
+| --------------------------------- | --------------------------------------- | ---------- | ---------------------------------------------------------------- |
+| id                                | string                                  | *required* | Model identifier (e.g., `"gpt-4"`).                              |
+| name                              | string                                  | None       | Friendly name for this model. Not sent to the provider API.      |
+| provider                          | string                                  | None       | Provider name for this model. Not sent to the provider API.      |
+| response_format                   | any                                     | None       | Structured output format (e.g., JSON schema or Pydantic model).  |
+| structured_outputs                | boolean                                 | False      | Whether to enable structured outputs on this model.              |
+| supports_native_structured_outputs| boolean                                 | False      | True if the model natively supports structured JSON responses.   |
+| supports_json_schema_outputs      | boolean                                 | False      | True if the model supports JSON Schema–based responses.          |
+| tool_choice                       | string or object                        | None       | Controls function invocation: `"none"`, `"auto"`, or specific. |
+| show_tool_calls                   | boolean                                 | None       | If True, include tool call details in model responses.           |
+| tool_call_limit                   | integer                                 | None       | Maximum number of allowed function/tool calls.                   |
+| _tools                            | array of objects                        | None       | Internal list of tool definitions sent to the model.             |
+| _functions                        | object                                  | None       | Internal map of available functions for tool invocation.         |
+| _function_call_stack              | array                                   | None       | Internal execution stack of function calls.                      |
+| system_prompt                     | string                                  | None       | System prompt inserted before user messages.                     |
+| instructions                      | array of strings                        | None       | Additional instructions added to model prompts.                  |
+| tool_message_role                 | string                                  | "tool"     | Role name for function/tool call messages.                       |
+| assistant_message_role            | string                                  | "assistant"| Role name for assistant messages returned by the model.          |

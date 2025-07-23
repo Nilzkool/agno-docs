@@ -2,6 +2,15 @@
 title: MongoMemoryDb
 ---
 
-MongoMemoryDb is a class that implements the MemoryDb interface using MongoDB as the backend storage system. It provides persistent storage for agent memories with support for indexing and efficient querying.
+MongoMemoryDb provides persistent storage for agent memories using MongoDB. Note: agno offers two implementations:
 
-<Snippet file="memory-mongo-reference.mdx" /> 
+- v2: Modern implementation in agno.memory.v2.db.mongodb with schema versioning (_version), updated_at timestamps, and optimistic locking.
+- v1 (legacy): Original implementation in agno.memory.db.mongodb without versioning.
+
+By default, import the v2 implementation:
+
+```python
+from agno.memory.v2.db.mongodb import MongoMemoryDb
+```
+
+<Snippet file="memory-mongo-reference.mdx" />

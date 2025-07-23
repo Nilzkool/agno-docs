@@ -2,6 +2,15 @@
 title: PostgresMemoryDb
 ---
 
-PostgresMemoryDb is a class that implements the MemoryDb interface using PostgreSQL as the backend storage system. It provides persistent storage for agent memories with support for JSONB data types, timestamps, and efficient querying.
+PostgresMemoryDb provides persistent storage for agent memories using PostgreSQL. Note: agno offers two implementations:
 
-<Snippet file="memory-postgres-reference.mdx" /> 
+- v2: Modern implementation in agno.memory.v2.db.postgres (class PostgresMemoryDb) with JSONB support, timestamps, and automatic schema creation.
+- v1 (legacy): Original implementation in agno.memory.db.postgres (class PgMemoryDb) without JSONB defaults.
+
+By default, import the v2 implementation:
+
+```python
+from agno.memory.v2.db.postgres import PostgresMemoryDb
+```
+
+<Snippet file="memory-postgres-reference.mdx" />

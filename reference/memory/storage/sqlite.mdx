@@ -2,6 +2,15 @@
 title: SqliteMemoryDb
 ---
 
-SqliteMemoryDb is a class that implements the MemoryDb interface using SQLite as the backend storage system. It provides lightweight, file-based or in-memory storage for agent memories with automatic timestamp management.
+SqliteMemoryDb provides lightweight, file-based or in-memory storage for agent memories using SQLite. Note: agno offers two implementations:
 
-<Snippet file="memory-sqlite-reference.mdx" /> 
+- v2: Modern implementation in agno.memory.v2.db.sqlite with automatic table creation, server_default timestamps, and persistent session management.
+- v1 (legacy): Original implementation in agno.memory.db.sqlite without persistent session reuse.
+
+By default, import the v2 implementation:
+
+```python
+from agno.memory.v2.db.sqlite import SqliteMemoryDb
+```
+
+<Snippet file="memory-sqlite-reference.mdx" />

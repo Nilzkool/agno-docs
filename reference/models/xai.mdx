@@ -5,4 +5,20 @@ sidebarTitle: xAI
 
 The xAI model provides access to xAI's language models.
 
+import { CodeBlock } from 'some-doc-components';
+
+## Usage
+
+```python
+from agno.models.xai import xAI
+
+# Instantiate with defaults or override as needed
+model = xAI(
+    # Provide your API key or set the XAI_API_KEY env var
+    api_key="YOUR_XAI_API_KEY",
+    # Optional: override the base URL (defaults to https://api.x.ai/v1)
+    base_url="https://api.x.ai/v1"
+)
+```
+
 <Snippet file="model-xai-params.mdx" />

@@ -136,14 +136,14 @@ def print_agent_memory(agent):
 
     # Print session summary
     for user_id in list(agent.memory.summaries.keys()):
+        session_summary = agent.memory.get_session_summary(
+            session_id=agent.session_id, user_id=user_id
+        )
         console.print(
             Panel(
                 JSON(
                     json.dumps(
-                        [
-                            summary.to_dict()
-                            for summary in agent.memory.get_session_summaries(user_id=user_id)
-                        ],
+                        session_summary.to_dict(),
                         indent=4,
                     ),
                 ),
@@ -153,15 +153,14 @@ def print_agent_memory(agent):
         )
 
 
-
 def main(user: str = "user"):
     """Interactive chat loop with memory display"""
     agent = create_agent(user)
 
     print("Try these example inputs:")
-    print("- 'My name is [name] and I live in [city]'")
-    print("- 'I love [hobby/interest]'")
-    print("- 'What do you remember about me?'")
+    print("- 'My name is [name] and I live in [city]'" )
+    print("- 'I love [hobby/interest]'" )
+    print("- 'What do you remember about me?'" )
     print("- 'What have we discussed so far?'\n")
 
     exit_on = ["exit", "quit", "bye"]
@@ -176,7 +175,6 @@ def main(user: str = "user"):
 
 if __name__ == "__main__":
     typer.run(main)
-
 ```
 
 ## Usage

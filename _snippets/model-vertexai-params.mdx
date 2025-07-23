@@ -2,9 +2,10 @@
 | --------------------------------- | ------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------ |
 | `id`                              | `str`                                 | `"gemini-2.0-flash-exp"` | The specific model ID used for generating responses.                                                   |
 | `name`                            | `str`                                 | `"Gemini"`               | The name identifier for the agent.                                                                     |
-| `provider`                        | `str`                                 | `"VertexAI"`             | The provider of the model.                                                                             |
-| `function_declarations`           | `Optional[List[FunctionDeclaration]]` | `None`                   | A list of function declarations that the model can utilize during the response generation process.     |
+| `provider`                        | `str`                                 | `"Google"`               | The provider of the model.                                                                             |
+| `function_declarations`           | `Optional[List[Any]]`                 | `None`                   | A list of function declarations that the model can utilize during response generation.                |
 | `generation_config`               | `Optional[Any]`                       | `None`                   | Configuration settings for the generation process, such as parameters for controlling output behavior. |
-| `safety_settings`                 | `Optional[Any]`                       | `None`                   | Settings related to safety measures, ensuring the generation of appropriate and safe content.          |
-| `generative_model_request_params` | `Optional[Dict[str, Any]]`           | `None`                   | Additional parameters for the generative model requests.                                               |
-| `client`                          | `Optional[GenerativeModel]`           | `None`                   | A pre-configured instance of the Gemini client.                                                        |
+| `safety_settings`                 | `Optional[List[Any]]`                 | `None`                   | Settings related to safety measures, ensuring the generation of appropriate and safe content.          |
+| `generative_model_kwargs`         | `Optional[Dict[str, Any]]`            | `None`                   | Additional generation parameters to pass to the Gemini API.                                             |
+| `request_params`                  | `Optional[Dict[str, Any]]`            | `None`                   | Additional request parameters for the underlying Gemini client.                                        |
+| `client`                          | `Optional[GeminiClient]`              | `None`                   | A pre-configured instance of the Gemini client.                                                        |

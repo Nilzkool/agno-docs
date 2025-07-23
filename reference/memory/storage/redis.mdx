@@ -2,6 +2,15 @@
 title: RedisMemoryDb
 ---
 
-RedisMemoryDb is a class that implements the MemoryDb interface using Redis as the backend storage system. It provides persistent storage for agent memories with support for JSONB data types, timestamps, and efficient querying.
+RedisMemoryDb provides persistent storage for agent memories using Redis. Note: agno offers two implementations:
 
-<Snippet file="memory-redis-reference.mdx" /> 
+- v2: Modern implementation in agno.memory.v2.db.redis with JSON serialization, created_at/updated_at timestamps, and namespaced keys.
+- v1 (legacy): Original implementation in agno.memory.db.redis (not versioned separately).
+
+By default, import the v2 implementation:
+
+```python
+from agno.memory.v2.db.redis import RedisMemoryDb
+```
+
+<Snippet file="memory-redis-reference.mdx" />

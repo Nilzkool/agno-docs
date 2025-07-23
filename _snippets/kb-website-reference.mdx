@@ -1,6 +1,8 @@
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `urls` | `List[str]` | `[]` | List of URLs to scrape |
-| `reader` | `Optional[WebsiteReader]` | `None` | Reader to scrape website content |
-| `max_depth` | `int` | `3` | Maximum depth of links to follow when scraping |
-| `max_links` | `int` | `10` | Maximum number of links to follow when scraping |
+| `urls` | `List[str]` | `[]` | List of starting URLs to crawl |
+| `reader` | `WebsiteReader` | `WebsiteReader()` | Reader to crawl and extract website content |
+| `max_depth` | `int` | `3` | Maximum depth of links to follow when crawling |
+| `max_links` | `int` | `10` | Maximum number of pages to fetch |
+| `timeout` | `int` | `10` | HTTP request timeout in seconds |
+| `proxy` | `Optional[str]` | `None` | Optional proxy URL for HTTP requests |

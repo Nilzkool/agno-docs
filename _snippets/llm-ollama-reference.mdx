@@ -1,33 +1,17 @@
-<ResponseField name="name" type="str" default="Ollama">
-</ResponseField>
-<ResponseField name="model" type="str" default="openhermes">
-  ID of the model to use.
-</ResponseField>
-<ResponseField name="host" type="str">
-</ResponseField>
-<ResponseField name="timeout" type="Any">
-</ResponseField>
-<ResponseField name="format" type="str">
- The format to return a response in. Currently the only accepted value is json
-</ResponseField>
-<ResponseField name="options" type="Any">
-  Additional model parameters such as temperature
-</ResponseField>
-<ResponseField name="keep_alive" type="Union[float, str]">
-   Controls how long the model will stay loaded into memory following the request.
-</ResponseField>
-<ResponseField name="client_kwargs" type="Dict[str, Any]" default="None">
-  Additional `{key: value}` dict sent when initalizing the `Ollama()` client.
-</ResponseField>
-<ResponseField name="ollama_client" type="ollama.Client()" default="None">
-  Provide your own `ollama.Client()`
-</ResponseField>
-<ResponseField name="function_call_limit" type="int" default="10">
-  Maximum number of function calls allowed across all iterations.
-</ResponseField>
-<ResponseField name="deactivate_tools_after_use" type="bool" default="False">
-  Deactivate tool calls by turning off JSON mode after 1 tool call
-</ResponseField>
-<ResponseField name="add_user_message_after_tool_call" type="bool" default="True">
-  After a tool call is run, add the user message as a reminder to the LLM
-</ResponseField>
+| Parameter         | Type                                     | Default       | Description                                                                                            |
+|-------------------|------------------------------------------|---------------|--------------------------------------------------------------------------------------------------------|
+| name              | `str`                                     | `"Ollama"`   | Client name for this model class.                                                                     |
+| id                | `str`                                     | `"llama3.1"` | ID of the Ollama model to use.                                                                        |
+| host              | `Optional[str]`                           | `None`        | Host address for the Ollama API.                                                                      |
+| timeout           | `Optional[Any]`                           | `None`        | Request timeout for the Ollama client.                                                                |
+| format            | `Optional[Any]`                           | `None`        | Response format (e.g., JSON) when structured_outputs is enabled.                                       |
+| options           | `Optional[Any]`                           | `None`        | Additional model parameters such as `temperature`, `top_p`.                                           |
+| keep_alive        | `Optional[Union[float, str]]`             | `None`        | Duration to keep the model loaded in memory after the request.                                         |
+| client_params     | `Optional[Dict[str, Any]]`                | `None`        | Extra `{key: value}` params passed when initializing the `OllamaClient`.                                 |
+| request_params    | `Optional[Dict[str, Any]]`                | `None`        | Additional request kwargs sent with each `chat` call.                                                 |
+| tools             | `Optional[List[Dict]]`                    | `None`        | List of tools/functions definitions included in the request payload.                                   |
+| response_format   | `Optional[Any]`                           | `None`        | Structured output schema or Pydantic model for JSON responses.                                        |
+| structured_outputs| `bool`                                    | `False`       | Whether to request native structured outputs from the model.                                          |
+| show_tool_calls   | `Optional[bool]`                          | `None`        | If True, include tool call info in the responses.                                                     |
+| tool_choice       | `Optional[Union[str, Dict[str, Any]]]`    | `None`        | Controls function-call behavior: “none”, “auto”, or specify a function.                                |
+| tool_call_limit   | `Optional[int]`                           | `None`        | Maximum number of function/tool calls allowed.                                                        |
