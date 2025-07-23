@@ -5,7 +5,7 @@ title: Mistral Embedder
 ## Code
 
 ```python
-from agno.agent import AgentKnowledge
+from agno.agent import Agent
 from agno.embedder.mistral import MistralEmbedder
 from agno.vectordb.pgvector import PgVector
 
@@ -18,7 +18,7 @@ print(f"Embeddings: {embeddings[:5]}")
 print(f"Dimensions: {len(embeddings)}")
 
 # Example usage:
-knowledge_base = AgentKnowledge(
+knowledge_base = Agent(
     vector_db=PgVector(
         db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
         table_name="mistral_embeddings",

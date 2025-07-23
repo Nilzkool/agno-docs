@@ -4,11 +4,11 @@ title: Basic Agent
 
 ## Code
 
-```python cookbook/models/openai/responses/basic.py
+```python
 from agno.agent import Agent, RunResponse  # noqa
-from agno.models.openai import OpenAIResponses
+from agno.models.openai import OpenAIChat
 
-agent = Agent(model=OpenAIResponses(id="gpt-4o"), markdown=True)
+agent = Agent(model=OpenAIChat(id="gpt-4o"), markdown=True)
 
 # Get the response in a variable
 # run: RunResponse = agent.run("Share a 2 sentence horror story")
@@ -17,6 +17,7 @@ agent = Agent(model=OpenAIResponses(id="gpt-4o"), markdown=True)
 # Print the response in the terminal
 agent.print_response("Share a 2 sentence horror story")
 
+# View metrics
 agent.run_response.metrics
 ```
 
@@ -40,11 +41,11 @@ agent.run_response.metrics
   <Step title="Run Agent">
     <CodeGroup>
     ```bash Mac
-    python cookbook/models/openai/responses/basic.py
+    python basic_agent.py
     ```
 
     ```bash Windows
-    python cookbook/models/openai/responses/basic.py
+    python basic_agent.py
     ```
     </CodeGroup>
   </Step>

@@ -14,12 +14,12 @@ Example prompts to try:
 - "Design a tech company offsite in Barcelona for 20 people"
 - "Plan a luxury honeymoon in Maldives for 10 days"
 
-```python travel_planner.py
+```python research_agent_exa.py
 from textwrap import dedent
 
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
-from agno.tools.exa import ExaTools
+from exa_py import ExaTools
 
 travel_agent = Agent(
     name="Globe Hopper",
@@ -174,7 +174,8 @@ Luxury Experiences:
 3. "Create a gourmet food tour in Paris"
 4. "Organize a luxury train journey through Europe"
 """
-```
+
+```python
 ## Usage
 
 <Steps>
@@ -195,8 +196,9 @@ Luxury Experiences:
 
   <Step title="Run the agent">
     ```bash
-    python travel_planner.py
+    python research_agent_exa.py
     ```
   </Step>
 
 </Steps>
+```

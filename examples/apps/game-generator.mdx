@@ -15,9 +15,9 @@ from agno.models.openai import OpenAIChat
 from agno.run.response import RunEvent
 from agno.storage.workflow.sqlite import SqliteWorkflowStorage
 from agno.utils.log import logger
-from agno.utils.pprint import pprint_run_response
 from agno.utils.string import hash_string_sha256
 from agno.utils.web import open_html_file
+from agno.utils.pprint import pprint_run_response
 from agno.workflow import Workflow
 from pydantic import BaseModel, Field
 
@@ -29,17 +29,16 @@ game_output_path.unlink(missing_ok=True)
 
 class GameOutput(BaseModel):
     reasoning: str = Field(..., description="Explain your reasoning")
-    code: str = Field(..., description="The html5 code for the game")
+    code: str      = Field(..., description="The html5 code for the game")
     instructions: str = Field(..., description="Instructions how to play the game")
 
 
 class QAOutput(BaseModel):
-    reasoning: str = Field(..., description="Explain your reasoning")
-    correct: bool = Field(False, description="Does the game pass your criteria?")
+    reasoning: str  = Field(..., description="Explain your reasoning")
+    correct: bool   = Field(False, description="Does the game pass your criteria?")
 
 
 class GameGenerator(Workflow):
-    # This description is only used in the workflow UI
     description: str = "Generator for single-page HTML5 games"
 
     game_developer: Agent = Agent(
@@ -48,10 +47,10 @@ class GameGenerator(Workflow):
         model=OpenAIChat(id="gpt-4o"),
         instructions=[
             "Create a game based on the user's prompt. "
-            "The game should be HTML5, completely self-contained and must be runnable simply by opening on a browser",
-            "Ensure the game has a alert that pops up if the user dies and then allows the user to restart or exit the game.",
-            "Ensure instructions for the game are displayed on the HTML page."
-            "Use user-friendly colours and make the game canvas large enough for the game to be playable on a larger screen.",
+            "The game should be HTML5, completely self-contained and must be runnable simply by opening on a browser.",
+            "Ensure the game shows an alert when the user dies and allows restart or exit.",
+            "Display game instructions on the HTML page.",
+            "Use user-friendly colors and a sufficiently large canvas for playability.",
         ],
         response_model=GameOutput,
     )
@@ -61,8 +60,7 @@ class GameGenerator(Workflow):
         model=OpenAIChat(id="gpt-4o"),
         description="You are a game QA and you evaluate html5 code for correctness.",
         instructions=[
-            "You will be given some HTML5 code."
-            "Your task is to read the code and evaluate it for correctness, but also that it matches the original task description.",
+            "You will be given HTML5 code. Your task is to read and evaluate it for correctness and match to the original description.",
         ],
         response_model=QAOutput,
     )
@@ -87,19 +85,20 @@ class GameGenerator(Workflow):
             )
             return
 
-        logger.info("QA'ing the game code")
-        qa_input = {
+        logger.info("Running QA on the game code")
+        qa_input = json.dumps({
             "game_description": game_description,
             "game_code": game_code,
-        }
-        qa_output = self.qa_agent.run(json.dumps(qa_input, indent=2))
+        }, indent=2)
+        qa_output = self.qa_agent.run(qa_input)
 
-        if qa_output and qa_output.content and isinstance(qa_output.content, QAOutput):
-            logger.info(qa_output.content)
+        if (
+            qa_output
+            and qa_output.content
+            and isinstance(qa_output.content, QAOutput)
+        ):
             if not qa_output.content.correct:
                 raise Exception(f"QA failed for code: {game_code}")
-
-            # Store the resulting code
             game_output_path.write_text(game_code)
 
             yield RunResponse(
@@ -113,41 +112,31 @@ class GameGenerator(Workflow):
                 event=RunEvent.workflow_completed,
                 content="Sorry, could not QA the game.",
             )
-            return
 
 
-# Run the workflow if the script is executed directly
 if __name__ == "__main__":
     from rich.prompt import Prompt
 
     game_description = Prompt.ask(
-        "[bold]Describe the game you want to make (keep it simple)[/bold]\n✨",
-        # default="An asteroids game."
-        default="An asteroids game. Make sure the asteroids move randomly and are random sizes. They should continually spawn more and become more difficult over time. Keep score. Make my spaceship's movement realistic.",
+        "[bold]Describe the game you want to make (keep it simple)[/bold]",
+        default="An asteroids game. Make sure the asteroids move randomly and grow in difficulty. Keep score."
     )
 
-    hash_of_description = hash_string_sha256(game_description)
-
-    # Initialize the investment analyst workflow
-    game_generator = GameGenerator(
-        session_id=f"game-gen-{hash_of_description}",
+    description_hash = hash_string_sha256(game_description)
+    workflow = GameGenerator(
+        session_id=f"game-gen-{description_hash}",
         storage=SqliteWorkflowStorage(
             table_name="game_generator_workflows",
             db_file="tmp/workflows.db",
         ),
     )
-
-    # Execute the workflow
-    result: Iterator[RunResponse] = game_generator.run(
-        game_description=game_description
-    )
-
-    # Print the report
+    result = workflow.run(game_description)
     pprint_run_response(result)
 
     if game_output_path.exists():
         open_html_file(game_output_path)
 ```
+
 ## Usage
 
 <Steps>
@@ -159,10 +148,9 @@ if __name__ == "__main__":
     ```
   </Step>
 
-  <Step title="Run the agent">
+  <Step title="Run the script">
     ```bash
-    python game_generator.py.py
+    python game_generator.py
     ```
   </Step>
-
 </Steps>

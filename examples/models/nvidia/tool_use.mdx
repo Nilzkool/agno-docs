@@ -4,11 +4,12 @@ title: Agent with Tools
 
 ## Code
 
-```python cookbook/models/nvidia/tool_use.py
+```python
 from agno.agent import Agent
 from agno.models.nvidia import Nvidia
 from agno.tools.duckduckgo import DuckDuckGoTools
 
+# Initialize an agent with external tools enabled
 agent = Agent(
     model=Nvidia(id="meta/llama-3.3-70b-instruct"),
     tools=[DuckDuckGoTools()],
@@ -16,6 +17,7 @@ agent = Agent(
     markdown=True,
 )
 
+# Option A: Print streamed response including tool calls
 agent.print_response("Whats happening in France?", stream=True)
 ```
 

@@ -4,17 +4,19 @@ title: Basic Agent
 
 ## Code
 
-```python cookbook/models/ollama/basic.py
+```python
 from agno.agent import Agent, RunResponse  # noqa
 from agno.models.ollama import Ollama
 
+# Initialize an Ollama agent
 agent = Agent(model=Ollama(id="llama3.1:8b"), markdown=True)
 
-# Get the response in a variable
-# run: RunResponse = agent.run("Share a 2 sentence horror story")
-# print(run.content)
+# Option A: Capture the response in a variable
+def run_example():
+    run = agent.run("Share a 2 sentence horror story")
+    print(run.content)
 
-# Print the response in the terminal
+# Option B: Print directly to the terminal
 agent.print_response("Share a 2 sentence horror story")
 ```
 

@@ -4,7 +4,7 @@ title: Basic Memory Operations
 
 ## Code
 
-```python cookbook/agent_concepts/memory/01_memory.py
+```python
 from agno.memory.v2 import Memory, UserMemory
 
 memory = Memory()
@@ -19,7 +19,6 @@ for user_id, user_memories in memory.memories.items():
     for um in user_memories.values():
         print(um.memory)
 print()
-
 
 # Add memories for Jane Doe
 jane_doe_id = "jane_doe@example.com"

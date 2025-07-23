@@ -5,7 +5,7 @@ title: Gemini Embedder
 ## Code
 
 ```python
-from agno.agent import AgentKnowledge
+from agno.agent import Agent
 from agno.embedder.google import GeminiEmbedder
 from agno.vectordb.pgvector import PgVector
 
@@ -18,7 +18,7 @@ print(f"Embeddings: {embeddings[:5]}")
 print(f"Dimensions: {len(embeddings)}")
 
 # Example usage:
-knowledge_base = AgentKnowledge(
+knowledge_base = Agent(
     vector_db=PgVector(
         db_url="postgresql+psycopg://ai:ai@localhost:5532/ai",
         table_name="gemini_embeddings",
@@ -41,7 +41,7 @@ knowledge_base = AgentKnowledge(
 
   <Step title="Install libraries">
     ```bash
-    pip install -U sqlalchemy 'psycopg[binary]' pgvector google-generativeai agno
+    pip install -U sqlalchemy 'psycopg[binary]' pgvector google-genai agno
     ```
   </Step>
 

@@ -1,5 +1,5 @@
 ---
-title: Video to Shorts Agent
+null title: Video to Shorts Agent
 ---
 
 ## Code
@@ -72,10 +72,12 @@ Your goal is to identify moments that are visually compelling, emotionally engag
 """
 
 # Generate Video Analysis
-response = agent.run(query, videos=[Video(content=video_file)])
+response = agent.run(
+    query,
+    videos=[Video(url=video_file.uri)]
+)
 
 # Create output directory
-output_dir = Path(output_dir)
 output_dir.mkdir(parents=True, exist_ok=True)
 
 # Extract and cut video segments
@@ -103,7 +105,7 @@ def extract_segments(response_text):
                 "-ss",
                 str(start_seconds),
                 "-i",
-                video_path,
+                str(video_path),
                 "-t",
                 str(duration),
                 "-vf",

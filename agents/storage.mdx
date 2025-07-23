@@ -14,9 +14,24 @@ In production environments, we serve (or trigger) Agents via an API and need to 
 Storage also let's us inspect and evaluate Agent sessions, extract few-shot examples and build internal monitoring tools. It lets us **look at the data** which helps us build better Agents.
 </Tip>
 
-Adding storage to an Agent, Team or Workflow is as simple as providing a `Storage` driver and Agno handles the rest. You can use Sqlite, Postgres, Mongo or any other database you want.
+Adding storage to an Agent, Team or Workflow is as simple as providing a `Storage` driver and Agno handles the rest. You can use Sqlite, Postgres, JSON or YAML file storage, or any other database you want.
 
-Here's a simple example that demostrates persistence across execution cycles:
+### Filesystem-based storage drivers
+
+Agno also ships with two file-based storage drivers:
+
+```python
+from agno.storage.json import JsonStorage
+from agno.storage.yaml import YamlStorage
+
+# JSON storage
+json_storage = JsonStorage(dir_path="tmp/sessions", mode="agent")
+
+# YAML storage
+yaml_storage = YamlStorage(dir_path="tmp/sessions", mode="agent")
+```
+
+Here's a simple example that demonstrates persistence across execution cycles:
 
 ```python storage.py
 from agno.agent import Agent
@@ -38,7 +53,7 @@ agent.print_response("What was my last question?")
 pprint(agent.get_messages_for_session())
 ```
 
-The first time you run this, the answer to "What was my last question?" will not be available. But run it again and the Agent will able to answer properly. Because we have fixed the session id, the Agent will continue from the same session every time you run the script.
+The first time you run this, the answer to "What was my last question?" will not be available. But run it again and the Agent will able to answer properly, because we have fixed the session id and the session is persisted across runs.
 
 ## Benefits of Storage
 
@@ -111,16 +126,8 @@ Storage is such a critical part of your Agentic infrastructure that it should ne
             user_id=user,
             knowledge=knowledge_base,
             storage=storage,
-            # Show tool calls in the response
             show_tool_calls=True,
-            # Enable the agent to read the chat history
             read_chat_history=True,
-            # We can also automatically add the chat history to the messages sent to the model
-            # But giving the model the chat history is not always useful, so we give it a tool instead
-            # to only use when needed.
-            # add_history_to_messages=True,
-            # Number of historical responses to add to the messages.
-            # num_history_responses=3,
         )
         if session_id is None:
             session_id = agent.session_id
@@ -128,14 +135,10 @@ Storage is such a critical part of your Agentic infrastructure that it should ne
         else:
             print(f"Continuing Session: {session_id}\n")
 
-        # Runs the agent as a cli app
         agent.cli_app(markdown=True)
 
-
     if __name__ == "__main__":
-        # Load the knowledge base: Comment after first run
         knowledge_base.load(upsert=True)
-
         typer.run(pdf_agent)
     ```
 
@@ -215,7 +218,3 @@ storage.upgrade_schema()
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `storage` | `Optional[AgentStorage]` | `None` | Storage mechanism for the agent. |
-
- ## Developer Resources
-
-- View [Cookbook](https://github.com/agno-agi/agno/tree/main/cookbook/storage)
