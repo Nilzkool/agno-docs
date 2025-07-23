@@ -19,7 +19,9 @@ agent = Agent(model=OpenAIChat(id="gpt-4o-mini"))
 # Run agent and return the response as a variable
 response: RunResponse = agent.run("Tell me a 5 second short story about a robot")
 # Run agent and return the response as a stream
-response_stream: Iterator[RunResponse] = agent.run("Tell me a 5 second short story about a lion", stream=True)
+response_stream: Iterator[RunResponse] = agent.run(
+    "Tell me a 5 second short story about a lion", stream=True
+)
 
 # Print the response in markdown format
 pprint_run_response(response, markdown=True)
@@ -35,23 +37,26 @@ The `Agent.run()` function returns either a `RunResponse` object or an `Iterator
 
 ### RunResponse Attributes
 
-| Attribute        | Type                   | Default                       | Description                                                                                                                      |
-| ---------------- | ---------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `content`        | `Any`                  | `None`                        | Content of the response.                                                                                                         |
-| `content_type`   | `str`                  | `"str"`                       | Specifies the data type of the content.                                                                                          |
-| `context`        | `List[MessageContext]` | `None`                        | The context added to the response for RAG.                                                                                       |
-| `event`          | `str`                  | `RunEvent.run_response.value` | Event type of the response.                                                                                                      |
-| `event_data`     | `Dict[str, Any]`       | `None`                        | Data associated with the event.                                                                                                  |
-| `messages`       | `List[Message]`        | `None`                        | A list of messages included in the response.                                                                                     |
-| `metrics`        | `Dict[str, Any]`       | `None`                        | Usage metrics of the run.                                                                                                        |
-| `model`          | `str`                  | `None`                        | The model used in the run.                                                                                                       |
-| `run_id`         | `str`                  | `None`                        | Run Id.                                                                                                                          |
-| `agent_id`       | `str`                  | `None`                        | Agent Id for the run.                                                                                                            |
-| `session_id`     | `str`                  | `None`                        | Session Id for the run.                                                                                                          |
-| `tools`          | `List[Dict[str, Any]]` | `None`                        | List of tools provided to the model.                                                                                             |
-| `images`         | `List[Image]`          | `None`                        | List of images the model produced.                                                                                               |
-| `videos`         | `List[Video]`          | `None`                        | List of videos the model produced.                                                                                               |
-| `audio`          | `List[Audio]`          | `None`                        | List of audio snippets the model produced.                                                                                       |
-| `response_audio` | `ModelResponseAudio`   | `None`                        | The model's raw response in audio.                                                                                               |
-| `created_at`     | `int`                  | -                             | Unix timestamp of the response creation.                                                                                         |
-| `extra_data`     | `RunResponseExtraData` | `None`                        | Extra data containing optional fields like `references`, `add_messages`, `history`, `reasoning_steps`, and `reasoning_messages`. |
+| Attribute             | Type                             | Default                        | Description                                                                                                     |
+| --------------------- | -------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `content`             | `Any`                            | `None`                         | Content of the response.                                                                                        |
+| `content_type`        | `str`                            | `"str"`                      | Specifies the data type of the content.                                                                         |
+| `thinking`            | `Optional[str]`                  | `None`                         | Interim thinking or internal process of the agent.                                                              |
+| `reasoning_content`   | `Optional[str]`                  | `None`                         | Combined reasoning steps content.                                                                               |
+| `event`               | `str`                            | `RunEvent.run_response.value`  | Event type of the response.                                                                                     |
+| `messages`            | `Optional[List[Message]]`        | `None`                         | List of messages included in the response.                                                                      |
+| `metrics`             | `Optional[Dict[str, Any]]`       | `None`                         | Usage metrics of the run.                                                                                       |
+| `model`               | `Optional[str]`                  | `None`                         | Model id used in the run.                                                                                       |
+| `run_id`              | `Optional[str]`                  | `None`                         | Unique run identifier.                                                                                          |
+| `agent_id`            | `Optional[str]`                  | `None`                         | Agent identifier.                                                                                               |
+| `session_id`          | `Optional[str]`                  | `None`                         | Session identifier.                                                                                             |
+| `workflow_id`         | `Optional[str]`                  | `None`                         | Workflow identifier if run within a workflow.                                                                   |
+| `tools`               | `Optional[List[Dict[str, Any]]]` | `None`                         | List of tools provided to the model.                                                                            |
+| `formatted_tool_calls`| `Optional[List[str]]`            | `None`                         | Formatted summaries of tool calls made during the run.                                                          |
+| `images`              | `Optional[List[ImageArtifact]]`  | `None`                         | Images produced by the model.                                                                                   |
+| `videos`              | `Optional[List[VideoArtifact]]`  | `None`                         | Videos produced by the model.                                                                                   |
+| `audio`               | `Optional[List[AudioArtifact]]`  | `None`                         | Audio artifacts produced by the model.                                                                          |
+| `response_audio`      | `Optional[AudioResponse]`        | `None`                         | Model's raw audio response.                                                                                     |
+| `citations`           | `Optional[Citations]`            | `None`                         | References and citations returned by the model.                                                                 |
+| `extra_data`          | `Optional[RunResponseExtraData]` | `None`                         | Extra structured data: references, added messages, reasoning steps, and reasoning messages.                     |
+| `created_at`          | `int`                            | Unix timestamp (time of run)   | Unix timestamp when the response was created.                                                                   |

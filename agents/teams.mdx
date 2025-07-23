@@ -8,19 +8,21 @@ title: Agent Teams [Deprecated]
   With our learning over 2 years, we released a new multi-agent reasoning architecture in 2025, please use the new [Teams](/teams) architecture instead.
 </Note>
 
-We can combine multiple Agents to form a team and tackle tasks as a cohesive unit. Here's a simple example that converts an agent into a team to write an article about the top stories on hackernews.
+You can combine multiple `Agent` instances to form a team and tackle tasks as a cohesive unit. Here's a simple example using the new `Team` class to write an article about the top stories on Hacker News.
 
 ```python hackernews_team.py
 from agno.agent import Agent
+from agno.team.team import Team
 from agno.models.openai import OpenAIChat
 from agno.tools.hackernews import HackerNewsTools
 from agno.tools.duckduckgo import DuckDuckGoTools
 from agno.tools.newspaper4k import Newspaper4kTools
 
+# Create individual agents
 hn_researcher = Agent(
     name="HackerNews Researcher",
     model=OpenAIChat("gpt-4o"),
-    role="Gets top stories from hackernews.",
+    role="Gets top stories from Hacker News.",
     tools=[HackerNewsTools()],
 )
 
@@ -39,12 +41,13 @@ article_reader = Agent(
     tools=[Newspaper4kTools()],
 )
 
-hn_team = Agent(
+# Combine agents into a team leader
+hn_team = Team(
     name="Hackernews Team",
     model=OpenAIChat("gpt-4o"),
-    team=[hn_researcher, web_searcher, article_reader],
+    members=[hn_researcher, web_searcher, article_reader],
     instructions=[
-        "First, search hackernews for what the user is asking about.",
+        "First, search Hacker News for what the user is asking about.",
         "Then, ask the article reader to read the links for the stories to get more information.",
         "Important: you must provide the article reader with the links to read.",
         "Then, ask the web searcher to search for each story to get more information.",
@@ -53,19 +56,20 @@ hn_team = Agent(
     show_tool_calls=True,
     markdown=True,
 )
-hn_team.print_response("Write an article about the top 2 stories on hackernews", stream=True)
+
+# Run the team asynchronously
+hn_team.print_response("Write an article about the top 2 stories on Hacker News", stream=True)
 ```
 
-Run the script to see the output.
+Run the script to see the output:
 
 ```bash
 pip install -U openai duckduckgo-search newspaper4k lxml_html_clean agno
-
 python hackernews_team.py
 ```
 
 ## How to build Agent Teams
 
-1. Add a `name` and `role` parameter to the member Agents.
-2. Create a Team Leader that can delegate tasks to team-members.
-3. Use your Agent team just like you would use a regular Agent.
+1. Add `name` and `role` parameters to each member `Agent`.
+2. Create a `Team` leader by importing `Team` from `agno.team.team` and passing your agent instances in `members=[...]`.
+3. Use the `Team` instance just like you would use an `Agent`, e.g. `.run()` or `.print_response()`.

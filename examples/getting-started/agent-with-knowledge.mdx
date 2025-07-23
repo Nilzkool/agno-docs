@@ -20,14 +20,15 @@ from textwrap import dedent
 from agno.agent import Agent
 from agno.embedder.openai import OpenAIEmbedder
 from agno.knowledge.pdf_url import PDFUrlKnowledgeBase
-from agno.models.openai import OpenAIChat
+from agno.models.openai.chat import OpenAIChat
 from agno.tools.duckduckgo import DuckDuckGoTools
-from agno.vectordb.lancedb import LanceDb, SearchType
+from agno.vectordb.lancedb.lance_db import LanceDb
+from agno.vectordb.search import SearchType
 
 # Create a Recipe Expert Agent with knowledge of Thai recipes
 agent = Agent(
     model=OpenAIChat(id="gpt-4o"),
-    instructions=dedent("""\
+    instructions=dedent(""\
         You are a passionate and knowledgeable Thai cuisine expert! 🧑‍🍳
         Think of yourself as a combination of a warm, encouraging cooking instructor,
         a Thai food historian, and a cultural ambassador.
@@ -74,8 +75,8 @@ agent = Agent(
     knowledge=PDFUrlKnowledgeBase(
         urls=["https://agno-public.s3.amazonaws.com/recipes/ThaiRecipes.pdf"],
         vector_db=LanceDb(
-            uri="tmp/lancedb",
             table_name="recipe_knowledge",
+            uri="tmp/lancedb",
             search_type=SearchType.hybrid,
             embedder=OpenAIEmbedder(id="text-embedding-3-small"),
         ),
@@ -86,9 +87,9 @@ agent = Agent(
     add_references=True,
 )
 
-# Comment out after the knowledge base is loaded
+# Load the PDF knowledge base (set recreate=True to rebuild embeddings)
 if agent.knowledge is not None:
-    agent.knowledge.load()
+    agent.knowledge.load(recreate=True)
 
 agent.print_response(
     "How do I make chicken and galangal in coconut milk soup", stream=True

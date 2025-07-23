@@ -10,7 +10,8 @@ from agno.models.openai import OpenAIChat
 from agno.tools.yfinance import YFinanceTools
 
 agent = Agent(
-    model=OpenAIChat(id="o3-mini", reasoning_effort="high"),
+    model=OpenAIChat(id="o3-mini"),
+    reasoning=True,
     tools=[YFinanceTools(enable_all=True)],
     show_tool_calls=True,
     markdown=True,

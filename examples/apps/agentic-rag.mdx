@@ -38,14 +38,14 @@ This example application shows how to build a sophisticated RAG (Retrieval Augme
 
 ## Code
 
-The complete code is available in the [Agno repository](https://github.com/agno-agi/agno).
+The complete code is available in the [Agno repository](https://github.com/Nilzkool/agno).
 
 ## Usage
 
 <Steps>
   <Step title="Clone the repository">
     ```bash
-    git clone https://github.com/agno-agi/agno.git
+    git clone https://github.com/Nilzkool/agno.git
     cd agno
     ```
   </Step>
@@ -59,19 +59,14 @@ The complete code is available in the [Agno repository](https://github.com/agno-
 
   <Step title="Install dependencies">
     ```bash
-    pip install -r cookbook/examples/apps/agentic_rag/requirements.txt
+    pip install -r examples/apps/agentic_rag/requirements.txt
     ```
   </Step>
 
   <Step title="Run PgVector">
     First, install [Docker Desktop](https://docs.docker.com/desktop/install/mac-install/).
 
-    Then run either using the helper script:
-    ```bash
-    ./cookbook/scripts/run_pgvector.sh
-    ```
-
-    Or directly with Docker:
+    Then start a PostgreSQL with the pgvector extension:
     ```bash
     docker run -d \
       -e POSTGRES_DB=ai \
@@ -100,7 +95,7 @@ The complete code is available in the [Agno repository](https://github.com/agno-
 
   <Step title="Launch the app">
     ```bash
-    streamlit run cookbook/examples/apps/agentic_rag/app.py
+    streamlit run examples/apps/agentic_rag/app.py
     ```
     Open [localhost:8501](http://localhost:8501) to start using the Agentic RAG.
   </Step>

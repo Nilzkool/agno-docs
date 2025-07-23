@@ -6,7 +6,7 @@ title: Introduction
 
 **Evals** are unit tests for your Agents. Use them judiciously to evaluate, measure and improve the performance of your Agents over time.
 
-We typically evaludate Agents on 3 dimensions:
+We typically evaluate Agents on 3 dimensions:
 
 - **Accuracy:** How complete/correct/accurate is the Agent's response (LLM-as-a-judge)
 - **Performance:** How fast does the Agent respond and what's the memory footprint?
@@ -18,7 +18,7 @@ Accuracy evals use input/output pairs to evaluate the Agent's performance. They 
 
 #### Example
 
-```python calculate_accuracy.py
+```python
 from typing import Optional
 
 from agno.agent import Agent
@@ -56,12 +56,13 @@ While latency will be dominated by the model API response time, we should still 
 
 #### Example
 
-```python storage_performance.py
+```python
 """Run `pip install openai agno` to install dependencies."""
 
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from agno.eval.perf import PerfEval
+
 
 def simple_response():
     agent = Agent(model=OpenAIChat(id='gpt-4o-mini'), system_message='Be concise, reply with one sentence.', add_history_to_messages=True)
@@ -88,9 +89,7 @@ What makes an Agent reliable?
 
 #### Example
 
-The first check is to ensure the Agent makes the expected tool calls. Here's an example:
-
-```python reliability.py
+```python
 from typing import Optional
 
 from agno.agent import Agent

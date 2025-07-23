@@ -4,29 +4,32 @@ title: Shell
 
 **ShellTools** enable an Agent to interact with the shell to run commands.
 
-## Example
+## Usage
 
-The following agent will run a shell command and show contents of the current directory.
+Import and add the ShellTools to your Agent. Optionally specify a `base_dir` where commands will be executed:
 
-<Note>
-  Mention your OS to the agent to make sure it runs the correct command.
-</Note>
-
-```python cookbook/tools/shell_tools.py
+```python
 from agno.agent import Agent
 from agno.tools.shell import ShellTools
 
-agent = Agent(tools=[ShellTools()], show_tool_calls=True)
-agent.print_response("Show me the contents of the current directory", markdown=True)
+# Create ShellTools with optional base_dir
+shell_tools = ShellTools(base_dir="/path/to/directory")
+
+agent = Agent(tools=[shell_tools], show_tool_calls=True)
+# Send a command, e.g. list directory contents
+agent.print_response("ls -la", markdown=True)
 ```
+
+The `run_shell_command` function accepts:
+- `args` (List[str]): The command and its arguments, e.g. ["ls", "-la"].
+- `tail` (int, default=100): Number of lines of the output to return.
 
 ## Functions in Toolkit
 
-| Function            | Description                                           |
-| ------------------- | ----------------------------------------------------- |
-| `run_shell_command` | Runs a shell command and returns the output or error. |
+| Function            | Signature                             | Description                                           |
+| ------------------- | ------------------------------------- | ----------------------------------------------------- |
+| `run_shell_command` | `(args: List[str], tail: int = 100) -> str` | Runs a shell command and returns the output or error. |
 
 ## Developer Resources
 
-- View [Tools](https://github.com/agno-agi/agno/blob/main/libs/agno/agno/tools/shell.py)
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/shell_tools.py)
+- View the [ShellTools implementation](https://github.com/Nilzkool/agno/blob/main/libs/agno/agno/tools/shell.py)

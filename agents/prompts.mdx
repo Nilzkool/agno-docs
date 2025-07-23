@@ -17,9 +17,9 @@ The 2 key parameters are:
 
 ## System message
 
-The system message is created using `description`, `instructions` and a number of other settings. The `description` is added to the start of the system message and `instructions` are added as a list after `Instructions`. For example:
+The system message is created using `description`, `instructions` and a number of other settings. The `description` is added to the start of the system message and `instructions` are added as a list after `<instructions>`. For example:
 
-```python instructions.py
+```python
 from agno.agent import Agent
 
 agent = Agent(
@@ -43,20 +43,7 @@ DEBUG    You are a famous short story writer asked to write for a magazine
 DEBUG    ============== user ==============
 DEBUG    Tell me a 2 sentence horror story.
 DEBUG    ============== assistant ==============
-DEBUG    As the autopilot disengaged inexplicably mid-flight over the Pacific, the pilot glanced at the copilot's seat
-         only to find it empty despite his every recall of a full crew boarding. Hands trembling, he looked into the
-         cockpit's rearview mirror and found his own reflection grinning back with blood-red eyes, whispering,
-         "There's no escape, not at 30,000 feet."
-DEBUG    **************** METRICS START ****************
-DEBUG    * Time to first token:         0.4518s
-DEBUG    * Time to generate response:   1.2594s
-DEBUG    * Tokens per second:           63.5243 tokens/s
-DEBUG    * Input tokens:                59
-DEBUG    * Output tokens:               80
-DEBUG    * Total tokens:                139
-DEBUG    * Prompt tokens details:       {'cached_tokens': 0}
-DEBUG    * Completion tokens details:   {'reasoning_tokens': 0}
-DEBUG    **************** METRICS END ******************
+... [output truncated for brevity]
 ```
 
 ## Set the system message directly
@@ -82,18 +69,18 @@ The input `message` sent to the `Agent.run()` or `Agent.print_response()` functi
 
 The Agent creates a default system message that can be customized using the following parameters:
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `description` | `str` | `None` | A description of the Agent that is added to the start of the system message. |
-| `goal` | `str` | `None` | Describe the task the agent should achieve. |
-| `instructions` | `List[str]` | `None` | List of instructions added to the system prompt in `<instructions>` tags. Default instructions are also created depending on values for `markdown`, `output_model` etc. |
-| `additional_context` | `str` | `None` | Additional context added to the end of the system message. |
-| `expected_output` | `str` | `None` | Provide the expected output from the Agent. This is added to the end of the system message. |
-| `markdown` | `bool` | `False` | Add an instruction to format the output using markdown. |
-| `add_datetime_to_instructions` | `bool` | `False` | If True, add the current datetime to the prompt to give the agent a sense of time. This allows for relative times like "tomorrow" to be used in the prompt |
-| `system_message` | `str` | `None` | System prompt: provide the system prompt as a string |
-| `system_message_role` | `str` | `system` | Role for the system message. |
-| `create_default_system_message` | `bool` | `True` | If True, build a default system prompt using agent settings and use that. |
+| Parameter                       | Type        | Default | Description                                                                                       |
+|---------------------------------|-------------|---------|---------------------------------------------------------------------------------------------------|
+| `description`                   | `str`       | `None`  | A description of the Agent that is added to the start of the system message.                      |
+| `goal`                          | `str`       | `None`  | Describe the task the agent should achieve.                                                        |
+| `instructions`                  | `List[str]` | `None`  | List of instructions added to the system prompt in `<instructions>` tags.                        |
+| `additional_context`            | `str`       | `None`  | Additional context added to the end of the system message.                                        |
+| `expected_output`               | `str`       | `None`  | Provide the expected output from the Agent. This is added to the end of the system message.      |
+| `markdown`                      | `bool`      | `False` | Add an instruction to format the output using markdown.                                           |
+| `add_datetime_to_instructions`  | `bool`      | `False` | If True, add the current datetime to the prompt to give the agent a sense of time.                |
+| `system_message`                | `str`       | `None`  | Provide a custom system prompt (string or callable returning a string).                          |
+| `system_message_role`           | `str`       | `system`| Role for the system message.                                                                      |
+| `create_default_system_message` | `bool`      | `True`  | Whether to build and send the default system message.                                             |
 
 <Tip>
 Disable the default system message by setting `create_default_system_message=False`.
@@ -101,21 +88,21 @@ Disable the default system message by setting `create_default_system_message=Fal
 
 ## Default user message
 
-The Agent creates a default user message, which is either the input message or a message with the `context` if `enable_rag=True`. The default user message can be customized using:
+The Agent creates a default user message based on the input message. You can include additional context using `add_context=True` and add knowledge-base references with `add_references=True`.
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `context` | `str` | `None` | Additional context added to the end of the user message. |
-| `add_context` | `bool` | `False` | If True, add the context to the user prompt. |
-| `resolve_context` | `bool` | `True` | If True, resolve the context (i.e. call any functions in the context) before adding it to the user prompt. |
-| `add_references` | `bool` | `False` | Enable RAG by adding references from the knowledge base to the prompt. |
-| `retriever` | `Callable` | `None` | Function to get references to add to the user_message. This function, if provided, is called when `add_references` is True. |
-| `references_format` | `Literal["json", "yaml"]` | `"json"` | Format of the references. |
-| `add_history_to_messages` | `bool` | `False` | If true, adds the chat history to the messages sent to the Model. |
-| `num_history_responses` | `int` | `3` | Number of historical responses to add to the messages. |
-| `user_message` | `Union[List, Dict, str]` | `None` | Provide the user prompt as a string. Note: this will ignore the message sent to the run function. |
-| `user_message_role` | `str` | `user` | Role for the user message. |
-| `create_default_user_message` | `bool` | `True` | If True, build a default user prompt using references and chat history. |
+| Parameter                   | Type                      | Default | Description                                                                                                 |
+|-----------------------------|---------------------------|---------|-------------------------------------------------------------------------------------------------------------|
+| `context`                   | `Dict[str, Any]`          | `None`  | Context data available for prompts or tools. Add to user prompt if `add_context=True`.                      |
+| `add_context`               | `bool`                    | `False` | If True, include `context` in the user message.                                                            |
+| `resolve_context`          | `bool`                    | `True`  | If True, call any functions in `context` to resolve values before adding to prompts.                      |
+| `add_references`            | `bool`                    | `False` | Enable RAG: retrieve and embed references from the knowledge base.                                         |
+| `retriever`                 | `Callable`                | `None`  | Custom function to fetch documents when `add_references=True`.                                             |
+| `references_format`         | `Literal["json","yaml"]` | `json`  | Format to embed references (JSON or YAML).                                                                 |
+| `add_history_to_messages`   | `bool`                    | `False` | If True, add past messages to the prompt history.                                                          |
+| `num_history_runs`          | `int`                     | `3`     | Number of past runs/messages to include when adding history (deprecated alias: `num_history_responses`).   |
+| `user_message`              | `Union[List, Dict, str]`  | `None`  | Override the user message. Passing a value here ignores the `message` input to `run()`.                     |
+| `user_message_role`         | `str`                     | `user`  | Role for the user message.                                                                                 |
+| `create_default_user_message` | `bool`                  | `True`  | Whether to build and send the default user message.                                                        |
 
 <Tip>
 Disable the default user message by setting `create_default_user_message=False`.

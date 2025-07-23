@@ -46,84 +46,29 @@ This mode is particularly useful when you have specialized agents with distinct 
             "You must only respond in Japanese",
         ],
     )
-    chinese_agent = Agent(
-        name="Chinese Agent",
-        role="You can only answer in Chinese",
-        model=DeepSeek(id="deepseek-chat"),
-        instructions=[
-            "You must only respond in Chinese",
-        ],
-    )
-    spanish_agent = Agent(
-        name="Spanish Agent",
-        role="You can only answer in Spanish",
-        model=OpenAIChat(id="gpt-4.5-preview"),
-        instructions=[
-            "You must only respond in Spanish",
-        ],
-    )
 
-    french_agent = Agent(
-        name="French Agent",
-        role="You can only answer in French",
-        model=MistralChat(id="mistral-large-latest"),
-        instructions=[
-            "You must only respond in French",
-        ],
-    )
+    # ... additional language agents ...
 
-    german_agent = Agent(
-        name="German Agent",
-        role="You can only answer in German",
-        model=Claude("claude-3-5-sonnet-20241022"),
-        instructions=[
-            "You must only respond in German",
-        ],
-    )
     multi_language_team = Team(
         name="Multi Language Team",
         mode="route",
         model=OpenAIChat("gpt-4.5-preview"),
-        members=[
-            english_agent,
-            spanish_agent,
-            japanese_agent,
-            french_agent,
-            german_agent,
-            chinese_agent,
-        ],
+        members=[english_agent, japanese_agent /*, ...*/],
         show_tool_calls=True,
         markdown=True,
         instructions=[
             "You are a language router that directs questions to the appropriate language agent.",
             "If the user asks in a language whose agent is not a team member, respond in English with:",
-            "'I can only answer in the following languages: English, Spanish, Japanese, French and German. Please ask your question in one of these languages.'",
+            "'I can only answer in the following languages: English, Japanese. Please ask your question in one of these languages.'",
             "Always check the language of the user's input before routing to an agent.",
-            "For unsupported languages like Italian, respond in English with the above message.",
         ],
         show_members_responses=True,
     )
 
-
-    # Ask "How are you?" in all supported languages
     multi_language_team.print_response(
         "How are you?", stream=True  # English
     )
-
-    multi_language_team.print_response(
-        "你好吗？", stream=True  # Chinese
-    )
-
-    multi_language_team.print_response(
-        "お元気ですか?", stream=True  # Japanese
-    )
-
-    multi_language_team.print_response(
-        "Comment allez-vous?",
-        stream=True,  # French
-    )
     ```
-
   </Step>
   <Step title="Run the team">
     Install libraries
@@ -137,7 +82,6 @@ This mode is particularly useful when you have specialized agents with distinct 
     ```shell
     python multi_language_team.py
     ```
-
   </Step>
 </Steps>
 
@@ -150,18 +94,13 @@ When using a Pydantic model for the response, the response from the selected tea
 
 ```python
 from pydantic import BaseModel
-from typing import List, Optional
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
-from agno.team import Team
-
+from agno.tools.yfinance import YFinanceTools
+from agno.team.team import Team
 
 class StockAnalysis(BaseModel):
     symbol: str
-    company_name: str
-    analysis: str
-
-class CompanyAnalysis(BaseModel):
     company_name: str
     analysis: str
 
@@ -171,24 +110,7 @@ stock_searcher = Agent(
     response_model=StockAnalysis,
     role="Searches for information on stocks and provides price analysis.",
     tools=[
-        YFinanceTools(
-            stock_price=True,
-            analyst_recommendations=True,
-        )
-    ],
-)
-
-company_info_agent = Agent(
-    name="Company Info Searcher",
-    model=OpenAIChat("gpt-4o"),
-    role="Searches for information about companies and recent news.",
-    response_model=CompanyAnalysis,
-    tools=[
-        YFinanceTools(
-            stock_price=False,
-            company_info=True,
-            company_news=True,
-        )
+        YFinanceTools(stock_price=True, analyst_recommendations=True),
     ],
 )
 
@@ -196,11 +118,78 @@ team = Team(
     name="Stock Research Team",
     mode="route",
     model=OpenAIChat("gpt-4o"),
-    members=[stock_searcher, company_info_agent],
+    members=[stock_searcher],
     markdown=True,
 )
 
-# This should route to the stock_searcher
 response = team.run("What is the current stock price of NVDA?")
 assert isinstance(response.content, StockAnalysis)
+```
+
+## Route Mode with Storage and Memory
+
+Route teams can also leverage persistent storage and per-user memory to maintain context across sessions and users. This is particularly useful for multi-user applications or when you need to recall prior interactions.
+
+### Example: Route Team with Storage and Memory
+
+```python storage_and_memory.py
+import tempfile
+import uuid
+from agno.agent import Agent
+from agno.models.openai import OpenAIChat
+from agno.tools.duckduckgo import DuckDuckGoTools
+from agno.tools.yfinance import YFinanceTools
+from agno.memory.v2.db.sqlite import SqliteMemoryDb
+from agno.memory.v2.memory import Memory
+from agno.storage.sqlite import SqliteStorage
+from agno.team.team import Team
+
+# Prepare storage (SQLite) for team sessions
+table = f"team_sessions_{uuid.uuid4().hex[:8]}"
+storage = SqliteStorage(table_name=table, db_file="./team.db", mode="team")
+storage.create()
+
+# Prepare persistent memory (SQLite) for user memories
+memory_db = SqliteMemoryDb(db_file="./memory.db")
+memory_db.create()
+memory = Memory(model=OpenAIChat("gpt-4o"), db=memory_db)
+
+# Define agents
+web_agent = Agent(
+    name="Web Agent",
+    model=OpenAIChat("gpt-4o"),
+    role="Search the web for information",
+    tools=[DuckDuckGoTools(cache_results=True)],
+)
+finance_agent = Agent(
+    name="Finance Agent",
+    model=OpenAIChat("gpt-4o"),
+    role="Get financial data",
+    tools=[YFinanceTools(stock_price=True)],
+)
+
+# Create the route team with storage and memory
+team = Team(
+    name="Route Team",
+    mode="route",
+    model=OpenAIChat("gpt-4o"),
+    members=[web_agent, finance_agent],
+    storage=storage,
+    memory=memory,
+    enable_user_memories=True,
+)
+
+# Run with a specific user and session
+response1 = team.run(
+    "What is the current price of AAPL?",
+    user_id="user1@example.com",
+    session_id="session1",
+)
+response2 = team.run(
+    "Any updates since last time?",
+    user_id="user1@example.com",
+    session_id="session1",
+)
+
+# Stored sessions and memories persist across runs and users
 ```

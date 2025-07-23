@@ -23,7 +23,7 @@ john_doe_id = "john_doe@example.com"
 agent = Agent(
     model=OpenAIChat(id="gpt-4o"),
     memory=memory,
-    enable_agentic_memory=True,
+    enable_user_memories=True,  # Enable automatic user memory creation
 )
 
 agent.print_response(

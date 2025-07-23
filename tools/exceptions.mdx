@@ -2,12 +2,15 @@
 title: Exceptions
 ---
 
-If after a tool call we need to "retry" the model with a different set of instructions or stop the agent, we can raise one of the following exceptions:
+Agno defines a set of exceptions you can raise to influence the agent’s execution or to handle internal errors:
 
-- `RetryAgentRun`: Use this exception when you want to retry the agent run with a different set of instructions.
-- `StopAgentRun`: Use this exception when you want to stop the agent run.
-- `AgentRunException`: A generic exception that can be used to retry the tool call.
-
+- `RetryAgentRun`: Raised when a tool call or agent run should be retried with different instructions.
+- `StopAgentRun`: Raised when you want to stop the agent’s execution entirely.
+- `AgentRunException`: Base exception for retry/stop scenarios; you can raise it directly for custom behavior.
+- `RunCancelledException`: Raised when a run is cancelled by the user (e.g. on KeyboardInterrupt).
+- `AgnoError`: Generic internal error with an associated HTTP-style `status_code`.
+- `ModelProviderError`: Raised when a model provider (e.g. OpenAI, Mistral) returns an error; holds optional `model_name` and `model_id`.
+- `ModelRateLimitError`: Raised when a model provider returns a rate limit error (HTTP 429).
 
 This example shows how to use the `RetryAgentRun` exception to retry the agent with additional instructions.
 
@@ -24,8 +27,9 @@ def add_item(agent: Agent, item: str) -> str:
     len_shopping_list = len(agent.session_state["shopping_list"])
     if len_shopping_list < 3:
         raise RetryAgentRun(
-            f"Shopping list is: {agent.session_state['shopping_list']}. Minimum 3 items in the shopping list. "
-            + f"Add {3 - len_shopping_list} more items.",
+            f"Shopping list is: {agent.session_state['shopping_list']}. "
+            + "Minimum 3 items in the shopping list. "
+            + f"Add {3 - len_shopping_list} more items."
         )
 
     logger.info(f"The shopping list is now: {agent.session_state.get('shopping_list')}")
@@ -34,7 +38,6 @@ def add_item(agent: Agent, item: str) -> str:
 
 agent = Agent(
     model=OpenAIChat(id="gpt-4o-mini"),
-    # Initialize the session state with empty shopping list
     session_state={"shopping_list": []},
     tools=[add_item],
     markdown=True,
@@ -44,5 +47,5 @@ print(f"Final session state: {agent.session_state}")
 ```
 
 <Tip>
-Make sure to set `AGNO_DEBUG=True` to see the debug logs.
+Make sure to set `AGNO_DEBUG=True` to see the debug logs and exception traces.
 </Tip>
