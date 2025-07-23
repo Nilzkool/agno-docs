@@ -1,69 +1,72 @@
 ### Parameters
 
-| Parameter | Type | Description | Default |
-|-----------|------|-------------|---------|
-| `model` | `Optional[Model]` | Model used for memories and summaries | `None` |
-| `memory_manager` | `Optional[MemoryManager]` | Manager for memory operations | `None` |
-| `summarizer` | `Optional[SessionSummarizer]` | Summarizer for generating session summaries | `None` |
-| `db` | `Optional[MemoryDb]` | Database for storing memories | `None` |
-| `debug_mode` | `bool` | Whether to enable debug logging | `False` |
+| Parameter         | Type                             | Description                                           | Default |
+|-------------------|----------------------------------|-------------------------------------------------------|---------|
+| `model`           | `Optional[Model]`                | Model used for memories and summaries                 | `None`  |
+| `memory_manager`  | `Optional[MemoryManager]`        | Manager for memory operations                         | `None`  |
+| `summarizer`      | `Optional[SessionSummarizer]`    | Summarizer for generating session summaries           | `None`  |
+| `db`              | `Optional[MemoryDb]`             | Database for storing memories                         | `None`  |
+| `debug_mode`      | `bool`                           | Whether to enable debug logging                       | `False` |
+| `delete_memories` | `bool`                           | Whether to delete memories when updating or creating  | `False` |
+| `clear_memories`  | `bool`                           | Whether to clear all existing memories on each update | `False` |
 
 ### Key Methods
 
 #### User Memory Management
 
-| Method | Description | Parameters | Returns |
-|--------|-------------|------------|---------|
-| `get_user_memories` | Retrieves all memories for a user | `user_id: str` | `List[UserMemory]` |
-| `get_user_memory` | Gets a specific memory | `user_id: str, memory_id: str` | `UserMemory` |
-| `add_user_memory` | Adds a new memory and gets the memory id | `memory: UserMemory, user_id: Optional[str] = None` | `str` |
-| `replace_user_memory` | Updates an existing memory and gets the memory id | `memory_id: str, memory: UserMemory, user_id: Optional[str] = None` | `str` |
-| `delete_user_memory` | Deletes a memory | `user_id: str, memory_id: str` | `None` |
-| `create_user_memories` | Creates memories from one or more messages | `message: Optional[str] = None, messages: Optional[List[Message]] = None, user_id: Optional[str] = None` | `str` |
-| `acreate_user_memories` | Creates memories from one or more messages (Async) | `message: Optional[str] = None, messages: Optional[List[Message]] = None, user_id: Optional[str] = None` | `str` |
-| `search_user_memories` | Searches user memories using specified retrieval method | `query: Optional[str] = None, limit: Optional[int] = None, retrieval_method: Optional[Literal["last_n", "first_n", "semantic"]] = None, user_id: Optional[str] = None` | `List[UserMemory]` |
+| Method                   | Description                                           | Parameters                                                                                                               | Returns               |
+|--------------------------|-------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|-----------------------|
+| `get_user_memories`      | Retrieves all memories for a user                     | `user_id: Optional[str] = None, refresh_from_db: bool = True`                                                            | `List[UserMemory]`    |
+| `get_user_memory`        | Gets a specific memory                                | `memory_id: str, user_id: Optional[str] = None, refresh_from_db: bool = True`                                            | `Optional[UserMemory]`|
+| `add_user_memory`        | Adds a new memory and returns its id                  | `memory: UserMemory, user_id: Optional[str] = None, refresh_from_db: bool = True`                                        | `str`                 |
+| `replace_user_memory`    | Updates an existing memory and returns its id         | `memory_id: str, memory: UserMemory, user_id: Optional[str] = None, refresh_from_db: bool = True`                         | `Optional[str]`       |
+| `delete_user_memory`     | Deletes a memory                                      | `memory_id: str, user_id: Optional[str] = None, refresh_from_db: bool = True`                                            | `None`                |
+| `create_user_memories`   | Creates memories from one or more messages            | `message: Optional[str] = None, messages: Optional[List[Message]] = None, user_id: Optional[str] = None, refresh_from_db: bool = True` | `str`                 |
+| `acreate_user_memories`  | Async version of `create_user_memories`               | `message: Optional[str] = None, messages: Optional[List[Message]] = None, user_id: Optional[str] = None, refresh_from_db: bool = True` | `str`                 |
+| `search_user_memories`   | Searches user memories using specified retrieval method; use `query` with `agentic` | `query: Optional[str] = None, limit: Optional[int] = None, retrieval_method: Optional[Literal["last_n","first_n","agentic"]] = None, user_id: Optional[str] = None, refresh_from_db: bool = True` | `List[UserMemory]`    |
 
 #### Session Summary Management
 
-| Method | Description | Parameters |
-|--------|-------------|------------|
-| `get_session_summaries` | Retrieves all session summaries for a user | `user_id: str` |
-| `get_session_summary` | Gets a specific session summary | `user_id: str, session_id: str` |
-| `create_session_summary` | Creates a summary for a session from the stored session runs | `session_id: str, user_id: Optional[str] = None` |
-| `acreate_session_summary` | Creates a summary for a session from the stored session runs (Async) | `session_id: str, user_id: Optional[str] = None` |
-| `delete_session_summary` | Deletes a session summary | `user_id: str, session_id: str` |
+| Method                      | Description                                                  | Parameters                                                | Returns                  |
+|-----------------------------|--------------------------------------------------------------|-----------------------------------------------------------|--------------------------|
+| `get_session_summaries`     | Retrieves all session summaries for a user                   | `user_id: Optional[str] = None`                           | `List[SessionSummary]`   |
+| `get_session_summary`       | Gets a specific session summary                              | `session_id: str, user_id: Optional[str] = None`          | `Optional[SessionSummary]`|
+| `create_session_summary`    | Creates summary for a session from stored session runs       | `session_id: str, user_id: Optional[str] = None`          | `Optional[SessionSummary]`|
+| `acreate_session_summary`   | Async version of `create_session_summary`                    | `session_id: str, user_id: Optional[str] = None`          | `Optional[SessionSummary]`|
+| `delete_session_summary`    | Deletes a session summary                                    | `user_id: str, session_id: str`                           | `None`                   |
 
 ### UserMemory
 
-| Parameter | Type | Description | Default |
-|-----------|------|-------------|---------|
-| `memory` | `str` | The actual memory content | Required |
-| `topics` | `Optional[List[str]]` | Topics or categories of the memory | `None` |
-| `input` | `Optional[str]` | Original input that generated the memory | `None` |
-| `last_updated` | `Optional[datetime]` | When the memory was last updated | `None` |
-| `memory_id` | `Optional[str]` | Unique identifier for the memory | `None` |
+| Parameter     | Type                 | Description                                 | Default |
+|---------------|----------------------|---------------------------------------------|---------|
+| `memory`      | `str`                | The actual memory content                   | Required|
+| `topics`      | `Optional[List[str]]`| Topics or categories of the memory          | `None`  |
+| `input`       | `Optional[str]`      | Original input that generated the memory    | `None`  |
+| `last_updated`| `Optional[datetime]` | When the memory was last updated           | `None`  |
+| `memory_id`   | `Optional[str]`      | Unique identifier for the memory            | `None`  |
 
 ### SessionSummary
 
-| Parameter | Type | Description | Default |
-|-----------|------|-------------|---------|
-| `summary` | `str` | Concise summary of the session | Required |
-| `topics` | `Optional[List[str]]` | Topics discussed in the session | `None` |
-| `last_updated` | `Optional[datetime]` | When the summary was last updated | `None` |
+| Parameter      | Type                 | Description                                 | Default |
+|----------------|----------------------|---------------------------------------------|---------|
+| `summary`      | `str`                | Concise summary of the session              | Required|
+| `topics`       | `Optional[List[str]]`| Topics discussed in the session             | `None`  |
+| `last_updated` | `Optional[datetime]` | When the summary was last updated           | `None`  |
 
 ### Memory Manager
 
-| Parameter | Type | Description | Default |
-|-----------|------|-------------|---------|
-| `model` | `Optional[Model]` | Model used for managing memories | `None` |
-| `system_message` | `Optional[str]` | Custom system prompt for the memory manager | `None` |
-| `additional_instructions` | `Optional[str]` | Additional instructions added to the end of the system message | `None` |
-
+| Parameter                   | Type                      | Description                                            | Default |
+|-----------------------------|---------------------------|--------------------------------------------------------|---------|
+| `model`                     | `Optional[Model]`         | Model used for managing memories                       | `None`  |
+| `system_message`            | `Optional[str]`           | Custom system prompt for the memory manager            | `None`  |
+| `memory_capture_instructions`| `Optional[str]`          | Custom instructions for capturing memories             | `None`  |
+| `additional_instructions`   | `Optional[str]`           | Additional instructions appended to the system message | `None`  |
 
 ### Session Summarizer
 
-| Parameter | Type | Description | Default |
-|-----------|------|-------------|---------|
-| `model` | `Optional[Model]` | Model used for summarizing sessions | `None` |
-| `system_message` | `Optional[str]` | Custom system prompt for the summarizer | `None` |
-| `additional_instructions` | `Optional[str]` | Additional instructions added to the end of the system message | `None` |
+| Parameter               | Type                      | Description                                            | Default |
+|-------------------------|---------------------------|--------------------------------------------------------|---------|
+| `model`                 | `Optional[Model]`         | Model used for summarizing sessions                    | `None`  |
+| `use_structured_outputs`| `bool`                    | Whether to parse model output into `SessionSummary`    | `False` |
+| `system_message`        | `Optional[str]`           | Custom system prompt for the summarizer                | `None`  |
+| `additional_instructions`| `Optional[str]`          | Additional instructions appended to the system message | `None`  |

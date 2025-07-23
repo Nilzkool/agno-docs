@@ -1,33 +1,43 @@
+<ResponseField name="id" type="str" default="llama3.1">
+  ID of the Ollama model to use.
+</ResponseField>
+
 <ResponseField name="name" type="str" default="Ollama">
+  The display name of the model provider.
 </ResponseField>
-<ResponseField name="model" type="str" default="openhermes">
-  ID of the model to use.
+
+<ResponseField name="provider" type="str" default="Ollama">
+  The name of the model provider.
 </ResponseField>
-<ResponseField name="host" type="str">
+
+<ResponseField name="supports_native_structured_outputs" type="bool" default="True">
+  Whether the model supports native structured outputs via Pydantic schemas.
 </ResponseField>
-<ResponseField name="timeout" type="Any">
+
+<ResponseField name="format" type="Any">
+  Format schema for structured or JSON outputs (e.g., Pydantic model schema).
 </ResponseField>
-<ResponseField name="format" type="str">
- The format to return a response in. Currently the only accepted value is json
-</ResponseField>
+
 <ResponseField name="options" type="Any">
-  Additional model parameters such as temperature
+  Additional model parameters (e.g., temperature, top_p) passed to Ollama.
 </ResponseField>
+
 <ResponseField name="keep_alive" type="Union[float, str]">
-   Controls how long the model will stay loaded into memory following the request.
+  Controls how long the model stays loaded in memory after the request.
 </ResponseField>
-<ResponseField name="client_kwargs" type="Dict[str, Any]" default="None">
-  Additional `{key: value}` dict sent when initalizing the `Ollama()` client.
+
+<ResponseField name="request_params" type="Dict[str, Any]">
+  Extra request parameters to include in every API call.
 </ResponseField>
-<ResponseField name="ollama_client" type="ollama.Client()" default="None">
-  Provide your own `ollama.Client()`
+
+<ResponseField name="host" type="str">
+  Custom host URL for the Ollama API.
 </ResponseField>
-<ResponseField name="function_call_limit" type="int" default="10">
-  Maximum number of function calls allowed across all iterations.
+
+<ResponseField name="timeout" type="Any">
+  Timeout setting for API requests.
 </ResponseField>
-<ResponseField name="deactivate_tools_after_use" type="bool" default="False">
-  Deactivate tool calls by turning off JSON mode after 1 tool call
-</ResponseField>
-<ResponseField name="add_user_message_after_tool_call" type="bool" default="True">
-  After a tool call is run, add the user message as a reminder to the LLM
+
+<ResponseField name="client_params" type="Dict[str, Any]">
+  Additional parameters for initializing the Ollama client.
 </ResponseField>

@@ -11,7 +11,8 @@ from agno.vectordb.milvus import Milvus
 
 COLLECTION_NAME = "thai-recipes"
 
-vector_db = Milvus(collection=COLLECTION_NAME, url="http://localhost:6333")
+# Note: parameter is `uri`, not `url`
+vector_db = Milvus(collection=COLLECTION_NAME, uri="http://localhost:6333")
 
 knowledge_base = PDFUrlKnowledgeBase(
     urls=["https://agno-public.s3.amazonaws.com/recipes/ThaiRecipes.pdf"],

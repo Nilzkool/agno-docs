@@ -2,7 +2,7 @@
 title: Video Generation
 ---
 
-This example shows how to create an AI agent that generates videos using ModelsLabs.
+This example shows how to create an AI agent that generates videos using ModelsLab.
 You can use this agent to create various types of short videos, from animated scenes
 to creative visual stories.
 
@@ -28,8 +28,7 @@ video_agent = Agent(
     description=dedent("""\
         You are an experienced AI video director with expertise in various video styles,
         from nature scenes to artistic animations. You have a deep understanding of motion,
-        timing, and visual storytelling through video content.\
-    """),
+        timing, and visual storytelling through video content."""),
     instructions=dedent("""\
         As an AI video director, follow these guidelines:
         1. Analyze the user's request carefully to understand the desired style and mood
@@ -39,8 +38,7 @@ video_agent = Agent(
         5. If the request is unclear, ask for clarification about style preferences
 
         The video will be displayed in the UI automatically below your response.
-        Always aim to create captivating and meaningful videos that bring the user's vision to life!\
-    """),
+        Always aim to create captivating and meaningful videos that bring the user's vision to life!"""),
     markdown=True,
     show_tool_calls=True,
 )
@@ -80,6 +78,7 @@ Try these creative prompts:
 
   <Step title="Set environment variables">
     ```bash
+    export OPENAI_API_KEY=****
     export MODELS_LAB_API_KEY=****
     ```
   </Step>

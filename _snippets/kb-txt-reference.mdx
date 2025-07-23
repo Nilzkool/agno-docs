@@ -1,4 +1,5 @@
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| `path` | `Union[str, Path]` | Required | Path to the text file |
-| `reader` | `TextReader` | `TextReader()` | Reader to read text documents |
+| `file` | `Union[Path, IO[Any]]` | Required | Path or file-like object of the text document |
+| `reader` | `TextReader` | `TextReader()` | Reader instance to process text documents |
+| `chunk` | `bool` | `False` | Whether to chunk documents into smaller pieces |
