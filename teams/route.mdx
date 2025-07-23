@@ -153,8 +153,8 @@ from pydantic import BaseModel
 from typing import List, Optional
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
-from agno.team import Team
-
+from agno.team.team import Team
+from agno.tools.yfinance import YFinanceTools
 
 class StockAnalysis(BaseModel):
     symbol: str

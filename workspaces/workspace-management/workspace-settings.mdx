@@ -8,8 +8,11 @@ The `WorkspaceSettings` object in the `workspace/settings.py` file defines commo
 ws_settings = WorkspaceSettings(
     # Update this to your project name
     ws_name="ai",
-    # Add your AWS subnets
-    subnet_ids=["subnet-xyz", "subnet-xyz"],
+    # Add your AWS subnets (use aws_subnet_ids)
+    aws_subnet_ids=["subnet-xyz", "subnet-xyz"],
+    # Alternatively, you can specify public and private subnets separately
+    aws_public_subnets=["subnet-abc"],
+    aws_private_subnets=["subnet-def"],
     # Add your image repository
     image_repo="[ACCOUNT_ID].dkr.ecr.us-east-1.amazonaws.com",
     # Set to True to build images locally
@@ -23,7 +26,7 @@ ws_settings = WorkspaceSettings(
 
 `WorkspaceSettings` can also be updated using environment variables or the `.env` file.
 
-Checkout the `example.env` file for an example.
+Checkout the `.env.example` file for an example.
 
 </Note>
 
@@ -39,24 +42,24 @@ The `ws_name` is used to name:
 
 - The image for your application
 - Apps like db, streamlit app and fastapi server
-- Resources like buckets, secrets and loadbalancers
+- Resources like buckets, secrets and load balancers
 
-Checkout the `workspace/dev_resources.py` and `workspace/prd_resources.py` file to see how its used.
+Checkout the `workspace/dev_resources.py` and `workspace/prd_resources.py` files to see how it's used.
 
 ## Image Repository
 
-The `image_repo` defines the repo for your image.
+The `image_repo` defines the repository for your image.
 
-- If using dockerhub it would be something like `agno`.
+- If using Docker Hub it would be something like `agno`.
 - If using ECR it would be something like `[ACCOUNT_ID].dkr.ecr.us-east-1.amazonaws.com`
 
-Checkout the `dev_image` in `workspace/dev_resources.py` and `prd_image` in `workspace/prd_resources.py` to see how its used.
+Checkout the `dev_image` in `workspace/dev_resources.py` and `prd_image` in `workspace/prd_resources.py` to see how it's used.
 
 ## Build Images
 
 Setting `build_images=True` will build images locally when running `ag ws up dev:docker` or `ag ws up prd:docker`.
 
-Checkout the `dev_image` in `workspace/dev_resources.py` and `prd_image` in `workspace/prd_resources.py` to see how its used.
+Checkout the `dev_image` in `workspace/dev_resources.py` and `prd_image` in `workspace/prd_resources.py` to see how it's used.
 
 Read more about:
 
@@ -67,7 +70,7 @@ Read more about:
 
 Setting `push_images=True` will push images after building when running `ag ws up dev:docker` or `ag ws up prd:docker`.
 
-Checkout the `dev_image` in `workspace/dev_resources.py` and `prd_image` in `workspace/prd_resources.py` to see how its used.
+Checkout the `dev_image` in `workspace/dev_resources.py` and `prd_image` in `workspace/prd_resources.py` to see how it's used.
 
 Read more about:
 
@@ -76,4 +79,4 @@ Read more about:
 
 ## AWS Settings
 
-The `aws_region` and `subnet_ids` provide values used for creating production resources. Checkout the `workspace/prd_resources.py` file to see how its used.
+The `aws_region` and `aws_subnet_ids` (or `aws_public_subnets` / `aws_private_subnets`) provide values used for creating production resources. Checkout the `workspace/prd_resources.py` file to see how it's used.

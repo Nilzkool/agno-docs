@@ -1,12 +1,18 @@
-| Parameter                 | Type                          | Default             | Description                                                                  |
-| ------------------------- | ----------------------------- | ------------------- | ---------------------------------------------------------------------------- |
-| `id`                      | `str`                         | -                   | The specific model ID used for generating responses. This field is required. |
-| `name`                    | `str`                         | `"AzureOpenAI"`     | The name identifier for the agent.                                           |
-| `provider`                | `str`                         | `"Azure"`           | The provider of the model.                                                   |
-| `api_key`                 | `Optional[str]`               | `"None"`            | The API key for authenticating requests to the Azure OpenAI service.         |
-| `api_version`             | `str`                         | `"2024-10-21"`      | The version of the Azure OpenAI API to use.                                  |
-| `azure_endpoint`          | `Optional[str]`               | `"None"`            | The endpoint URL for the Azure OpenAI service.                               |
-| `azure_deployment`        | `Optional[str]`               | `"None"`            | The deployment name or ID in Azure.                                          |
-| `azure_ad_token`          | `Optional[str]`               | `"None"`            | The Azure Active Directory token for authenticating requests.                |
-| `azure_ad_token_provider` | `Optional[Any]`               | `"None"`            | The provider for obtaining Azure Active Directory tokens.                    |
-| `openai_client`           | `Optional[AzureOpenAIClient]` | `"None"`            | An instance of AzureOpenAIClient provided for making API requests.           |
+| Parameter                | Type                                           | Default                 | Description                                                      |
+| ------------------------ | ---------------------------------------------- | ----------------------- | ---------------------------------------------------------------- |
+| `id`                     | `str`                                          | —                       | The deployment or model ID to use for Azure OpenAI. Required.    |
+| `name`                   | `str`                                          | `"AzureOpenAI"`       | The client name for Azure OpenAI.                                |
+| `provider`               | `str`                                          | `"Azure"`             | The provider identifier.                                         |
+| `api_key`                | `Optional[str]`                                | `None`                  | Azure OpenAI API key (env `AZURE_OPENAI_API_KEY` if unset).      |
+| `api_version`            | `str`                                          | `"2024-10-21"`        | Version of the Azure OpenAI API.                                 |
+| `azure_endpoint`         | `Optional[str]`                                | `None`                  | URL endpoint for Azure OpenAI (env `AZURE_OPENAI_ENDPOINT`).      |
+| `azure_deployment`       | `Optional[str]`                                | `None`                  | Deployment name or ID for your model.                            |
+| `base_url`               | `Optional[str]`                                | `None`                  | Custom base URL override.                                        |
+| `azure_ad_token`         | `Optional[str]`                                | `None`                  | Azure Active Directory token for auth.                           |
+| `azure_ad_token_provider`| `Optional[Any]`                                | `None`                  | Callable or provider for obtaining AD tokens.                    |
+| `default_headers`        | `Optional[Dict[str, str]]`                     | `None`                  | Default HTTP headers to include in each request.                 |
+| `default_query`          | `Optional[Dict[str, Any]]`                     | `None`                  | Default query parameters to append to requests.                  |
+| `client`                 | `Optional[AzureOpenAIClient]`                  | `None`                  | Synchronous Azure OpenAI client instance.                        |
+| `async_client`           | `Optional[AsyncAzureOpenAIClient]`             | `None`                  | Asynchronous Azure OpenAI client instance.                       |
+| `http_client`            | `Optional[httpx.Client]`                       | `None`                  | Custom HTTP transport/client.                                    |
+| `client_params`          | `Optional[Dict[str, Any]]`                     | `None`                  | Extra configuration for the underlying client.                   |

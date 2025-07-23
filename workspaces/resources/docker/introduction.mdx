@@ -47,48 +47,9 @@ curl -X POST http://localhost:80
 The same can be defined as an `App`:
 
 ```python resources.py
-from agno.docker.app.whoami import Whoami
+from agno.docker.app.redis.redis import Redis
 
-whoami = Whoami()
+redis_app = Redis()
 ```
 
 Stop resources using `ag stop resources.py`
-
-## Image
-
-The `DockerImage` class defines an image, for example use the following code create your own python image and run it in a container. Build it using `ag start resources.py`
-
-<CodeGroup>
-
-```python resources.py
-from agno.docker.resource.container import DockerContainer
-from agno.docker.resource.image import DockerImage
-
-python_image = DockerImage(
-    name="my/python",
-    tag="3.12",
-    path=".",
-    # push_image=True,
-)
-
-python_container = DockerContainer(
-    name='python',
-    image=python_image.get_image_str(),
-)
-```
-
-```docker Dockerfile
-FROM agnohq/python:3.12
-
-CMD ["chill"]
-```
-
-</CodeGroup>
-
-<br />
-
-<Note>
-
-Make sure to add the `Dockerfile` in the current directory.
-
-</Note>

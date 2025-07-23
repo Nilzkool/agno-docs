@@ -1,4 +1,4 @@
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| `path` | `Union[str, Path]` | Required | Path to the PDF file |
-| `reader` | `Union[PDFReader, PDFImageReader]` | `PDFReader()` | Reader to read PDF documents |
+| Parameter | Type                          | Default          | Description                                                       |
+| ---       | ---                           | ---              | ---                                                               |
+| `pdf`     | `Union[str, Path, IO[Any]]`     | Required         | Path string, Path object, or file-like object to the PDF file     |
+| `reader`  | `Union[PDFReader, PDFImageReader]` | `PDFReader()`    | Reader to extract text (and images) from PDF documents            |

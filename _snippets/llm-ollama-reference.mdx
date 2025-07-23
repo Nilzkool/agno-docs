@@ -1,33 +1,39 @@
-<ResponseField name="name" type="str" default="Ollama">
-</ResponseField>
-<ResponseField name="model" type="str" default="openhermes">
+<ResponseField name="id" type="str" default="llama3.1">
   ID of the model to use.
 </ResponseField>
+<ResponseField name="name" type="str" default="Ollama">
+  Name for this Model instance.
+</ResponseField>
+<ResponseField name="provider" type="str" default="Ollama">
+  Provider name.
+</ResponseField>
 <ResponseField name="host" type="str">
+  Host address for Ollama server.
 </ResponseField>
 <ResponseField name="timeout" type="Any">
+  Timeout for requests.
 </ResponseField>
-<ResponseField name="format" type="str">
- The format to return a response in. Currently the only accepted value is json
+<ResponseField name="format" type="Any">
+  Format for the response.
 </ResponseField>
 <ResponseField name="options" type="Any">
-  Additional model parameters such as temperature
+  Model options such as temperature, top_p, etc.
 </ResponseField>
 <ResponseField name="keep_alive" type="Union[float, str]">
-   Controls how long the model will stay loaded into memory following the request.
+  How long the model stays loaded after the request.
 </ResponseField>
-<ResponseField name="client_kwargs" type="Dict[str, Any]" default="None">
-  Additional `{key: value}` dict sent when initalizing the `Ollama()` client.
+<ResponseField name="request_params" type="Dict[str, Any]" default="None">
+  Additional request parameters for chat calls.
 </ResponseField>
-<ResponseField name="ollama_client" type="ollama.Client()" default="None">
-  Provide your own `ollama.Client()`
+<ResponseField name="client_params" type="Dict[str, Any]" default="None">
+  Parameters for initializing the Ollama client.
 </ResponseField>
-<ResponseField name="function_call_limit" type="int" default="10">
-  Maximum number of function calls allowed across all iterations.
+<ResponseField name="client" type="ollama.Client()" default="None">
+  Custom OllamaClient instance.
 </ResponseField>
-<ResponseField name="deactivate_tools_after_use" type="bool" default="False">
-  Deactivate tool calls by turning off JSON mode after 1 tool call
+<ResponseField name="async_client" type="ollama.AsyncClient()" default="None">
+  Custom AsyncOllamaClient instance.
 </ResponseField>
-<ResponseField name="add_user_message_after_tool_call" type="bool" default="True">
-  After a tool call is run, add the user message as a reminder to the LLM
+<ResponseField name="supports_native_structured_outputs" type="bool" default="True">
+  Whether the model supports structured outputs natively.
 </ResponseField>
