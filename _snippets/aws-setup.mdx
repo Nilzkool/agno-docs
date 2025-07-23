@@ -15,14 +15,15 @@
 
   </Step>
   <Step title="Update region and subnets">
-    Update the `aws_region` and add 2 [subnets](https://us-east-1.console.aws.amazon.com/vpc/home?#subnets:) to the `workspace/settings.py` file (required for ECS services)
+    Update the `aws_region` and add 2 subnets to the `workspace/settings.py` file (required for ECS services)
 
     ```python workspace/settings.py
     ws_settings = WorkspaceSettings(
         ...
         # -*- AWS settings
+        aws_region="us-east-1",
         # Add your Subnet IDs here
-        subnet_ids=["subnet-xyz", "subnet-xyz"],
+        aws_subnet_ids=["subnet-xyz", "subnet-abc"],
         ...
     )
     ```

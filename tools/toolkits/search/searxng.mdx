@@ -4,14 +4,14 @@ title: Searxng
 
 ## Example
 
-**Searxng** enables an Agent to search the web for a query, scrape a website, or crawl a website.
+**Searxng** enables an Agent to perform web searches across various categories using a Searxng instance.
 
-```python cookbook/tools/searxng_tools.py
+```python
 from agno.agent import Agent
-from agno.tools.searxng import SearxngTools
+from agno.tools.searxng import Searxng
 
 # Initialize Searxng with your Searxng instance URL
-searxng = SearxngTools(
+searxng = Searxng(
     host="http://localhost:53153",
     engines=[],
     fixed_max_results=5,
@@ -19,14 +19,11 @@ searxng = SearxngTools(
     science=True
 )
 
-# Create an agent with Searxng
 agent = Agent(tools=[searxng])
-
-# Example: Ask the agent to search using Searxng
-agent.print_response("""
-Please search for information about artificial intelligence
-and summarize the key points from the top results
-""")
+agent.print_response(
+    "Please search for information about artificial intelligence "
+    "and summarize the key points from the top results"
+)
 ```
 
 ## Toolkit Params
@@ -59,5 +56,5 @@ and summarize the key points from the top results
 
 ## Developer Resources
 
-- View [Tools](https://github.com/agno-agi/agno/blob/main/libs/agno/agno/tools/searxng.py)
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/searxng_tools.py)
+- View [Tools](https://github.com/Nilzkool/agno/blob/main/libs/agno/agno/tools/searxng.py)
+- View [Cookbook](https://github.com/Nilzkool/agno/blob/main/cookbook/agent_concepts/agentic_search/searxng.py)

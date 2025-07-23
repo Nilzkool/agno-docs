@@ -1,6 +1,4 @@
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| `chunk` | `bool` | `True` | Whether to chunk the documents |
-| `chunk_size` | `int` | `3000` | Size of each chunk when chunking is enabled |
-| `separators` | `List[str]` | `["\n", "\n\n", "\r", "\r\n", "\n\r", "\t", " ", "  "]` | List of separators used for chunking text |
-| `chunking_strategy` | `ChunkingStrategy` | `FixedSizeChunking` | Strategy class used for chunking documents |
+| Parameter    | Type | Default | Description                                           |
+| ------------ | ---- | ------- | ----------------------------------------------------- |
+| `chunk_size` | `int` | `5000`  | Maximum number of characters per chunk                |
+| `overlap`    | `int` | `0`     | Number of overlapping characters between consecutive chunks |
