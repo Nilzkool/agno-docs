@@ -1,3 +1,17 @@
+## Prerequisites
+
+Before you start, ensure you have installed Agno and the LiteLLM proxy extras, and set your API key:
+
+```shell
+pip install agno 'litellm[proxy]'
+```
+
+Set your `LITELLM_API_KEY` environment variable:
+
+```shell
+export LITELLM_API_KEY=your_api_key_here
+```
+
 ## Proxy Server Integration
 
 LiteLLM can also be used as an OpenAI-compatible proxy server, allowing you to route requests to different models through a unified API.
@@ -38,13 +52,13 @@ agent.print_response("Share a 2 sentence horror story")
 
 The `LiteLLMOpenAI` class accepts the following parameters:
 
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `id` | str | Model identifier | "gpt-4o" |
-| `name` | str | Display name for the model | "LiteLLM" |
-| `provider` | str | Provider name | "LiteLLM" |
-| `api_key` | str | API key (falls back to LITELLM_API_KEY environment variable) | None |
-| `base_url` | str | URL of the LiteLLM proxy server | "http://0.0.0.0:4000" |
+| Parameter  | Type            | Description                                            | Default                 |
+| ---------- | --------------- | ------------------------------------------------------ | ----------------------- |
+| `id`       | str             | Model identifier                                       | "gpt-4o"              |
+| `name`     | str             | Display name for the model                             | "LiteLLM"             |
+| `provider` | str             | Provider name                                          | "LiteLLM"             |
+| `api_key`  | str             | API key (falls back to `LITELLM_API_KEY`)              | None                    |
+| `base_url` | str             | URL of the LiteLLM proxy server                        | "http://0.0.0.0:4000" |
 
 ## Examples
 

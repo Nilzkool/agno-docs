@@ -1,33 +1,19 @@
-<ResponseField name="name" type="str" default="Ollama">
-</ResponseField>
-<ResponseField name="model" type="str" default="openhermes">
-  ID of the model to use.
-</ResponseField>
-<ResponseField name="host" type="str">
-</ResponseField>
-<ResponseField name="timeout" type="Any">
-</ResponseField>
-<ResponseField name="format" type="str">
- The format to return a response in. Currently the only accepted value is json
-</ResponseField>
-<ResponseField name="options" type="Any">
-  Additional model parameters such as temperature
-</ResponseField>
-<ResponseField name="keep_alive" type="Union[float, str]">
-   Controls how long the model will stay loaded into memory following the request.
-</ResponseField>
-<ResponseField name="client_kwargs" type="Dict[str, Any]" default="None">
-  Additional `{key: value}` dict sent when initalizing the `Ollama()` client.
-</ResponseField>
-<ResponseField name="ollama_client" type="ollama.Client()" default="None">
-  Provide your own `ollama.Client()`
-</ResponseField>
-<ResponseField name="function_call_limit" type="int" default="10">
-  Maximum number of function calls allowed across all iterations.
-</ResponseField>
-<ResponseField name="deactivate_tools_after_use" type="bool" default="False">
-  Deactivate tool calls by turning off JSON mode after 1 tool call
-</ResponseField>
-<ResponseField name="add_user_message_after_tool_call" type="bool" default="True">
-  After a tool call is run, add the user message as a reminder to the LLM
-</ResponseField>
+| Parameter                  | Type                             | Default         | Description                                                      |
+|----------------------------|----------------------------------|-----------------|------------------------------------------------------------------|
+| id                         | str                              | "llama3.1"     | Identifier of the Ollama model                                   |
+| name                       | str                              | "Ollama"       | Display name for this model (not sent to API)                   |
+| provider                   | str                              | "Ollama"       | Provider identifier                                             |
+| host                       | Optional[str]                    | None            | Host address of the Ollama server                               |
+| timeout                    | Optional[Any]                    | None            | Request timeout setting                                         |
+| format                     | Optional[Any]                    | None            | Response format/schema for structured outputs                   |
+| options                    | Optional[Any]                    | None            | Additional model parameters (e.g., temperature)                 |
+| keep_alive                 | Optional[Union[float,str]]       | None            | How long the model stays loaded in memory                       |
+| request_params             | Optional[Dict[str, Any]]         | None            | Extra request parameters to send                                 |
+| client_params              | Optional[Dict[str, Any]]         | None            | Additional kwargs for client initialization                     |
+| client                     | OllamaClient                     | None            | Preconfigured synchronous Ollama client                         |
+| async_client               | AsyncOllamaClient                | None            | Preconfigured asynchronous Ollama client                        |
+| response_format            | Optional[Any]                    | None            | Format or schema for structured outputs                         |
+| structured_outputs         | bool                             | False           | Enable structured output mode                                   |
+| supports_native_structured_outputs | bool                    | True            | Whether the model supports native structured outputs            |
+| _tools                     | Optional[List[Dict[str,Any]]]    | None            | Tool/function definitions sent to the provider                  |
+| _functions                 | Optional[Dict[str,Any]]          | None            | Internal function definitions (for execution)                   |

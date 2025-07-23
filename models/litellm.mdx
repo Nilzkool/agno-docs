@@ -3,20 +3,21 @@
 [LiteLLM](https://docs.litellm.ai/docs/) provides a unified interface for various LLM providers, allowing you to use different models with the same code.
 
 Agno integrates with LiteLLM in two ways:
-1. **Direct SDK integration** - Using the LiteLLM Python SDK
-2. **Proxy Server integration** - Using LiteLLM as an OpenAI-compatible proxy
+1. **Direct SDK integration** - Using the LiteLLM Python SDK ([details](#sdk-integration))
+2. **Proxy Server integration** - Using an OpenAI-compatible proxy ([docs](./litellm_openai.mdx))
 
 ## Prerequisites
 
 For both integration methods, you'll need:
 
 ```shell
-# Install required packages
 pip install agno litellm
+# For proxy integration, install extras:
+pip install 'litellm[proxy]'
 ```
 
 Set up your API key:
-Regardless of the model used(OpenAI, Hugging Face, or XAI) the API key is referenced as `LITELLM_API_KEY`.
+Regardless of the model used (OpenAI, Hugging Face, or XAI) the API key is referenced as `LITELLM_API_KEY`.
 ```shell
 export LITELLM_API_KEY=your_api_key_here
 ```
@@ -67,17 +68,17 @@ agent.print_response("What's happening in France?")
 
 The `LiteLLM` class accepts the following parameters:
 
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `id` | str | Model identifier (e.g., "gpt-4o" or "huggingface/mistralai/Mistral-7B-Instruct-v0.2") | "gpt-4o" |
-| `name` | str | Display name for the model | "LiteLLM" |
-| `provider` | str | Provider name | "LiteLLM" |
-| `api_key` | Optional[str] | API key (falls back to LITELLM_API_KEY environment variable) | None |
-| `api_base` | Optional[str] | Base URL for API requests | None |
-| `max_tokens` | Optional[int] | Maximum tokens in the response | None |
-| `temperature` | float | Sampling temperature | 0.7 |
-| `top_p` | float | Top-p sampling value | 1.0 |
-| `request_params` | Optional[Dict[str, Any]] | Additional request parameters | None |
+| Parameter         | Type                  | Description                                          | Default |
+| ----------------- | --------------------- | ---------------------------------------------------- | ------- |
+| `id`              | str                   | Model identifier (e.g., "gpt-4o" or a HF model)    | "gpt-4o" |
+| `name`            | str                   | Display name for the model                          | "LiteLLM" |
+| `provider`        | str                   | Provider name                                        | "LiteLLM" |
+| `api_key`         | Optional[str]         | API key (falls back to `LITELLM_API_KEY`)            | None    |
+| `api_base`        | Optional[str]         | Base URL for API requests                            | None    |
+| `max_tokens`      | Optional[int]         | Maximum tokens in the response                       | None    |
+| `temperature`     | float                 | Sampling temperature                                 | 0.7     |
+| `top_p`           | float                 | Top-p sampling value                                 | 1.0     |
+| `request_params`  | Optional[Dict[str, Any]] | Additional request parameters                    | None    |
 
 ### SDK Examples
 <Note> View more examples [here](../examples/models/litellm). </Note>

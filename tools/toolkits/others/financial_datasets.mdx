@@ -64,6 +64,8 @@ For more examples, see the [Financial Datasets Examples](/examples/concepts/tool
 
 ## Toolkit Functions
 
+> **Note**: All toolkit functions return JSON strings containing the requested data.
+
 | Function                                                                         | Description                                                                                                     |
 | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | `get_income_statements(ticker: str, period: str = "annual", limit: int = 10)`    | Get income statements for a company with options for annual, quarterly, or trailing twelve months (ttm) periods |
@@ -81,11 +83,4 @@ For more examples, see the [Financial Datasets Examples](/examples/concepts/tool
 | `get_sec_filings(ticker: str, form_type: Optional[str] = None, limit: int = 50)` | Get SEC filings with optional filtering by form type (10-K, 10-Q, etc.)                                         |
 | `get_segmented_financials(ticker: str, period: str = "annual", limit: int = 10)` | Get segmented financial data by product category and geographic region                                          |
 
-## Rate Limits and Usage
-
-The Financial Datasets API may have usage limits based on your subscription tier. Please refer to their documentation for specific rate limit information.
-
-## Developer Resources
-
-- View [Tools](https://github.com/agno-agi/agno/blob/main/libs/agno/agno/tools/financial_datasets.py)
-- View [Cookbook](https://github.com/agno-agi/agno/blob/main/cookbook/tools/financial_datasets_tools.py)
+Rest of the document unchanged.

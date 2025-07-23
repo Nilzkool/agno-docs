@@ -136,22 +136,16 @@ def print_agent_memory(agent):
 
     # Print session summary
     for user_id in list(agent.memory.summaries.keys()):
-        console.print(
-            Panel(
-                JSON(
-                    json.dumps(
-                        [
-                            summary.to_dict()
-                            for summary in agent.memory.get_session_summaries(user_id=user_id)
-                        ],
-                        indent=4,
-                    ),
-                ),
-                title=f"Summary for session_id: {agent.session_id}",
-                expand=True,
+        # retrieve the summary using the correct API
+        session_summary = agent.memory.get_session_summary(session_id=agent.session_id, user_id=user_id)
+        if session_summary:
+            console.print(
+                Panel(
+                    JSON(json.dumps(session_summary.to_dict(), indent=4)),
+                    title=f"Summary for session_id: {agent.session_id}",
+                    expand=True,
+                )
             )
-        )
-
 
 
 def main(user: str = "user"):
@@ -159,10 +153,10 @@ def main(user: str = "user"):
     agent = create_agent(user)
 
     print("Try these example inputs:")
-    print("- 'My name is [name] and I live in [city]'")
-    print("- 'I love [hobby/interest]'")
-    print("- 'What do you remember about me?'")
-    print("- 'What have we discussed so far?'\n")
+    print("- 'My name is [name] and I live in [city]'" )
+    print("- 'I love [hobby/interest]'" )
+    print("- 'What do you remember about me?'" )
+    print("- 'What have we discussed so far?'\n" )
 
     exit_on = ["exit", "quit", "bye"]
     while True:
@@ -176,7 +170,6 @@ def main(user: str = "user"):
 
 if __name__ == "__main__":
     typer.run(main)
-
 ```
 
 ## Usage

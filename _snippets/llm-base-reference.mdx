@@ -1,16 +1,21 @@
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `model` | `str` | - | ID of the model to use. |
-| `name` | `str` | - | Name for this LLM. Note: This is not sent to the LLM API. |
-| `metrics` | `Dict[str, Any]` | - | Metrics collected for this LLM. Note: This is not sent to the LLM API. |
-| `response_format` | `Any` | - | Format of the response. |
-| `tools` | `List[Union[Tool, Dict]]` | - | A list of tools provided to the LLM. Tools are functions the model may generate JSON inputs for. If you provide a dict, it is not called by the model. Always add tools using the `add_tool()` method. |
-| `tool_choice` | `Union[str, Dict[str, Any]]` | - | Controls which (if any) function is called by the model. `"none"` means the model will not call a function and instead generates a message. `"auto"` means the model can pick between generating a message or calling a function. Specifying a particular function via `{"type": "function", "function": {"name": "my_function"}}` forces the model to call that function. `"none"` is the default when no functions are present. `"auto"` is the default if functions are present. |
-| `run_tools` | `bool` | `True` | If True, runs tools. |
-| `show_tool_calls` | `bool` | - | If True, shows tool calls in the response. |
-| `functions` | `Dict[str, Function]` | - | Functions extracted from the tools. Note: These are not sent to the LLM API and are only used for execution. |
-| `function_call_limit` | `int` | `20` | Maximum number of function calls allowed. |
-| `function_call_stack` | `List[FunctionCall]` | - | Stack of function calls. |
-| `system_prompt` | `str` | - | System prompt provided to the LLM. |
-| `instructions` | `str` | - | Instructions provided to the LLM. |
+| Parameter                             | Type                             | Default  | Description                                                      |
+|---------------------------------------|----------------------------------|----------|------------------------------------------------------------------|
+| id                                    | str                              | –        | Identifier of the model to use                                   |
+| name                                  | Optional[str]                    | None     | Display name for this model (not sent to API)                   |
+| provider                              | Optional[str]                    | None     | Provider identifier for this model                               |
+| api_key                               | Optional[str]                    | None     | API key for authenticating with the provider                     |
+| api_base                              | Optional[str]                    | None     | Base URL for the LLM API                                         |
+| max_tokens                            | Optional[int]                    | None     | Maximum number of tokens to generate                             |
+| temperature                           | float                            | 0.7      | Sampling temperature                                             |
+| top_p                                 | float                            | 1.0      | Nucleus sampling probability                                     |
+| request_params                        | Optional[Dict[str, Any]]         | None     | Additional parameters sent to the provider                       |
+| response_format                       | Optional[Any]                    | None     | Format or schema for structured outputs                          |
+| structured_outputs                    | bool                             | False    | Enable structured output mode                                    |
+| supports_native_structured_outputs    | bool                             | False    | Whether the model natively supports structured outputs           |
+| supports_json_schema_outputs          | bool                             | False    | Whether the model supports JSON schema–based outputs             |
+| tools                                 | Optional[List[Dict[str, Any]]]   | None     | List of tool/function definitions provided to the model          |
+| functions                             | Optional[Dict[str, Any]]         | None     | Internal function definitions used for execution (not sent)      |
+| tool_choice                           | Optional[Union[str, Dict[str,Any]]]| None   | Controls which tool/function to call: "none", "auto", or specific |
+| show_tool_calls                       | Optional[bool]                   | None     | Include tool call details in the model response                  |
+| tool_call_limit                       | Optional[int]                    | None     | Maximum number of tool calls allowed                             |
+| client                                | Any                              | –        | Underlying LLM client instance                                   |
