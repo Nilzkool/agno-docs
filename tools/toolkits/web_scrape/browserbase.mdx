@@ -1,1 +1,21 @@
-dummy content =====> align this empty doc with code
+---
+title: Differential Equation Solver
+sidebarTitle: Diff Eq Solver
+---
+
+The Differential Equation Solver toolkit provides symbolic solutions for first-order ordinary differential equations (ODEs).
+
+Developed in the agno.tools library, the new DifferentialEquationTools class offers the solve_ode function. This function accepts an ODE expressed as a string in the format "dy/dx = expression" along with optional initial conditions provided as a dictionary (e.g. {"x0": 0, "y0": 1}).
+
+On invocation, solve_ode parses the equation, applies sympy-based symbolic operations, and returns a JSON string detailing the solution or an error if encountered.
+
+Example usage:
+
+  • Import the toolkit:
+    from agno.tools.diff_equations_solver import DifferentialEquationTools
+
+  • Solve an ODE:
+    solver = DifferentialEquationTools()
+    result = solver.solve_ode("dy/dx = x + y", initial_condition={"x0": 0, "y0": 1})
+
+This update aligns the documentation with the newly introduced differential equation solving capabilities.

@@ -1,0 +1,24 @@
+---
+title: Differential Equation Solver
+sidebarTitle: Diff Eq Solver
+---
+
+# Differential Equation Solver Toolkit
+
+This toolkit provides a symbolic solver for first-order ordinary differential equations by leveraging the sympy library. It exposes a single method, `solve_ode`, which accepts an ODE formatted as a string (for example, "dy/dx = x + y"), the dependent variable, the independent variable, and an optional initial condition. When provided, the initial condition should be a JSON object such as {"x0": <number>, "y0": <number>}.
+
+## How It Works
+
+Internally, the toolkit uses sympy to parse and solve the ODE symbolically. If an initial condition is given, it computes a particular solution using the provided values. The response is returned as a JSON string containing either the solution or an error message if the solving process fails.
+
+## Example
+
+For instance, to solve the ODE "dy/dx = x + y" with an initial condition, you can call:
+
+```python
+solver = DifferentialEquationTools()
+result = solver.solve_ode("dy/dx = x + y", initial_condition={"x0": 0, "y0": 1})
+print(result)
+```
+
+This will return a JSON-formatted result with the solution.
